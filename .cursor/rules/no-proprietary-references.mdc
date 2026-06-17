@@ -1,0 +1,33 @@
+---
+description: Keep @pco repo free of proprietary employer/client project references
+alwaysApply: true
+---
+
+# No proprietary project references
+
+This repository (`page-component-object` / `@pco/*`) is **public and standalone**. It must not reference proprietary codebases, employers, or client products.
+
+## Do not include in this repo
+
+- Names of internal/proprietary apps (e.g. specific product codenames)
+- Paths to private monorepos or internal packages
+- Copy-pasted domain models, routes, API paths, or test objects from proprietary apps
+- Migration notes that name proprietary projects as consumers or sources of truth
+
+## Do instead
+
+- Use **fictitious** consumer apps under `apps/*` (e.g. `demo-shared`, `vitest-demo`, `storybook-demo`)
+- Use generic domain examples: `Items`, `Catalog`, `Workspace`, `ItemDetail`
+- Describe patterns abstractly: "prior art from production apps" without naming them
+- When porting ideas from private code, **reimplement** with generic names; never paste proprietary identifiers
+
+## Documentation & commits
+
+- `PLAN.md`, `README.md`, package docs, and commit messages must stay generic
+- Examples in code comments should use the demo app (`HomeViewTestObject`, `ItemsApiTestObject`) only
+
+## Allowed
+
+- Public libraries (Testing Library, MSW, Storybook, Cypress)
+- Public articles and OSS (Kent Dodds, page-o, semantic-matchers)
+- Author's own public packages (e.g. `semantic-matchers` on GitHub)

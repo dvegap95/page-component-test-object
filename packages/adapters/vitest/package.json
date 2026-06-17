@@ -1,0 +1,37 @@
+{
+  "name": "@pco/adapter-vitest",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@pco/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "@pco/msw": "workspace:*",
+    "@testing-library/user-event": "^14.0.0",
+    "vitest": "^2.0.0"
+  },
+  "devDependencies": {
+    "@pco/msw": "workspace:*",
+    "@testing-library/user-event": "^14.5.2",
+    "rimraf": "^6.0.1",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}
