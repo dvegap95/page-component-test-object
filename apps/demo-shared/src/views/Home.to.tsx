@@ -1,10 +1,10 @@
-import { BaseViewTestObject } from '@pco/react';
+import { MswViewTestObject } from '@pco/react';
 
 import { ApiTestObject, ItemsApiTestObject, ItemFactory } from '../api/ItemsApi.to';
 import { DemoApp, Home } from '../views/DemoApp';
 import { createDemoAppManager } from '../testing/DemoAppManager';
 
-export class HomeViewTestObject extends BaseViewTestObject {
+export class HomeViewTestObject extends MswViewTestObject {
   itemsApi = new ItemsApiTestObject();
   items = ItemFactory.defaultList(3);
 
@@ -39,7 +39,7 @@ export class HomeViewTestObject extends BaseViewTestObject {
   }
 }
 
-export class DemoAppViewTestObject extends BaseViewTestObject {
+export class DemoAppViewTestObject extends MswViewTestObject {
   itemsApi = new ItemsApiTestObject();
   items = ItemFactory.defaultList(3);
 

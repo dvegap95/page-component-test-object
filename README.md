@@ -11,11 +11,12 @@ See [PLAN.md](./PLAN.md) for architecture.
 | `@pco/core` | Types, `ObjectFactory`, `App` singleton, runtime injection |
 | `@pco/queries` | `ComponentTestObject` (RTL queries + user agent) |
 | `@pco/msw` | MSW v2 API mock registry |
-| `@pco/react` | `BaseViewTestObject`, `BaseAppManager` |
+| `@pco/react` | `BaseViewTestObject`, `MswViewTestObject`, `BaseAppManager` |
 | `@pco/router-react` | React Router v5 test shell helpers |
+| `@pco/preset-mui` | MUI widget test objects + class/state helpers |
 | `@pco/adapter-vitest` | Vitest setup |
 | `@pco/adapter-jest` | Jest setup |
-| `@pco/adapter-storybook` | Storybook `play` helpers |
+| `@pco/adapter-storybook` | Storybook `play` + MSW session helpers |
 
 ## Demo apps (not published)
 

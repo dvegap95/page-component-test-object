@@ -28,6 +28,7 @@ packages/
   msw/            @pco/msw
   react/          @pco/react
   router-react/   @pco/router-react
+  presets/        mui (future: more @pco/preset-*)
   adapters/       vitest | jest | storybook | cypress (future)
 apps/             demo-shared, vitest-demo, jest-demo, storybook-demo (not published)
 ```
@@ -63,6 +64,8 @@ expect(detail.heading).toBeTruthy();
 
 Handler spies are captured at setup — tests assert via `view.mocks.getItems` without re-registering handlers.
 
+`MswViewTestObject` + `createMockSession()` export the same handlers for Storybook `parameters.msw` (see [docs/msw-storybook.md](./docs/msw-storybook.md)).
+
 ### Cypress
 
 No MSW. Reuse getters and `UserAgent` against a real running app.
@@ -92,10 +95,10 @@ Interim API matchers in `@pco/msw/matchers`; migrate to [semantic-matchers](http
 - [x] Bootstrap `@pco/core`, `@pco/queries`, `@pco/msw`, `@pco/react`
 - [x] Adapters: vitest, jest
 - [x] Demo apps: vitest-demo, jest-demo, demo-shared
-- [ ] `@pco/router-react`
-- [ ] `@pco/adapter-storybook` + storybook-demo
+- [x] `@pco/router-react`
+- [x] `@pco/adapter-storybook` + storybook-demo
 - [ ] `@pco/adapter-cypress` + cypress-demo
-- [ ] `@pco/preset-mui`
+- [x] `@pco/preset-mui`
 - [ ] Claim `@pco` on npm before publish
 
 ---

@@ -1,5 +1,5 @@
 {
-  "name": "@pco/adapter-storybook",
+  "name": "@pco/preset-mui",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -18,19 +18,16 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@pco/core": "workspace:*",
-    "@pco/msw": "workspace:*",
-    "@pco/queries": "workspace:*",
-    "@pco/react": "workspace:*"
+    "@pco/queries": "workspace:*"
   },
   "peerDependencies": {
-    "@storybook/test": "^8.0.0",
-    "storybook": "^8.0.0"
+    "@testing-library/dom": "^10.0.0",
+    "@testing-library/react": "^16.0.0"
   },
   "devDependencies": {
-    "@storybook/test": "^8.6.0",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.1.0",
     "rimraf": "^6.0.1",
-    "storybook": "^8.6.0",
     "tsup": "^8.3.5",
     "typescript": "^5.7.2"
   }
