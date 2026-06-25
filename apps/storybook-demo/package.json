@@ -10,9 +10,14 @@
   },
   "dependencies": {
     "@pco/adapter-storybook": "workspace:*",
-    "@pco/demo-shared": "workspace:*"
+    "@pco/demo-shared": "workspace:*",
+    "@pco/preset-mui": "workspace:*",
+    "@pco/queries": "workspace:*"
   },
   "devDependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^6.4.0",
     "@storybook/addon-essentials": "^8.6.0",
     "@storybook/react": "^8.6.0",
     "@storybook/react-vite": "^8.6.0",

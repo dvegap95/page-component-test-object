@@ -16,3 +16,6 @@ export { MuiMenuTestObject, MuiMenuOptionTestObject } from './MuiMenuTestObject'
 export { MuiSelectTestObject } from './MuiSelectTestObject';
 export { MuiComboBoxTestObject } from './MuiComboBoxTestObject';
 export { MuiDialogTestObject } from './MuiDialogTestObject';
+export { MuiSnackbarTestObject, type SnackbarSeverity } from './MuiSnackbarTestObject';
+export { MuiTimePickerTestObject } from './MuiTimePickerTestObject';
+export { MuiTableRowTestObject } from './MuiTableRowTestObject';

@@ -41,7 +41,7 @@ export const Default: Story = {
 
 `createMockSession()` / `MswViewTestObject.createMockSession()` snapshot handlers after `setupMockData()` and reset the global registry so the next story starts clean.
 
-Call `setupPCOStorybook()` once in `.storybook/preview.ts` so handler spies use Storybook's `fn()`.
+Call `setupPCOStorybook()` once in `.storybook/preview.tsx` so handler spies use Storybook's `fn()`.
 
 ## API access from the view in both environments
 

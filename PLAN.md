@@ -1,6 +1,6 @@
 # Page Component Object (PCO) — Architecture Plan
 
-> **Status:** In progress  
+> **Status:** Active development — core packages and demo apps implemented; npm publish pending.
 > **Goal:** Environment-agnostic Page Component Object toolkit for Vitest, Jest, Storybook, and Cypress.
 
 ---
@@ -29,8 +29,8 @@ packages/
   react/          @pco/react
   router-react/   @pco/router-react
   presets/        mui (future: more @pco/preset-*)
-  adapters/       vitest | jest | storybook | cypress (future)
-apps/             demo-shared, vitest-demo, jest-demo, storybook-demo (not published)
+  adapters/       vitest | jest | storybook | cypress
+apps/             demo-shared, vitest-demo, jest-demo, storybook-demo, cypress-demo (not published)
 ```
 
 Tooling: **pnpm + Turborepo + tsup**.
@@ -83,8 +83,9 @@ Interim API matchers in `@pco/msw/matchers`; migrate to [semantic-matchers](http
 | App | Runner |
 |-----|--------|
 | `apps/vitest-demo` | Vitest + MSW behavioral tests |
-| `apps/jest-demo` | Jest adapter smoke tests |
-| `apps/storybook-demo` | Storybook + `createStoryPlay` |
+| `apps/jest-demo` | Jest + MSW behavioral tests |
+| `apps/storybook-demo` | Storybook + `createStoryPlay` + MUI preset demos |
+| `apps/cypress-demo` | Cypress E2E + TestObject getters |
 
 **One runner per package** — never Jest and Vitest in the same workspace package.
 
@@ -97,12 +98,12 @@ Interim API matchers in `@pco/msw/matchers`; migrate to [semantic-matchers](http
 - [x] Demo apps: vitest-demo, jest-demo, demo-shared
 - [x] `@pco/router-react`
 - [x] `@pco/adapter-storybook` + storybook-demo
-- [ ] `@pco/adapter-cypress` + cypress-demo
+- [x] `@pco/adapter-cypress` + cypress-demo
 - [x] `@pco/preset-mui`
 - [ ] Claim `@pco` on npm before publish
 
 ---
 
-## 6. Philosophy (summary)
+## 6. Philosophy
 
-Behavioral `.bh.test.*` specs target **observable user behavior**, not implementation details — aligned with the [Testing Trophy](https://kentcdodds.com/blog/the-testing-trophy-and-testing-classifications) and [RTL guiding principles](https://testing-library.com/docs/guiding-principles). PCO is a structured Page Object layer on top of Testing Library, not a replacement.
+See [docs/philosophy.md](./docs/philosophy.md) for behavioral testing guidelines, Testing Trophy alignment, and when to use PCO vs plain RTL.
