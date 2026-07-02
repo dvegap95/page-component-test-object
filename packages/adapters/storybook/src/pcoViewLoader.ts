@@ -5,7 +5,8 @@ import { BaseViewTestObject } from '@pco/react';
 
 export type PcoViewConfig<T extends BaseViewTestObject = BaseViewTestObject> = {
   view: ViewTestObjectClass<T>;
-  setupMocks?: (view: T) => void;
+  /** Runs after `setupMockData()` on the view instance. */
+  setupMocks?: (view: T, mocks: ReturnType<T['setupMockData']>) => void;
 };
 
 export type PcoStoryParameters = {
@@ -16,7 +17,7 @@ type ViewMockSession<T extends BaseViewTestObject> = MockSession<T> & { view: T 
 
 type ViewTestObjectClass<T extends BaseViewTestObject> = {
   new (): T;
-  mockSession(setupMocks?: (view: T) => void): ViewMockSession<T>;
+  mockSession(setupMocks?: (view: T, mocks: ReturnType<T['setupMockData']>) => void): ViewMockSession<T>;
 };
 
 /**

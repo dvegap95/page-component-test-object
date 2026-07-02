@@ -20,13 +20,18 @@ export function snapshotHandlers(): HttpHandler[] {
 /**
  * Register mocks in an isolated session without starting the node MSW server.
  * Returns the same handler instances (and embedded spies) for Vitest/Jest and Storybook.
+ *
+ * `configure` runs after `setupMockData()` so stories can override view fields or
+ * register additional handlers before handlers are snapshotted.
  */
 export function createMockSession<T extends MockDataSource>(
   factory: () => T,
+  configure?: (instance: T, mocks: ReturnType<T['setupMockData']>) => void,
 ): MockSession<T> {
   ApiTestObject.resetHandlers();
   const instance = factory();
   const mocks = instance.setupMockData() as ReturnType<T['setupMockData']>;
+  configure?.(instance, mocks);
   const handlers = snapshotHandlers();
   ApiTestObject.resetHandlers();
   return { handlers, instance, mocks };

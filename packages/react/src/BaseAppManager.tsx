@@ -177,32 +177,25 @@ export class BaseViewTestObject extends ComponentTestObject {
 
   /**
    * Storybook `parameters.msw` from a fresh mock session (no AppManager render).
-   * MSW is the transport; spread the return value onto `story.parameters`.
+   * `setupMocks` runs after `setupMockData()` — override `view` fields or API handlers.
    */
   static storyParameters<T extends BaseViewTestObject>(
     this: new () => T,
-    setupMocks?: (view: T) => void,
+    setupMocks?: (view: T, mocks: ReturnType<T['setupMockData']>) => void,
   ): { msw: { handlers: HttpHandler[] } } {
-    const session = createMockSession(() => {
-      const view = new this();
-      setupMocks?.(view);
-      return view;
-    });
+    const session = createMockSession(() => new this(), setupMocks);
     return buildMswParameters(session.handlers);
   }
 
   /**
    * Isolated mock registration — reuse `handlers` in Storybook and `mocks` in optional `play`.
+   * `setupMocks` runs after `setupMockData()`.
    */
   static mockSession<T extends BaseViewTestObject>(
     this: new () => T,
-    setupMocks?: (view: T) => void,
+    setupMocks?: (view: T, mocks: ReturnType<T['setupMockData']>) => void,
   ): MockSession<T> & { view: T } {
-    const session = createMockSession(() => {
-      const view = new this();
-      setupMocks?.(view);
-      return view;
-    });
+    const session = createMockSession(() => new this(), setupMocks);
     return { ...session, view: session.instance };
   }
 }

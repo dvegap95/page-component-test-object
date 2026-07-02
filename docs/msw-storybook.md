@@ -75,7 +75,7 @@ export const EmptyList: Story = {
 };
 ```
 
-`storyParameters()` snapshots handlers after `setupMockData()` and resets the global registry so the next story starts clean.
+`storyParameters(setupMocks?)` snapshots handlers after `setupMockData()` (and optional `setupMocks`, which runs **after** defaults are registered). The global registry is reset so the next story starts clean.
 
 ### Storybook — inline mock setup via loader
 

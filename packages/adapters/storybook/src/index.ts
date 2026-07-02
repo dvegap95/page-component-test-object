@@ -34,7 +34,7 @@ export type ViewMockSession<T extends BaseViewTestObject> = {
 
 type ViewTestObjectClass<T extends BaseViewTestObject> = {
   new (): T;
-  mockSession(setupMocks?: (view: T) => void): ViewMockSession<T>;
+  mockSession(setupMocks?: (view: T, mocks: ReturnType<T['setupMockData']>) => void): ViewMockSession<T>;
 };
 
 /**
@@ -43,13 +43,13 @@ type ViewTestObjectClass<T extends BaseViewTestObject> = {
  */
 export function createViewMockSession<T extends BaseViewTestObject>(
   ViewClass: ViewTestObjectClass<T>,
-  setupMocks?: (view: T) => void,
+  setupMocks?: (view: T, mocks: ReturnType<T['setupMockData']>) => void,
 ): ViewMockSession<T> {
   return ViewClass.mockSession(setupMocks);
 }
 
 export type DefineViewStoryOptions<T extends BaseViewTestObject> = {
-  setupMocks?: (view: T) => void;
+  setupMocks?: (view: T, mocks: ReturnType<T['setupMockData']>) => void;
 };
 
 /**
