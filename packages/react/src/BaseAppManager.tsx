@@ -11,9 +11,18 @@ import {
   type RouterHistory,
   type ShallowRenderOptions,
 } from '@pco/core';
-import { ApiTestObject } from '@pco/msw';
+import {
+  buildMswParameters,
+  createMockSession,
+  snapshotHandlers,
+  ApiTestObject,
+  type HttpHandler,
+  type MockSession,
+} from '@pco/msw';
 import { ComponentTestObject } from '@pco/queries';
 import { buildShallowRouteTree, RoutedShell } from '@pco/router-react';
+
+import { getViewTestConfig } from './viewTestConfig';
 
 export type ProviderWrapperProps = { children: ReactNode };
 
@@ -122,12 +131,78 @@ export class BaseAppManager implements AppManager {
   }
 }
 
+/**
+ * Behavioral view test object: routed view under `App.get()` with HTTP mocked via `setupMockData()`.
+ *
+ * - In tests: call `configureViewTestObjects({ createAppManager })` in setup, then
+ *   implement `setupMockData()` + getters (no per-view constructor boilerplate).
+ * - In Storybook: `storyParameters` / `mockSession` call `setupMockData()` after field
+ *   initializers — no AppManager needed.
+ */
 export class BaseViewTestObject extends ComponentTestObject {
+  private mockDataInitialized = false;
+
+  constructor() {
+    super();
+    getViewTestConfig()?.createAppManager();
+  }
+
+  /** Override when the view fetches HTTP APIs. Default: no handlers. */
+  setupMockData(): unknown {
+    return {};
+  }
+
+  /** Runs once after subclass field initializers (before first render or handler read). */
+  protected ensureMockDataInitialized(): void {
+    if (!this.mockDataInitialized) {
+      this.setupMockData();
+      this.mockDataInitialized = true;
+    }
+  }
+
   protected get app() {
+    this.ensureMockDataInitialized();
     return App.get();
+  }
+
+  /** Handlers registered by this view's APIs (after `setupMockData`). */
+  getMswHandlers(): HttpHandler[] {
+    this.ensureMockDataInitialized();
+    return snapshotHandlers();
   }
 
   getUser() {
     return getSharedUserAgent();
+  }
+
+  /**
+   * Storybook `parameters.msw` from a fresh mock session (no AppManager render).
+   * MSW is the transport; spread the return value onto `story.parameters`.
+   */
+  static storyParameters<T extends BaseViewTestObject>(
+    this: new () => T,
+    setupMocks?: (view: T) => void,
+  ): { msw: { handlers: HttpHandler[] } } {
+    const session = createMockSession(() => {
+      const view = new this();
+      setupMocks?.(view);
+      return view;
+    });
+    return buildMswParameters(session.handlers);
+  }
+
+  /**
+   * Isolated mock registration — reuse `handlers` in Storybook and `mocks` in optional `play`.
+   */
+  static mockSession<T extends BaseViewTestObject>(
+    this: new () => T,
+    setupMocks?: (view: T) => void,
+  ): MockSession<T> & { view: T } {
+    const session = createMockSession(() => {
+      const view = new this();
+      setupMocks?.(view);
+      return view;
+    });
+    return { ...session, view: session.instance };
   }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom';
 
 import { Home, ItemDetail } from '@pco/demo-shared/views';
 
@@ -10,17 +10,17 @@ const items = [
   { id: '3', name: 'Item 3' },
 ];
 
+function ItemDetailRoute() {
+  const { id } = useParams<{ id: string }>();
+  const item = items.find((i) => i.id === id) ?? null;
+  return <ItemDetail item={item} />;
+}
+
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
-    <Switch>
-      <Route exact path="/" render={() => <Home items={items} loading={false} />} />
-      <Route
-        path="/items/:id"
-        render={({ match }) => {
-          const item = items.find((i) => i.id === match.params.id) ?? null;
-          return <ItemDetail item={item} />;
-        }}
-      />
-    </Switch>
+    <Routes>
+      <Route path="/" element={<Home items={items} loading={false} />} />
+      <Route path="/items/:id" element={<ItemDetailRoute />} />
+    </Routes>
   </BrowserRouter>,
 );

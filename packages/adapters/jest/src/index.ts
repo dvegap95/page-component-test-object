@@ -7,23 +7,21 @@ import {
   resetSharedUserAgent,
   type UserAgent,
 } from '@pco/core';
+import { ApiTestObject } from '@pco/msw';
 import { createApiMatchers } from '@pco/msw/matchers';
 
 export interface SetupPCOOptions {
+  /** Base URL for `resolveApiUrl()` when API test objects use relative paths. Default: `http://localhost` */
   apiBaseUrl?: string;
 }
 
 export function setupPCO(options: SetupPCOOptions = {}): void {
+  ApiTestObject.apiBaseUrl = options.apiBaseUrl ?? 'http://localhost';
+
   configureRuntime({
     spyFactory: { fn: (impl) => jest.fn(impl) as never },
     createUserAgent: (): UserAgent => userEvent.setup() as unknown as UserAgent,
   });
-
-  if (options.apiBaseUrl) {
-    void import('@pco/msw').then(({ ApiTestObject }) => {
-      ApiTestObject.apiBaseUrl = options.apiBaseUrl!;
-    });
-  }
 
   const matchers = createApiMatchers((a, b) => {
     try {
@@ -51,13 +49,12 @@ export function setupPCO(options: SetupPCOOptions = {}): void {
   });
 }
 
-export function installPCOLifecycle(): void {
+export function installPCOLifecycle(options: SetupPCOOptions = {}): void {
   beforeAll(() => {
-    setupPCO();
+    setupPCO(options);
   });
 
   afterEach(async () => {
-    const { ApiTestObject } = await import('@pco/msw');
     ApiTestObject.clear();
     App.reset();
     resetSharedUserAgent();

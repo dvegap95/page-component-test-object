@@ -1,6 +1,20 @@
 # Cypress integration
 
-Cypress runs against a **real Vite app** with no MSW. PCO’s role is to **reuse TestObject getters** and optional `UserAgent` bridging — not to duplicate Cypress’s strengths (network, screenshots, real navigation).
+Cypress runs against a **real app** with **no MSW**. PCO’s role is to **reuse TestObject getters** and optional `UserAgent` bridging — not to duplicate Cypress’s strengths (network, screenshots, real navigation).
+
+> **Important:** Cypress never uses the node MSW server or `BaseViewTestObject` constructors. Share **DOM getters** from `ComponentTestObject` subclasses; keep API mock setup in Vitest/Storybook only.
+
+## Consumer install
+
+```bash
+yarn add file:./vendor/pco/pco-core-0.0.0.tgz \
+  file:./vendor/pco/pco-queries-0.0.0.tgz \
+  file:./vendor/pco/pco-adapter-cypress-0.0.0.tgz
+```
+
+You do **not** need `pco-msw` or `pco-react` in Cypress specs unless you import MSW-backed view classes (avoid that — see [import paths](#which-test-objects-to-import)).
+
+Peer dependency: `cypress` ^13 or ^14.
 
 ## Setup
 
@@ -13,6 +27,8 @@ setupPCOCypress({ resetUserAgentEachTest: false });
 ```
 
 Register the adapter in the **same bundle** as your spec (webpack may duplicate modules; support-file-only setup is not always enough).
+
+After `cy.visit`, call `bindToRoot` on the AUT document — same pattern as [getting started](./getting-started.md#3-dom-only-test-object-storybook--cypress).
 
 ## Binding to the application under test
 
@@ -28,10 +44,17 @@ function bindView() {
 }
 ```
 
-Use **MSW-free** test objects and import paths that do not pull node MSW into the browser bundle:
+Use **MSW-free** test objects and import paths that do not pull node MSW into the browser bundle.
 
-- `@pco/demo-shared/story-objects` — lightweight `ComponentTestObject`
-- `@pco/demo-shared/views` — React views without fetch/MSW
+## Which test objects to import
+
+| Approach | Recommended? | Notes |
+|----------|--------------|-------|
+| Import getters from `*.to.tsx` using `ComponentTestObject` only | **Yes** | Same file Storybook uses for DOM-only stories |
+| Import `BaseViewTestObject` subclasses | **No** | Pulls `@pco/msw` node server into the browser bundle |
+| Separate `*.story.to.tsx` export for Cypress/Storybook | Optional | When view TO mixes MSW + JSX in one class |
+
+There is no separate “Cypress export” path — reuse the **DOM-only** test object class (or a thin subclass without MSW) from your `*.to.tsx` files.
 
 ## Hybrid interactions
 
@@ -50,7 +73,7 @@ cy.url().should('include', '/items/1');
 
 ## Webpack aliases (cypress-demo)
 
-The Cypress preprocessor resolves `@pco/*` to **source** paths so specs compile without pre-built `dist` exports. Mirror this in your consumer if you import workspace packages from `cypress/e2e`.
+The Cypress preprocessor resolves `@pco/*` to **source** paths so specs compile without pre-built `dist` exports. When using tarballs, point aliases at `node_modules/@pco/*/dist` or rely on package exports directly.
 
 ## What to assert
 

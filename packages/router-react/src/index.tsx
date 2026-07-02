@@ -1,6 +1,12 @@
 import React, { type ReactElement, type ReactNode } from 'react';
 
-import { MemoryRouter, Route, Switch, useHistory } from 'react-router-dom';
+import {
+  MemoryRouter,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 
 import type { RouterHistory } from '@pco/core';
 
@@ -11,16 +17,25 @@ export type HistoryCaptureProps = {
 
 /** Exposes a live `RouterHistory` to test AppManager after mount. */
 export function HistoryCapture({ children, onReady }: HistoryCaptureProps) {
-  const history = useHistory();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   React.useEffect(() => {
     const routerHistory: RouterHistory = {
       get location() {
-        return history.location;
+        return {
+          pathname: location.pathname,
+          search: location.search,
+          hash: location.hash,
+        };
       },
-      push: (path: string) => history.push(path),
+      push: (path: string) => {
+        void navigate(path);
+      },
     };
     onReady(routerHistory);
-  }, [history, onReady]);
+  }, [navigate, location, onReady]);
+
   return <>{children}</>;
 }
 
@@ -43,9 +58,9 @@ export function buildShallowRouteTree(
 
   const content = wrapLayout ? wrapLayout(element) : element;
   return (
-    <Switch>
-      <Route path={routePath} render={() => <>{content}</>} />
-    </Switch>
+    <Routes>
+      <Route path={routePath} element={<>{content}</>} />
+    </Routes>
   );
 }
 

@@ -15,7 +15,7 @@ Teams with **views + behavioral tests + Storybook** duplicate DOM access pattern
 |------|---------|
 | `TestObject` / `*.to.*` | Umbrella for mocks, APIs, factories, and DOM wrappers |
 | `ComponentTestObject` | **DOM-only** base (queries + user agent) |
-| `BaseViewTestObject` | View under app context via `App.get()` |
+| `BaseViewTestObject` | View under `App.get()` with `setupMockData()` for HTTP API mocks |
 
 ---
 
@@ -64,7 +64,7 @@ expect(detail.heading).toBeTruthy();
 
 Handler spies are captured at setup — tests assert via `view.mocks.getItems` without re-registering handlers.
 
-`MswViewTestObject` + `createMockSession()` export the same handlers for Storybook `parameters.msw` (see [docs/msw-storybook.md](./docs/msw-storybook.md)).
+`BaseViewTestObject` + `mockSession()` / `storyParameters()` export the same handlers for Storybook `parameters.msw` (see [docs/msw-storybook.md](./docs/msw-storybook.md)).
 
 ### Cypress
 

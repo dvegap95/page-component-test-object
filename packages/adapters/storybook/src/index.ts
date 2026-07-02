@@ -1,6 +1,5 @@
 import type { HttpHandler } from '@pco/msw';
-import { createMockSession } from '@pco/msw';
-import { MswViewTestObject } from '@pco/react';
+import { BaseViewTestObject } from '@pco/react';
 import { ComponentTestObject } from '@pco/queries';
 
 export type StoryPlayContext = {
@@ -27,57 +26,60 @@ export function createStoryPlay<T extends ComponentTestObject>(
   };
 }
 
-export type MswStorySession<T extends MswViewTestObject> = {
+export type ViewMockSession<T extends BaseViewTestObject> = {
   handlers: HttpHandler[];
   view: T;
   mocks: ReturnType<T['setupMockData']>;
 };
 
-/**
- * One-time mock session for a story: share handlers in `parameters.msw` and `mocks` in `play`.
- * Call at module scope when defining the story (not inside `play`).
- */
-export function createMswStorySession<T extends MswViewTestObject>(
-  ViewClass: new () => T,
-  configure?: (view: T) => void,
-): MswStorySession<T> {
-  const session = createMockSession(() => {
-    const view = new ViewClass();
-    configure?.(view);
-    return view;
-  });
-  return { handlers: session.handlers, view: session.instance, mocks: session.mocks };
-}
-
-export type DefineMswViewStoryOptions<T extends MswViewTestObject> = {
-  configure?: (view: T) => void;
-  play?: StoryPlayFn<T>;
+type ViewTestObjectClass<T extends BaseViewTestObject> = {
+  new (): T;
+  mockSession(setupMocks?: (view: T) => void): ViewMockSession<T>;
 };
 
 /**
- * Storybook helpers from a ViewTestObject class:
- * - `parameters` → pass to story (`msw.handlers` for msw-storybook-addon)
- * - `play` → binds the session view to the canvas (reuses the same mock spies)
+ * One-time mock session for a story: share handlers in `parameters.msw` and `mocks` in optional `play`.
+ * Call at module scope when defining the story (not inside `play`).
  */
-export function defineMswViewStory<T extends MswViewTestObject>(
-  ViewClass: new () => T,
-  options: DefineMswViewStoryOptions<T> = {},
+export function createViewMockSession<T extends BaseViewTestObject>(
+  ViewClass: ViewTestObjectClass<T>,
+  setupMocks?: (view: T) => void,
+): ViewMockSession<T> {
+  return ViewClass.mockSession(setupMocks);
+}
+
+export type DefineViewStoryOptions<T extends BaseViewTestObject> = {
+  setupMocks?: (view: T) => void;
+};
+
+/**
+ * Storybook helpers from a ViewTestObject class — parameters and session only (no bundled `play`).
+ */
+export function defineViewStory<T extends BaseViewTestObject>(
+  ViewClass: ViewTestObjectClass<T>,
+  options: DefineViewStoryOptions<T> = {},
 ) {
-  const session = createMswStorySession(ViewClass, options.configure);
+  const session = createViewMockSession(ViewClass, options.setupMocks);
 
   return {
     parameters: { msw: { handlers: session.handlers } },
     mocks: session.mocks,
     view: session.view,
-    play: options.play
-      ? async (context: StoryPlayContext) => {
-          session.view.bindToRoot(context.canvasElement);
-          await options.play!(session.view, context);
-        }
-      : undefined,
   };
 }
 
 /** Re-export expect configured for Storybook test runner. */
 export { expect } from '@storybook/test';
 export { setupPCOStorybook } from './setupPCOStorybook';
+export {
+  getStorybookMswPreviewConfig,
+  type StorybookMswPreviewOptions,
+  type MswParameters,
+} from './getStorybookMswPreviewConfig';
+export {
+  pcoViewLoader,
+  createViewAssertionPlay,
+  type PcoViewConfig,
+  type PcoStoryParameters,
+  type ViewAssertionContext,
+} from './pcoViewLoader';

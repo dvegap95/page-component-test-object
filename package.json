@@ -4,9 +4,11 @@
   "packageManager": "pnpm@9.15.0",
   "scripts": {
     "build": "turbo run build",
+    "pack:dist": "node scripts/pack.mjs",
+    "test:consumer-smoke": "node scripts/consumer-smoke.mjs",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
-    "clean": "turbo run clean && rimraf node_modules"
+    "clean": "turbo run clean && rimraf node_modules dist"
   },
   "devDependencies": {
     "rimraf": "^6.0.1",

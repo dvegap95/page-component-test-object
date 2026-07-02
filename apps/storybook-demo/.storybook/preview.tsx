@@ -2,17 +2,20 @@ import React from 'react';
 import type { Preview } from '@storybook/react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { initialize, mswLoader } from 'msw-storybook-addon';
+import {
+  setupPCOStorybook,
+  getStorybookMswPreviewConfig,
+} from '@pco/adapter-storybook';
 
-import { setupPCOStorybook } from '@pco/adapter-storybook';
+const msw = getStorybookMswPreviewConfig({ onUnhandledRequest: 'warn' });
 
 setupPCOStorybook();
-initialize({ onUnhandledRequest: 'warn' });
+msw.initializeMsw();
 
 const theme = createTheme();
 
 const preview: Preview = {
-  loaders: [mswLoader],
+  loaders: [...msw.loaders],
   decorators: [
     (Story) => (
       <ThemeProvider theme={theme}>

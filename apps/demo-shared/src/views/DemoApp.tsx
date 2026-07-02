@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Route, Switch } from 'react-router-dom';
+import { Link, Route, Routes, useParams } from 'react-router-dom';
 
 import type { Item } from '../types';
 
@@ -40,6 +40,12 @@ export function ItemDetail({ item }: { item: Item | null }) {
   );
 }
 
+function ItemDetailRoute({ items }: { items: Item[] }) {
+  const { id } = useParams<{ id: string }>();
+  const item = items.find((i) => i.id === id) ?? null;
+  return <ItemDetail item={item} />;
+}
+
 export function DemoApp() {
   const [items, setItems] = React.useState<Item[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -60,15 +66,9 @@ export function DemoApp() {
   }, []);
 
   return (
-    <Switch>
-      <Route exact path="/" render={() => <Home items={items} loading={loading} />} />
-      <Route
-        path="/items/:id"
-        render={({ match }) => {
-          const item = items.find((i) => i.id === match.params.id) ?? null;
-          return <ItemDetail item={item} />;
-        }}
-      />
-    </Switch>
+    <Routes>
+      <Route path="/" element={<Home items={items} loading={loading} />} />
+      <Route path="/items/:id" element={<ItemDetailRoute items={items} />} />
+    </Routes>
   );
 }

@@ -21,7 +21,7 @@
     "@pco/core": "workspace:*"
   },
   "peerDependencies": {
-    "cypress": "^13.0.0 || ^14.0.0"
+    "cypress": "^13.0.0 || ^14.0.0 || ^15.0.0"
   },
   "devDependencies": {
     "cypress": "^14.0.0",

@@ -23,8 +23,8 @@
   },
   "peerDependencies": {
     "@pco/msw": "workspace:*",
-    "@testing-library/user-event": "^14.0.0",
-    "vitest": "^2.0.0"
+    "@testing-library/user-event": "^14.0.0 || ^15.0.0",
+    "vitest": "^2.0.0 || ^3.0.0"
   },
   "devDependencies": {
     "@pco/msw": "workspace:*",
