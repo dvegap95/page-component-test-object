@@ -32,17 +32,17 @@ Full peer list for tarball consumers: [CONSUMER_INSTALL.md](./CONSUMER_INSTALL.m
 
 ### External consumer (tarballs)
 
-Build packs from a PCO checkout (`pnpm pack:dist`), copy `dist/packs/` + `manifest.json`, update `file:` paths to `0.0.0-dev.N` (see [CONSUMER_INSTALL.md](./CONSUMER_INSTALL.md)), then:
+Build packs from a PCO checkout (`pnpm pack:dist`), copy `dist/packs/` + `manifest.json`, update `file:` paths to `0.1.0-dev.N` (see [CONSUMER_INSTALL.md](./CONSUMER_INSTALL.md)), then:
 
 ```bash
-# Replace 0.0.0-dev.N with version from dist/packs/manifest.json
+# Replace 0.1.0-dev.N with version from dist/packs/manifest.json
 yarn add \
-  file:./vendor/pco/pco-core-0.0.0-dev.N.tgz \
-  file:./vendor/pco/pco-queries-0.0.0-dev.N.tgz \
-  file:./vendor/pco/pco-msw-0.0.0-dev.N.tgz \
-  file:./vendor/pco/pco-router-react-0.0.0-dev.N.tgz \
-  file:./vendor/pco/pco-react-0.0.0-dev.N.tgz \
-  file:./vendor/pco/pco-adapter-vitest-0.0.0-dev.N.tgz
+  file:./vendor/pco/pco-core-0.1.0-dev.N.tgz \
+  file:./vendor/pco/pco-queries-0.1.0-dev.N.tgz \
+  file:./vendor/pco/pco-msw-0.1.0-dev.N.tgz \
+  file:./vendor/pco/pco-router-react-0.1.0-dev.N.tgz \
+  file:./vendor/pco/pco-react-0.1.0-dev.N.tgz \
+  file:./vendor/pco/pco-adapter-vitest-0.1.0-dev.N.tgz
 ```
 
 Add `pco-adapter-storybook-0.0.0.tgz` and/or `pco-adapter-cypress-0.0.0.tgz` when you use those runners. See [CONSUMER_INSTALL.md](./CONSUMER_INSTALL.md) for the complete tarball + peer manifest.
@@ -78,12 +78,14 @@ Equivalent entry points: `setupPCO()` / `installPCOLifecycle()` (Vitest), `setup
 
 ## 2. TestObject hierarchy
 
-| Layer | Class | Use when |
-|-------|-------|----------|
-| DOM only | `ComponentTestObject` | Storybook canvas, Cypress-bound root, props-only stories |
-| View + app + API mocks | `BaseViewTestObject` | Behavioral view tests via `App.get()` with `setupMockData()` |
+| Layer | Class | Role | Use when |
+|-------|-------|------|----------|
+| Query + primitive | `ComponentTestObject` | Getters + `userClick` / `userType` | Storybook canvas, Cypress-bound root, props-only stories |
+| View + app + API mocks | `BaseViewTestObject` | Above + `setupMockData()` + `render()` | Vitest/Jest/Storybook MSW view tests via `App.get()` |
 
 **BaseView** = routed view under `AppManager` with HTTP mocked through `setupMockData()` (MSW in Vitest/Jest/Storybook is an implementation detail).
+
+**Intent methods** (e.g. `fillLogin`, `openSettings`) belong on **your** `*.to.*` classes — not in `@pco/*`. They compose primitives. See [philosophy.md](./philosophy.md#query-primitive-intent).
 
 ### Where to put PCO files
 

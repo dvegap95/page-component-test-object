@@ -2,13 +2,24 @@
 
 Use this when installing PCO from `dist/packs/*.tgz` in an **external** monorepo (not the pnpm workspace).
 
+## Release tiers (`0.1.0`)
+
+| Surface | Stability | Packages |
+|---------|-----------|----------|
+| **Vitest** + MSW view tests | **Stable** | core, queries, msw, react, router-react, adapter-vitest |
+| **Jest** + MSW view tests | **Stable** | same + adapter-jest |
+| **Storybook** + MSW addon | **Stable** | same + adapter-storybook, `msw-storybook-addon` peer |
+| **Cypress** E2E | **Experimental** | core, queries, adapter-cypress — getter reuse; [PCOChainable planned](../PLAN.md#phase-3--cypress-pcochainable-ongoing) |
+
+npm publish (Phase 1) targets the **stable** rows first. Tarballs remain the install path until `@pco` is on the registry.
+
 Build packs from a PCO checkout:
 
 ```bash
 pnpm install && pnpm pack:dist
 ```
 
-Each `pack:dist` bumps **`0.0.0-dev.N`** (`scripts/pack-version.json`) and writes **`dist/packs/manifest.json`** with exact tarball filenames.
+Each `pack:dist` bumps **`0.1.0-dev.N`** (`scripts/pack-version.json` + `scripts/release-version.json`) and writes **`dist/packs/manifest.json`** with exact tarball filenames.
 
 ## Pack versions and Yarn lockfiles
 
@@ -18,7 +29,7 @@ Each `pack:dist` bumps **`0.0.0-dev.N`** (`scripts/pack-version.json`) and write
 
 1. `pnpm pack:dist` in PCO
 2. Copy all of `dist/packs/*.tgz` + `manifest.json` into your consumer (e.g. `vendor/pco/`)
-3. Update `file:` paths in consumer `package.json` to the new `0.0.0-dev.N` filenames (see manifest), or run from PCO:
+3. Update `file:` paths in consumer `package.json` to the new `0.1.0-dev.N` filenames (see manifest), or run from PCO:
 
    ```bash
    node scripts/apply-pack-manifest.mjs path/to/your-app/package.json path/to/vendor/pco/manifest.json
@@ -35,14 +46,14 @@ Each `pack:dist` bumps **`0.0.0-dev.N`** (`scripts/pack-version.json`) and write
 
 ## Tarballs by use case
 
-Use filenames from `manifest.json` (example version `0.0.0-dev.42`):
+Use filenames from `manifest.json` (example version `0.1.0-dev.42`):
 
 ### Minimum (DOM-only Storybook / Cypress getters)
 
 ```bash
 yarn add \
-  file:./vendor/pco/pco-core-0.0.0-dev.42.tgz \
-  file:./vendor/pco/pco-queries-0.0.0-dev.42.tgz
+  file:./vendor/pco/pco-core-0.1.0-dev.42.tgz \
+  file:./vendor/pco/pco-queries-0.1.0-dev.42.tgz
 ```
 
 ### Routed view tests (Vitest / Jest / Storybook MSW views)
@@ -51,20 +62,20 @@ Required — not optional for `BaseViewTestObject` / `BaseAppManager`:
 
 ```bash
 yarn add \
-  file:./vendor/pco/pco-core-0.0.0-dev.42.tgz \
-  file:./vendor/pco/pco-queries-0.0.0-dev.42.tgz \
-  file:./vendor/pco/pco-msw-0.0.0-dev.42.tgz \
-  file:./vendor/pco/pco-router-react-0.0.0-dev.42.tgz \
-  file:./vendor/pco/pco-react-0.0.0-dev.42.tgz
+  file:./vendor/pco/pco-core-0.1.0-dev.42.tgz \
+  file:./vendor/pco/pco-queries-0.1.0-dev.42.tgz \
+  file:./vendor/pco/pco-msw-0.1.0-dev.42.tgz \
+  file:./vendor/pco/pco-router-react-0.1.0-dev.42.tgz \
+  file:./vendor/pco/pco-react-0.1.0-dev.42.tgz
 ```
 
 ### Runner adapters (add what you use)
 
 | Package | Tarball prefix |
 |---------|----------------|
-| `@pco/adapter-vitest` | `pco-adapter-vitest-0.0.0-dev.N.tgz` |
-| `@pco/adapter-storybook` | `pco-adapter-storybook-0.0.0-dev.N.tgz` |
-| `@pco/adapter-cypress` | `pco-adapter-cypress-0.0.0-dev.N.tgz` |
+| `@pco/adapter-vitest` | `pco-adapter-vitest-0.1.0-dev.N.tgz` |
+| `@pco/adapter-storybook` | `pco-adapter-storybook-0.1.0-dev.N.tgz` |
+| `@pco/adapter-cypress` | `pco-adapter-cypress-0.1.0-dev.N.tgz` |
 
 ## Peer dependencies (install in the consumer app)
 
@@ -119,19 +130,19 @@ Install these in the **same app package** that runs tests. PCO adapters declare 
 
 ## One-shot install example (Vitest + routed MSW views, RR v7)
 
-Replace `0.0.0-dev.42` with `version` from `manifest.json`:
+Replace `0.1.0-dev.42` with `version` from `manifest.json`:
 
 ```bash
 yarn add \
   react react-dom react-router-dom@^7 \
   @testing-library/react @testing-library/dom @testing-library/user-event \
   msw vitest@^3 \
-  file:./vendor/pco/pco-core-0.0.0-dev.42.tgz \
-  file:./vendor/pco/pco-queries-0.0.0-dev.42.tgz \
-  file:./vendor/pco/pco-msw-0.0.0-dev.42.tgz \
-  file:./vendor/pco/pco-router-react-0.0.0-dev.42.tgz \
-  file:./vendor/pco/pco-react-0.0.0-dev.42.tgz \
-  file:./vendor/pco/pco-adapter-vitest-0.0.0-dev.42.tgz
+  file:./vendor/pco/pco-core-0.1.0-dev.42.tgz \
+  file:./vendor/pco/pco-queries-0.1.0-dev.42.tgz \
+  file:./vendor/pco/pco-msw-0.1.0-dev.42.tgz \
+  file:./vendor/pco/pco-router-react-0.1.0-dev.42.tgz \
+  file:./vendor/pco/pco-react-0.1.0-dev.42.tgz \
+  file:./vendor/pco/pco-adapter-vitest-0.1.0-dev.42.tgz
 ```
 
 ## Required test setup (Vitest)

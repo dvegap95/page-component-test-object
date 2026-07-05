@@ -6,3 +6,6 @@ dist
 *.tsbuildinfo
 coverage
 .DS_Store
+
+.cursor-chatgpt-share.html
+.cursor-chatgpt-extracted.txt

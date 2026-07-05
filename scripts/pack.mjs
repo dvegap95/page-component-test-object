@@ -1,7 +1,7 @@
 /**
  * Build all @pco/* packages and emit versioned tarballs under dist/packs/.
  *
- * Each run bumps `scripts/pack-version.json` → `0.0.0-dev.N` so consumers get
+ * Each run bumps scripts/pack-version.json to {release}-dev.N (release from scripts/release-version.json) so consumers get
  * new filenames and Yarn lockfile checksums stay valid after a repack.
  *
  * See dist/packs/manifest.json for the tarball list to wire in consumer package.json.
@@ -74,7 +74,7 @@ function packOne({ dir, tarball }, packVersion) {
       try {
         cpSync(source, join(stagingDir, entry), { recursive: true });
       } catch {
-        // Optional extra files (README, etc.) — skip if missing.
+        // Optional extra files (README, etc.) â€” skip if missing.
       }
     }
 
@@ -101,7 +101,7 @@ function main() {
   const packVersion = bumpPackVersion();
   console.log(`Pack version: ${packVersion}`);
 
-  console.log('Building packages…');
+  console.log('Building packagesâ€¦');
   execSync('pnpm run build', { cwd: root, stdio: 'inherit' });
 
   rmSync(packsDir, { recursive: true, force: true });
@@ -116,7 +116,7 @@ function main() {
       tarball: result.filename,
       file: `file:./vendor/pco/${result.filename}`,
     });
-    console.log(`  ${entry.tarball} → dist/packs/${result.filename}`);
+    console.log(`  ${entry.tarball} â†’ dist/packs/${result.filename}`);
   }
 
   const manifest = {
@@ -126,7 +126,7 @@ function main() {
   };
   writeFileSync(join(packsDir, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
 
-  console.log(`\nPacked ${packages.length} tarballs → dist/packs/manifest.json`);
+  console.log(`\nPacked ${packages.length} tarballs â†’ dist/packs/manifest.json`);
 }
 
 main();

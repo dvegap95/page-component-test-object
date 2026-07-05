@@ -5,6 +5,7 @@
   "scripts": {
     "build": "turbo run build",
     "pack:dist": "node scripts/pack.mjs",
+    "version:sync": "node scripts/sync-package-versions.mjs",
     "test:consumer-smoke": "node scripts/consumer-smoke.mjs",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",

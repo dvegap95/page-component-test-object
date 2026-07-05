@@ -2,7 +2,7 @@
 
 **Environment-agnostic Page Component Object toolkit** for behavioral UI tests. Write view-level test objects once and reuse them across **Vitest**, **Jest**, **Storybook `play`**, and **Cypress** — with shared MSW mocks where the runner supports them.
 
-> **Status:** Early development — install via `pnpm pack:dist` tarballs until npm publish.
+> **Status:** `0.1.0` — **publish-ready** for **Vitest**, **Jest**, and **Storybook** (MSW-backed view tests). Install via `pnpm pack:dist` tarballs until `@pco` is on npm. **Cypress** getter reuse ships today; native chain integration (`PCOChainable`) is [ongoing](./PLAN.md#phase-3--cypress-pcochainable-ongoing).
 
 ## Why PCO?
 
@@ -81,7 +81,7 @@ Fictitious catalog domain under [`apps/demo-shared`](./apps/demo-shared) — **n
 | [Getting started](./docs/getting-started.md) | Adapters, TestObject hierarchy, first test |
 | [Project structure](./docs/project-structure.md) | `__pco__` layout, factories vs API mocks |
 | [Consumer install manifest](./docs/CONSUMER_INSTALL.md) | Tarballs + full peer dependency list |
-| [Architecture plan](./PLAN.md) | Monorepo layout, `App` singleton, render modes |
+| [Architecture & roadmap](./PLAN.md) | Vision, phases, `App` singleton, publish tiers |
 | [MSW in tests vs Storybook](./docs/msw-storybook.md) | Shared handlers, `createMockSession`, story parameters |
 | [Cypress integration](./docs/cypress.md) | `bindToRoot`, hybrid `cy` + getter patterns |
 | [Philosophy](./docs/philosophy.md) | Behavioral tests, Testing Trophy, RTL alignment |
@@ -107,7 +107,7 @@ Packages are not on npm yet. After cloning, build and pack tarballs for external
 
 ```bash
 pnpm install
-pnpm pack:dist   # bumps 0.0.0-dev.N, writes dist/packs/manifest.json
+pnpm pack:dist   # bumps 0.1.0-dev.N, writes dist/packs/manifest.json
 ```
 
 Copy `dist/packs/` into your consumer repo, update `file:` paths from **`manifest.json`** (or run `node scripts/apply-pack-manifest.mjs`), then `yarn install`. Each repack gets a new `dev.N` suffix so Yarn lockfile checksums stay valid.
@@ -118,7 +118,14 @@ See [Consumer install manifest](./docs/CONSUMER_INSTALL.md) for the full peer li
 
 ## Roadmap
 
-See [PLAN.md](./PLAN.md) checklist. Next steps include claiming the `@pco` npm scope and optional presets beyond MUI.
+See [PLAN.md — Phases](./PLAN.md#phases) for the full plan:
+
+- **Phase 0 (done):** Core packages, four adapters, MSW Storybook API, `__pco__` layout
+- **Phase 1 (now):** npm publish for Vitest / Jest / Storybook at `0.1.0`
+- **Phase 3 (ongoing):** Cypress `PCOChainable` — native chains + semantic PCO methods
+- **Later:** [semantic-matchers](https://github.com/dvegap95/semantic-matchers), more UI presets
+
+Interaction model (query → primitive → intent): [docs/philosophy.md](./docs/philosophy.md).
 
 ## Related
 

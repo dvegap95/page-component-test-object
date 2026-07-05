@@ -7,7 +7,7 @@
 | [Consumer install manifest](./CONSUMER_INSTALL.md) | Tarballs + peer deps for external monorepos |
 | [MSW in tests vs Storybook](./msw-storybook.md) | Shared handlers between Vitest/Jest and Storybook |
 | [Cypress integration](./cypress.md) | E2E patterns with `bindToRoot` and hybrid `cy` usage |
-| [Philosophy](./philosophy.md) | Behavioral testing principles and runner choice |
+| [Philosophy](./philosophy.md) | Query / primitive / intent model, Testing Trophy |
 
 Repository overview and package list: [README](../README.md).  
 Architecture and roadmap: [PLAN.md](../PLAN.md).

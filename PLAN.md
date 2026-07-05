@@ -1,25 +1,68 @@
-# Page Component Object (PCO) — Architecture Plan
+# Page Component Object (PCO) — Architecture & Roadmap
 
-> **Status:** Active development — core packages and demo apps implemented; npm publish pending.
-> **Goal:** Environment-agnostic Page Component Object toolkit for Vitest, Jest, Storybook, and Cypress.
+> **Release:** `0.1.0` — **publish-ready** for Vitest, Jest, and Storybook (MSW-backed view tests).  
+> **Cypress:** getters and `UserAgent` bridging ship in `0.1.0`; **native Cypress chain integration** (`PCOChainable`) is ongoing — see [Phase 3](#phase-3--cypress-pcochainable-ongoing).
 
 ---
 
-## 1. Problem
+## Vision
 
-Teams with **views + behavioral tests + Storybook** duplicate DOM access patterns across runners. PCO centralizes **TestObjects** (`*.to.ts` / `*.to.tsx`) so one `HomeViewTestObject` can drive Vitest, Storybook `play`, and Cypress getters.
+PCO is a **cross-runner UI interaction model**, not just a prettier Testing Library wrapper. Teams define **TestObjects** (`*.to.ts` / `*.to.tsx`) once; the same getters and primitive interactions drive Vitest, Jest, Storybook, and (with documented caveats) Cypress.
+
+Three layers — only the first two belong in `@pco/*`; the third belongs in consumer `__pco__` code:
+
+| Layer | Example | Owner |
+|-------|---------|-------|
+| **Query** | `view.email` — RTL `getByRole`, etc. | Framework (`ComponentTestObject` getters) |
+| **Primitive interaction** | `await view.email.userType('x')`, `await view.submit.userClick()` | Framework (adapter-backed, element-centric) |
+| **Intent** | `await view.loginForm.fill(credentials)` | **Consumer PCOs** (domain workflows) |
+
+See [docs/philosophy.md](./docs/philosophy.md) for the decision guide (“does this method belong in the library?”).
+
+---
+
+## Design principles
+
+- **Testing Library first** — roles and accessible names over `data-testid`.
+- **Framework provides primitives; user PCOs own intents** — no `fillLogin` in `@pco/react`.
+- **MSW for HTTP boundary** in Vitest, Jest, and Storybook only — not in Cypress E2E.
+- **Element-centric interactions** — `await view.button.userClick()`, not `await user.click(view.button)`; singleton `UserAgent` behind the scenes.
+- **Cypress: augment, don't override** — future `PCOChainable` exposes native `.type()` / `.click()` / `.should()` plus semantic `userType()` / `userClick()`; never replace Cypress command names.
+- **Jest/Vitest: await-based** — same intent method names as Cypress; execution model may differ.
+
+### Non-goals (v1)
+
+- Playwright adapter in the same chain model as Cypress
+- Multi-user simulation in one test
+- Overriding Cypress native `.type()` / `.click()`
+- Domain workflows shipped inside `@pco/*`
+
+---
+
+## Package maturity (`0.1.0`)
+
+| Runner / surface | Status in `0.1.0` | Notes |
+|------------------|-------------------|-------|
+| **Vitest** + MSW | **Stable** | Primary demo path; `installPCOLifecycle` |
+| **Jest** + MSW | **Stable** | Parity with Vitest demos |
+| **Storybook** + MSW addon | **Stable** | `storyParameters`, `mockSession`, `pcoViewLoader` |
+| **Cypress** E2E | **Experimental** | DOM getter reuse works; hybrid `cy.wrap` patterns documented; `PCOChainable` planned |
+| **`@pco/preset-mui`** | **Stable** | Storybook `play` demos |
+| **npm registry** | **Pending** | Tarballs via `pnpm pack:dist` until `@pco` scope is claimed |
+
+---
+
+## Architecture reference
 
 ### Naming
 
 | Term | Meaning |
 |------|---------|
 | `TestObject` / `*.to.*` | Umbrella for mocks, APIs, factories, and DOM wrappers |
-| `ComponentTestObject` | **DOM-only** base (queries + user agent) |
+| `ComponentTestObject` | **DOM-only** base (queries + primitive interactions) |
 | `BaseViewTestObject` | View under `App.get()` with `setupMockData()` for HTTP API mocks |
 
----
-
-## 2. Monorepo layout
+### Monorepo layout
 
 ```
 packages/
@@ -33,77 +76,97 @@ packages/
 apps/             demo-shared, vitest-demo, jest-demo, storybook-demo, cypress-demo (not published)
 ```
 
-Tooling: **pnpm + Turborepo + tsup**.
-
----
-
-## 3. Core design
+Tooling: **pnpm + Turborepo + tsup**. Version: **`scripts/release-version.json`** → `pnpm version:sync`.
 
 ### App singleton (`App.get()`)
 
-One `AppManager` per test, registered when the app's manager is constructed. ViewTestObjects do **not** own the manager. After navigation, a new ViewTestObject queries `screen` — no binding step.
-
-```ts
-await App.renderApp(<CatalogApp />, { initialRoute: '/' });
-
-const list = new ItemListViewTestObject();
-await list.itemLinks[0].userClick();
-
-const detail = new ItemDetailViewTestObject();
-expect(detail.heading).toBeTruthy();
-```
+One `AppManager` per test, registered via `configureViewTestObjects({ createAppManager })`. After navigation, a new ViewTestObject queries `screen` — no binding step.
 
 ### Two render modes
 
 | Mode | API | Use |
 |------|-----|-----|
-| **Shallow** (default) | `App.renderView(<View />, { route, routePath })` | Single-view tests inside router shell |
-| **Full app** | `App.renderApp(<App />, { initialRoute })` | Multi-view navigation flows |
+| **Shallow** | `app.renderView(<View />, { route, routePath })` | Single-view tests inside router shell |
+| **Full app** | `app.renderApp(<AppRoutes />, { initialRoute })` | Multi-view navigation — mount **route subtree**, not prod `BrowserRouter` shell |
 
 ### `setupMockData()` + `mocks`
 
-Handler spies are captured at setup — tests assert via `view.mocks.getItems` without re-registering handlers.
+Handler spies captured at setup. Storybook reuses handlers via `BaseViewTestObject.storyParameters()` / `mockSession()` (see [docs/msw-storybook.md](./docs/msw-storybook.md)).
 
-`BaseViewTestObject` + `mockSession()` / `storyParameters()` export the same handlers for Storybook `parameters.msw` (see [docs/msw-storybook.md](./docs/msw-storybook.md)).
+### Consumer layout
 
-### Cypress
-
-No MSW. Reuse getters and `UserAgent` against a real running app.
-
-### Matchers (future)
-
-Interim API matchers in `@pco/msw/matchers`; migrate to [semantic-matchers](https://github.com/dvegap95/semantic-matchers).
+Colocate PCO artifacts under **`__pco__`** per feature. See [docs/project-structure.md](./docs/project-structure.md).
 
 ---
 
-## 4. Consumer apps & test runners
+## Phases {#phases}
 
-**In-monorepo `apps/` only** — fictitious domain, no proprietary references.
+### Phase 0 — Foundation (complete)
 
-| App | Runner |
-|-----|--------|
-| `apps/vitest-demo` | Vitest + MSW behavioral tests |
-| `apps/jest-demo` | Jest + MSW behavioral tests |
-| `apps/storybook-demo` | Storybook + `createStoryPlay` + MUI preset demos |
-| `apps/cypress-demo` | Cypress E2E + TestObject getters |
+- [x] Core packages: `@pco/core`, `@pco/queries`, `@pco/msw`, `@pco/react`, `@pco/router-react`
+- [x] Adapters: Vitest, Jest, Storybook, Cypress
+- [x] `@pco/preset-mui` + demo apps
+- [x] Pack pipeline (`pnpm pack:dist`) + [CONSUMER_INSTALL](./docs/CONSUMER_INSTALL.md)
+- [x] Consumer smoke (`fixtures/rr7-consumer`)
+- [x] MSW Storybook ergonomics (`storyParameters`, `pcoViewLoader`; collapsed `BaseViewTestObject` hierarchy)
+- [x] RR v6/v7 (`Routes`, `useNavigate`)
+- [x] `__pco__` project-structure guide
+- [x] Roadmap + interaction model documentation (this file)
 
-**One runner per package** — never Jest and Vitest in the same workspace package.
+### Phase 1 — Publish to npm (in progress)
+
+**Goal:** External apps install `@pco/*` from npm for Vitest, Jest, and Storybook.
+
+- [x] Align package versions to `0.1.0` (`pnpm version:sync`)
+- [x] Document publish tiers and Cypress experimental status
+- [ ] Claim `@pco` npm org
+- [ ] CI publish on version tag
+- [ ] Package-level unit tests (beyond demo apps)
+
+**Done when:** `pnpm add @pco/react @pco/adapter-vitest @pco/adapter-storybook` works from npm; CONSUMER_INSTALL documents both npm and tarball paths.
+
+### Phase 2 — Interaction model clarity (complete in docs)
+
+**Goal:** Contributors know where framework ends and consumer PCOs begin.
+
+- [x] Three-layer model in [philosophy.md](./docs/philosophy.md)
+- [x] Primitive vs intent in [getting-started.md](./docs/getting-started.md)
+
+**Done when:** “Does `fillLogin` belong in the library?” → **No** (documented).
+
+### Phase 3 — Cypress PCOChainable (ongoing)
+
+**Goal:** Cypress-native chains **and** PCO semantic methods on the same locator object.
+
+**Today (`0.1.0`):** reuse getters; drive actions with `cy.wrap(element).click()` or `userClick()` via `UserAgent` bridge. See [docs/cypress.md](./docs/cypress.md).
+
+**Planned:**
+
+- `PCOChainable<T>` wrapping `Cypress.Chainable<JQuery<T>>`
+- Native: `.type()`, `.click()`, `.should()` — pass-through
+- Semantic: `.userType()`, `.userClick()`, `.selectOptionByText()` — PCO extensions (no name collisions)
+- Spike in `packages/adapters/cypress` + `apps/cypress-demo`
+- **v1 approach:** separate Cypress-oriented test object base (Option B) to avoid breaking node `HTMLElement` getters
+
+**Done when:** Cypress demo shows native + semantic side-by-side without `cy.wrap` for common flows.
+
+### Phase 4 — semantic-matchers
+
+Replace interim `@pco/msw/matchers` with [semantic-matchers](https://github.com/dvegap95/semantic-matchers) for API spy assertions.
+
+### Phase 5 — Ecosystem expansion
+
+- Additional UI presets (`@pco/preset-*`)
+- Storybook demo parity (`HomeViewTestObject.storyParameters` stories)
+- `waitForIdle` / `registerTriggeredRestHandler` demos
+- Playwright adapter (evaluate after Cypress PCOChainable stabilizes)
 
 ---
 
-## 5. Checklist
+## Philosophy
 
-- [x] Bootstrap `@pco/core`, `@pco/queries`, `@pco/msw`, `@pco/react`
-- [x] Adapters: vitest, jest
-- [x] Demo apps: vitest-demo, jest-demo, demo-shared
-- [x] `@pco/router-react`
-- [x] `@pco/adapter-storybook` + storybook-demo
-- [x] `@pco/adapter-cypress` + cypress-demo
-- [x] `@pco/preset-mui`
-- [ ] Claim `@pco` on npm before publish
+Behavioral testing guidelines, Testing Trophy alignment, and when to use PCO vs plain RTL: [docs/philosophy.md](./docs/philosophy.md).
 
----
+## Related
 
-## 6. Philosophy
-
-See [docs/philosophy.md](./docs/philosophy.md) for behavioral testing guidelines, Testing Trophy alignment, and when to use PCO vs plain RTL.
+- [ChatGPT architectural discussion](https://chatgpt.com/share/6a4a22b5-02e4-83eb-a287-c9e7478ccb21) — interaction model north star (summarized above, not pasted in full)
