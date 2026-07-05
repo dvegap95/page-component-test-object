@@ -85,6 +85,10 @@ Equivalent entry points: `setupPCO()` / `installPCOLifecycle()` (Vitest), `setup
 
 **BaseView** = routed view under `AppManager` with HTTP mocked through `setupMockData()` (MSW in Vitest/Jest/Storybook is an implementation detail).
 
+### Where to put PCO files
+
+Use a **`__pco__`** directory beside the feature (not `__tests__`) so Storybook and behavioral tests import the same surface. Keep **data factories** in `*.factory.ts` separate from **API mock** classes in `*Api.to.ts`. Full layout: [project-structure.md](./project-structure.md).
+
 Naming convention: `*ViewTestObject` or `*StoryTestObject` in `*.to.ts` / `*.to.tsx`.
 
 ### File extension rule
@@ -152,7 +156,9 @@ export class HomeViewTestObject extends BaseViewTestObject {
 | Shallow | `view.render()` → `app.renderView(<View />, { route, routePath })` | Single screen, isolated view |
 | Full app | `view.renderApp()` → `app.renderApp(<AppRoutes />, { initialRoute })` | Multi-route navigation |
 
-After navigation in a full-app test, **create a new view test object** (or query `app.getHistory()`) — views do not carry router state on the object instance.
+After navigation in a full-app test, **create a new view test object** (or call `view.getHistory()`) — views do not carry router state on the object instance.
+
+`getHistory()` is public on `BaseViewTestObject`; `app` is also public when you need the full `AppManager` (e.g. `isRendered()`).
 
 #### Route subtree, not production shell
 

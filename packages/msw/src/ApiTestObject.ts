@@ -100,6 +100,20 @@ export default class ApiTestObject {
   static server: SetupServer | null = null;
   static handlers: HttpHandler[] = [];
   static apiBaseUrl = '';
+  private static restHandlersByKey = new Map<string, HttpHandler>();
+
+  private static restHandlerKey(method: string, path: string): string {
+    return `${method.toUpperCase()}:${path}`;
+  }
+
+  private replaceRestHandler(method: string, path: string, httpHandler: HttpHandler): void {
+    const key = ApiTestObject.restHandlerKey(method, path);
+    const previous = ApiTestObject.restHandlersByKey.get(key);
+    if (previous) {
+      ApiTestObject.handlers = ApiTestObject.handlers.filter((handler) => handler !== previous);
+    }
+    ApiTestObject.restHandlersByKey.set(key, httpHandler);
+  }
 
   registerHandler(handler: HttpHandler): void {
     ApiTestObject.handlers.push(handler);
@@ -115,6 +129,7 @@ export default class ApiTestObject {
   ): MockFn {
     const { mswResolver, mocked } = flexRequestToHttpHandler<TRequest, TResponse>(handler);
     const httpHandler = http[method](path, mswResolver);
+    this.replaceRestHandler(method, path, httpHandler);
     this.registerHandler(httpHandler);
     ApiTestObject.server?.use(httpHandler);
     return mocked;
@@ -140,6 +155,7 @@ export default class ApiTestObject {
       });
     });
 
+    this.replaceRestHandler(method, path, httpHandler);
     this.registerHandler(httpHandler);
     ApiTestObject.server?.use(httpHandler);
 
@@ -169,6 +185,7 @@ export default class ApiTestObject {
 
   static resetHandlers(): void {
     this.handlers = [];
+    this.restHandlersByKey.clear();
   }
 
   static clear(): void {

@@ -33,7 +33,11 @@ The shared `UserAgent` (`userClick`, `userType`, …) wraps `@testing-library/us
 
 A view test object maps to a **screen or meaningful UI region**, not every leaf component. Nested widgets can use smaller `ComponentTestObject` subclasses (see `@pco/preset-mui`).
 
-For multi-step flows across routes, use **separate view test objects** per route and the app’s `getHistory()` when you need the current path.
+For multi-step flows across routes, use **separate view test objects** per route and `view.getHistory()` when you need the current path.
+
+## PCO file layout
+
+Colocate test objects, API mocks, and factories under **`__pco__`** (not `__tests__`) so Storybook stories can import them without crossing test boundaries. Keep **factories** (`*.factory.ts`) independent of **API test objects** (`*Api.to.ts`). See [project-structure.md](./project-structure.md).
 
 ## MSW as boundary
 

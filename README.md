@@ -79,6 +79,7 @@ Fictitious catalog domain under [`apps/demo-shared`](./apps/demo-shared) — **n
 | Doc | Topic |
 |-----|-------|
 | [Getting started](./docs/getting-started.md) | Adapters, TestObject hierarchy, first test |
+| [Project structure](./docs/project-structure.md) | `__pco__` layout, factories vs API mocks |
 | [Consumer install manifest](./docs/CONSUMER_INSTALL.md) | Tarballs + full peer dependency list |
 | [Architecture plan](./PLAN.md) | Monorepo layout, `App` singleton, render modes |
 | [MSW in tests vs Storybook](./docs/msw-storybook.md) | Shared handlers, `createMockSession`, story parameters |

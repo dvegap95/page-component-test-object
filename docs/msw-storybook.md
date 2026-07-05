@@ -75,7 +75,7 @@ export const EmptyList: Story = {
 };
 ```
 
-`storyParameters(setupMocks?)` snapshots handlers after `setupMockData()` (and optional `setupMocks`, which runs **after** defaults are registered). The global registry is reset so the next story starts clean.
+`storyParameters(setupMocks?)` snapshots handlers after `setupMockData()` (and optional `setupMocks`, which runs **after** defaults are registered). Re-registering the same route via `*ApiTestObject.register*` replaces the prior handler for that method + path. The global registry is reset so the next story starts clean.
 
 ### Storybook — inline mock setup via loader
 

@@ -32,7 +32,7 @@ describe('Demo app (full mount)', () => {
     await app.getUser().click(firstLink);
 
     await waitFor(() => {
-      expect(app.app.getHistory().location.pathname).toBe('/items/1');
+      expect(app.getHistory().location.pathname).toBe('/items/1');
     });
   });
 });

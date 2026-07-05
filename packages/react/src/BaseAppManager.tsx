@@ -160,9 +160,15 @@ export class BaseViewTestObject extends ComponentTestObject {
     }
   }
 
-  protected get app() {
+  /** Registered `AppManager` from `configureViewTestObjects`. Mock data is ensured on first access. */
+  get app(): AppManager {
     this.ensureMockDataInitialized();
     return App.get();
+  }
+
+  /** Router history after `render()` / `renderApp()`. Use in specs instead of reaching through `App.get()`. */
+  getHistory(): RouterHistory {
+    return this.app.getHistory();
   }
 
   /** Handlers registered by this view's APIs (after `setupMockData`). */
