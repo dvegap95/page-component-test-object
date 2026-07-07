@@ -1,4 +1,5 @@
 import { setupPCOCypress } from '@pco/adapter-cypress';
+import { CatalogHomeCypressTestObject } from '@pco/demo-shared/cypress-objects';
 import { CatalogHomeStoryTestObject } from '@pco/demo-shared/story-objects';
 
 setupPCOCypress({ resetUserAgentEachTest: false });
@@ -6,6 +7,14 @@ setupPCOCypress({ resetUserAgentEachTest: false });
 function bindView() {
   return cy.document().then((doc) => {
     const view = new CatalogHomeStoryTestObject();
+    view.bindToRoot(doc.body);
+    return view;
+  });
+}
+
+function bindCypressView() {
+  return cy.document().then((doc) => {
+    const view = new CatalogHomeCypressTestObject();
     view.bindToRoot(doc.body);
     return view;
   });
@@ -29,6 +38,25 @@ describe('Catalog home (E2E + PCO)', () => {
     cy.get('h1').should('contain', 'Items');
 
     bindView().then((view) => cy.wrap(view.itemLinks[0]).click());
+
+    cy.url().should('include', '/items/1');
+  });
+
+  it('uses native Cypress chains on PCOChainable getters', () => {
+    cy.get('h1').should('contain', 'Items');
+
+    bindCypressView().then((view) => {
+      view.heading.should('contain.text', 'Items');
+      view.firstItemLink.should('be.visible');
+    });
+  });
+
+  it('navigates using semantic userClick on PCOChainable', () => {
+    cy.get('h1').should('contain', 'Items');
+
+    bindCypressView().then((view) => {
+      view.firstItemLink.userClick();
+    });
 
     cy.url().should('include', '/items/1');
   });

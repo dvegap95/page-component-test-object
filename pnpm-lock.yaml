@@ -82,6 +82,9 @@ importers:
         specifier: workspace:*
         version: link:../../packages/react
     devDependencies:
+      '@pco/adapter-cypress':
+        specifier: workspace:*
+        version: link:../../packages/adapters/cypress
       '@types/react':
         specifier: ^18.3.18
         version: 18.3.31
@@ -277,6 +280,9 @@ importers:
       '@pco/core':
         specifier: workspace:*
         version: link:../../core
+      '@pco/queries':
+        specifier: workspace:*
+        version: link:../../queries
     devDependencies:
       cypress:
         specifier: ^14.0.0
@@ -432,6 +438,9 @@ importers:
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@25.9.3)(happy-dom@15.11.7)(jsdom@25.0.1)(msw@2.14.6(@types/node@25.9.3)(typescript@5.9.3))(terser@5.48.0)
 
   packages/presets/mui:
     dependencies:

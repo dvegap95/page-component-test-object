@@ -7,6 +7,7 @@
     ".": "./src/index.ts",
     "./views": "./src/views/DemoApp.tsx",
     "./story-objects": "./src/views/CatalogHomeStory.to.ts",
+    "./cypress-objects": "./src/views/CatalogHomeCypress.to.ts",
     "./testing": "./src/testing/index.ts"
   },
   "scripts": {
@@ -24,6 +25,7 @@
     "react-router-dom": "^7.6.2"
   },
   "devDependencies": {
+    "@pco/adapter-cypress": "workspace:*",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "react": "^18.3.1",

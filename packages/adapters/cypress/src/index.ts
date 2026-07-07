@@ -1,12 +1,10 @@
 import { configureRuntime, resetSharedUserAgent, type UserAgent } from '@pco/core';
 
-function runCypressCommand(command: () => Cypress.Chainable): Promise<void> {
-  return new Cypress.Promise<void>((resolve) => {
-    command().then(() => {
-      resolve();
-    });
-  });
-}
+import { runCypressCommand } from './cypressCommand';
+
+export { CypressComponentTestObject } from './CypressComponentTestObject';
+export { asPCOChainable, type PCOChainable } from './pcoChainable';
+export { runCypressCommand } from './cypressCommand';
 
 export function createCypressUserAgent(): UserAgent {
   return {

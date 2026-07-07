@@ -119,9 +119,10 @@ Colocate PCO artifacts under **`__pco__`** per feature. See [docs/project-struct
 
 - [x] Align package versions to `0.1.0` (`pnpm version:sync`)
 - [x] Document publish tiers and Cypress experimental status
-- [ ] Claim `@pco` npm org
-- [ ] CI publish on version tag
-- [ ] Package-level unit tests (beyond demo apps)
+- [x] Package-level unit tests (`@pco/msw`, `@pco/adapter-vitest`)
+- [x] CI workflow (test + consumer smoke)
+- [x] Publish workflow + [PUBLISH.md](./docs/PUBLISH.md)
+- [ ] Claim `@pco` npm org (manual — see PUBLISH.md)
 
 **Done when:** `pnpm add @pco/react @pco/adapter-vitest @pco/adapter-storybook` works from npm; CONSUMER_INSTALL documents both npm and tarball paths.
 
@@ -134,21 +135,24 @@ Colocate PCO artifacts under **`__pco__`** per feature. See [docs/project-struct
 
 **Done when:** “Does `fillLogin` belong in the library?” → **No** (documented).
 
-### Phase 3 — Cypress PCOChainable (ongoing)
+### Phase 3 — Cypress PCOChainable (spike shipped)
 
 **Goal:** Cypress-native chains **and** PCO semantic methods on the same locator object.
 
-**Today (`0.1.0`):** reuse getters; drive actions with `cy.wrap(element).click()` or `userClick()` via `UserAgent` bridge. See [docs/cypress.md](./docs/cypress.md).
+**Shipped (`0.1.0` spike — Option B):**
 
-**Planned:**
+- `CypressComponentTestObject` + `PCOChainable` in `@pco/adapter-cypress`
+- Native: `.type()`, `.click()`, `.should()` — Cypress pass-through on chainable getters
+- Semantic: `.userType()`, `.userClick()`, `.userClear()` — PCO extensions
+- Demo: `CatalogHomeCypressTestObject` + specs in `apps/cypress-demo`
 
-- `PCOChainable<T>` wrapping `Cypress.Chainable<JQuery<T>>`
-- Native: `.type()`, `.click()`, `.should()` — pass-through
-- Semantic: `.userType()`, `.userClick()`, `.selectOptionByText()` — PCO extensions (no name collisions)
-- Spike in `packages/adapters/cypress` + `apps/cypress-demo`
-- **v1 approach:** separate Cypress-oriented test object base (Option B) to avoid breaking node `HTMLElement` getters
+**Remaining:**
 
-**Done when:** Cypress demo shows native + semantic side-by-side without `cy.wrap` for common flows.
+- Richer semantic primitives (`selectOptionByText`, …)
+- Broader demo coverage; document when to use `ComponentTestObject` vs `CypressComponentTestObject`
+- Revisit unified class (Option A) after consumer feedback
+
+**Done when:** Cypress demo shows native + semantic side-by-side without `cy.wrap` for common flows. *(Spike met — polish ongoing.)*
 
 ### Phase 4 — semantic-matchers
 

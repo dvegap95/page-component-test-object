@@ -61,7 +61,7 @@ See [docs/getting-started.md](./docs/getting-started.md) for the full walkthroug
 | [`@pco/adapter-vitest`](./packages/adapters/vitest) | Vitest lifecycle + user agent |
 | [`@pco/adapter-jest`](./packages/adapters/jest) | Jest lifecycle + user agent |
 | [`@pco/adapter-storybook`](./packages/adapters/storybook) | `createStoryPlay`, `storyParameters`, `pcoViewLoader`, MSW bridge |
-| [`@pco/adapter-cypress`](./packages/adapters/cypress) | Cypress runtime + `UserAgent` over `cy.*` |
+| [`@pco/adapter-cypress`](./packages/adapters/cypress) | Cypress runtime, `CypressComponentTestObject`, `PCOChainable` |
 
 ## Demo apps (not published)
 

@@ -2,7 +2,7 @@
 
 Cypress runs against a **real app** with **no MSW**. PCO’s role is to **reuse TestObject getters** and optional `UserAgent` bridging — not to duplicate Cypress’s strengths (network, screenshots, real navigation).
 
-> **Stability (`0.1.0`):** Cypress support is **experimental**. DOM getter reuse and `setupPCOCypress()` work today. **Native Cypress chain integration** (`PCOChainable` — `.type()` / `.should()` on getters plus semantic `userType()` / `userClick()`) is [ongoing work](../PLAN.md#phase-3--cypress-pcochainable-ongoing). Prefer the patterns below until Phase 3 ships.
+> **Stability (`0.1.0`):** Cypress support is **experimental**. DOM getter reuse, `setupPCOCypress()`, and the **`PCOChainable` spike** (`CypressComponentTestObject`) work today. See [PCOChainable](#pcochainable-cypresscomponenttestobject) below.
 
 > **Important:** Cypress never uses the node MSW server or `BaseViewTestObject` constructors. Share **DOM getters** from `ComponentTestObject` subclasses; keep API mock setup in Vitest/Storybook only.
 
@@ -54,13 +54,44 @@ Use **MSW-free** test objects and import paths that do not pull node MSW into th
 
 | Approach | Recommended? | Notes |
 |----------|--------------|-------|
-| Import getters from `*.to.tsx` using `ComponentTestObject` only | **Yes** | Same file Storybook uses for DOM-only stories |
+| `CypressComponentTestObject` + chainable getters | **Yes (E2E)** | Native `.should()` + semantic `userClick()` — see below |
+| Import getters from `ComponentTestObject` only | **Yes** | Storybook / legacy `cy.wrap` hybrid |
 | Import `BaseViewTestObject` subclasses | **No** | Pulls `@pco/msw` node server into the browser bundle |
 | Separate `*.story.to.tsx` export for Cypress/Storybook | Optional | When view TO mixes MSW + JSX in one class |
 
 There is no separate “Cypress export” path — reuse the **DOM-only** test object class (or a thin subclass without MSW) from your `*.to.tsx` files.
 
-## Hybrid interactions (stable in `0.1.0`)
+## PCOChainable (`CypressComponentTestObject`)
+
+**Option B (shipped in `0.1.0` spike):** use a separate Cypress base class so node runners keep `HTMLElement` getters.
+
+```ts
+import { CypressComponentTestObject } from '@pco/adapter-cypress';
+
+export class CatalogHomeCypressTestObject extends CypressComponentTestObject {
+  get heading() {
+    return this.chain(() => this.context.getByRole('heading', { name: /items/i }));
+  }
+
+  get firstItemLink() {
+    return this.chainAt(() => this.context.getAllByRole('link'), 0);
+  }
+}
+```
+
+After `bindToRoot`:
+
+```ts
+// Native Cypress on chainable getters
+view.heading.should('contain.text', 'Items');
+
+// PCO semantic (awaitable)
+view.firstItemLink.userClick();
+```
+
+See demo: [`apps/cypress-demo/cypress/e2e/home.cy.ts`](../apps/cypress-demo/cypress/e2e/home.cy.ts) and [`CatalogHomeCypress.to.ts`](../apps/demo-shared/src/views/CatalogHomeCypress.to.ts).
+
+## Hybrid interactions (HTMLElement getters)
 
 Return Cypress commands from `.then()` so they enqueue correctly:
 
@@ -71,7 +102,7 @@ cy.url().should('include', '/items/1');
 
 `createCypressUserAgent()` wraps `cy.*` in `Cypress.Promise` for `UserAgent` compatibility, but command-queue ordering is fragile for nested async — prefer `cy.wrap(element).click()` for navigation tests.
 
-Element-centric primitives also work when the test object root is bound:
+Element-centric primitives on `ComponentTestObject` also work when the test object root is bound:
 
 ```ts
 bindView().then(async (view) => {
@@ -79,24 +110,17 @@ bindView().then(async (view) => {
 });
 ```
 
-## Planned: PCOChainable (Phase 3)
+## Legacy hybrid (`cy.wrap`)
 
-Goal: getters return a **Cypress-native chain** with PCO semantic extensions alongside — without overriding Cypress command names.
+Prefer `CypressComponentTestObject` for new specs. `ComponentTestObject` + `cy.wrap` still works:
 
 ```ts
-// Target API (not yet shipped)
-view.email.type('abc').should('have.value', 'abc');   // native Cypress
-await view.email.userType('abc');                      // PCO semantic
-await view.loginForm.fill(credentials).submit();       // consumer intent
+bindView().then((view) => cy.wrap(view.itemLinks[0]).click());
 ```
-
-Design notes and spike scope: [PLAN.md — Phase 3](../PLAN.md#phase-3--cypress-pcochainable-ongoing).
 
 ## Routing in the demo app
 
 `apps/cypress-demo` uses **`BrowserRouter`** (not `MemoryRouter`) so `cy.url()` reflects client-side navigation. The app must include routes for destinations you assert on (e.g. `/items/:id`).
-
-## Webpack aliases (cypress-demo)
 
 The Cypress preprocessor resolves `@pco/*` to **source** paths so specs compile without pre-built `dist` exports. When using tarballs, point aliases at `node_modules/@pco/*/dist` or rely on package exports directly.
 

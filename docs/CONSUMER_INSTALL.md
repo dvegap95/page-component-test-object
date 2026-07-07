@@ -11,7 +11,15 @@ Use this when installing PCO from `dist/packs/*.tgz` in an **external** monorepo
 | **Storybook** + MSW addon | **Stable** | same + adapter-storybook, `msw-storybook-addon` peer |
 | **Cypress** E2E | **Experimental** | core, queries, adapter-cypress — getter reuse; [PCOChainable planned](../PLAN.md#phase-3--cypress-pcochainable-ongoing) |
 
-npm publish (Phase 1) targets the **stable** rows first. Tarballs remain the install path until `@pco` is on the registry.
+npm publish (Phase 1) targets the **stable** rows first. Tarball workflow remains for pre-release testing. See [PUBLISH.md](./PUBLISH.md).
+
+### npm (after `@pco` scope is claimed)
+
+```bash
+pnpm add @pco/core @pco/queries @pco/msw @pco/react @pco/router-react @pco/adapter-vitest
+```
+
+Add `@pco/adapter-jest`, `@pco/adapter-storybook`, or `@pco/adapter-cypress` for other runners. Peer dependencies: see tables below.
 
 Build packs from a PCO checkout:
 

@@ -20,7 +20,8 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@pco/core": "workspace:*"
+    "@pco/core": "workspace:*",
+    "@pco/queries": "workspace:*"
   },
   "peerDependencies": {
     "cypress": "^13.0.0 || ^14.0.0 || ^15.0.0"

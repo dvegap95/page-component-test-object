@@ -31,6 +31,10 @@ export default defineConfig({
                   repoRoot,
                   'apps/demo-shared/src/views/CatalogHomeStory.to.ts',
                 ),
+                '@pco/demo-shared/cypress-objects': path.join(
+                  repoRoot,
+                  'apps/demo-shared/src/views/CatalogHomeCypress.to.ts',
+                ),
               },
             },
             module: {
