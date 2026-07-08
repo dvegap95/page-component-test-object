@@ -149,10 +149,10 @@ Colocate PCO artifacts under **`__pco__`** per feature. See [docs/project-struct
 
 **Remaining:**
 
-- Richer semantic primitives (`selectOptionByText`, …)
-- More `findBy*` helpers on `CypressComponentTestObject` (`findByLabelText`, `findByText`, …)
-- Broader demo coverage; document when to use `ComponentTestObject` vs `CypressComponentTestObject`
-- Revisit unified class (Option A) after consumer feedback
+- [x] Richer semantic primitives (`selectOptionByText`) on `PCOChainable`
+- [x] More `findBy*` helpers on `CypressComponentTestObject` (`findByAltText`, `findByTitle`, `findByDisplayValue`, indexed variants)
+- [x] Broader demo coverage (native + semantic select flows)
+- [ ] Revisit unified class (Option A) after consumer feedback
 
 **Done when:** Cypress demo shows native + semantic side-by-side without `cy.wrap` for common flows. *(Spike met — polish ongoing.)*
 

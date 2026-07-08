@@ -98,4 +98,60 @@ export class CypressComponentTestObject extends ComponentTestObject {
     }
     return cyFindAllByAt('findAllByPlaceholderText', index ?? 0, text, optionsOrIndex);
   }
+
+  protected findByDisplayValue(
+    ...args: Parameters<typeof cy.findByDisplayValue>
+  ): PCOChainable {
+    return cyFindBy('findByDisplayValue', ...args);
+  }
+
+  protected findAllByDisplayValueAt(
+    text: Parameters<typeof cy.findAllByDisplayValue>[0],
+    optionsOrIndex: Parameters<typeof cy.findAllByDisplayValue>[1] | number,
+    index?: number,
+  ): PCOChainable {
+    if (typeof optionsOrIndex === 'number') {
+      return cyFindAllByAt('findAllByDisplayValue', optionsOrIndex, text);
+    }
+    return cyFindAllByAt(
+      'findAllByDisplayValue',
+      index ?? 0,
+      text,
+      optionsOrIndex,
+    );
+  }
+
+  protected findByAltText(
+    ...args: Parameters<typeof cy.findByAltText>
+  ): PCOChainable {
+    return cyFindBy('findByAltText', ...args);
+  }
+
+  protected findAllByAltTextAt(
+    text: Parameters<typeof cy.findAllByAltText>[0],
+    optionsOrIndex: Parameters<typeof cy.findAllByAltText>[1] | number,
+    index?: number,
+  ): PCOChainable {
+    if (typeof optionsOrIndex === 'number') {
+      return cyFindAllByAt('findAllByAltText', optionsOrIndex, text);
+    }
+    return cyFindAllByAt('findAllByAltText', index ?? 0, text, optionsOrIndex);
+  }
+
+  protected findByTitle(
+    ...args: Parameters<typeof cy.findByTitle>
+  ): PCOChainable {
+    return cyFindBy('findByTitle', ...args);
+  }
+
+  protected findAllByTitleAt(
+    text: Parameters<typeof cy.findAllByTitle>[0],
+    optionsOrIndex: Parameters<typeof cy.findAllByTitle>[1] | number,
+    index?: number,
+  ): PCOChainable {
+    if (typeof optionsOrIndex === 'number') {
+      return cyFindAllByAt('findAllByTitle', optionsOrIndex, text);
+    }
+    return cyFindAllByAt('findAllByTitle', index ?? 0, text, optionsOrIndex);
+  }
 }

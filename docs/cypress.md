@@ -86,6 +86,14 @@ export class CatalogHomeCypressTestObject extends CypressComponentTestObject {
   get firstItemLink() {
     return this.findAllByRoleAt('link', 0);
   }
+
+  get demoSelect() {
+    return this.findByLabelText(/demo select/i);
+  }
+
+  get selectedStatus() {
+    return this.findByRole('status');
+  }
 }
 ```
 
@@ -97,6 +105,10 @@ view.heading.should('contain.text', 'Items');
 
 // PCO semantic (awaitable)
 view.firstItemLink.userClick();
+
+// PCO semantic select (native `<select>` only)
+view.demoSelect.selectOptionByText('Option B');
+view.selectedStatus.should('contain.text', 'Option B');
 ```
 
 See demo: [`apps/cypress-demo/cypress/e2e/home.cy.ts`](../apps/cypress-demo/cypress/e2e/home.cy.ts) and [`CatalogHomeCypress.to.ts`](../apps/demo-shared/src/views/CatalogHomeCypress.to.ts).
@@ -110,8 +122,11 @@ See demo: [`apps/cypress-demo/cypress/e2e/home.cy.ts`](../apps/cypress-demo/cypr
 | `findByRole` | `findAllByRoleAt` |
 | `findByLabelText` | `findAllByLabelTextAt` |
 | `findByText` | `findAllByTextAt` |
+| `findByAltText` | `findAllByAltTextAt` |
 | `findByTestId` | `findAllByTestIdAt` |
+| `findByTitle` | `findAllByTitleAt` |
 | `findByPlaceholderText` | `findAllByPlaceholderTextAt` |
+| `findByDisplayValue` | `findAllByDisplayValueAt` |
 
 Use these in getters instead of sync `this.context.getBy*` — Cypress retries automatically. Legacy `chain()` / `chainAt()` remain for bridging sync RTL getters when needed.
 

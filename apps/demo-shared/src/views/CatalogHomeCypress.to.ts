@@ -9,4 +9,12 @@ export class CatalogHomeCypressTestObject extends CypressComponentTestObject {
   get firstItemLink() {
     return this.findAllByRoleAt('link', 0);
   }
+
+  get demoSelect() {
+    return this.findByLabelText(/demo select/i);
+  }
+
+  get selectedStatus() {
+    return this.findByRole('status');
+  }
 }

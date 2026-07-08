@@ -56,4 +56,11 @@ describe('Catalog home (E2E + PCO)', () => {
 
     cy.url().should('include', '/items/1');
   });
+
+  it('selects an option using semantic selectOptionByText on PCOChainable', () => {
+    bindCypressView().then((view) => {
+      view.demoSelect.selectOptionByText('Option B');
+      view.selectedStatus.should('contain.text', 'Option B');
+    });
+  });
 });

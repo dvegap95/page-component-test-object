@@ -13,6 +13,8 @@ export function Home({ items, loading }: HomeProps) {
     return <p role="status">Loading items…</p>;
   }
 
+  const [selected, setSelected] = React.useState('Option A');
+
   return (
     <main>
       <h1>Items</h1>
@@ -23,6 +25,23 @@ export function Home({ items, loading }: HomeProps) {
           </li>
         ))}
       </ul>
+
+      <div>
+        <label htmlFor="demo-select">Demo select</label>
+        <select
+          id="demo-select"
+          value={selected}
+          onChange={(e) => setSelected(e.target.value)}
+        >
+          <option value="Option A">Option A</option>
+          <option value="Option B">Option B</option>
+          <option value="Option C">Option C</option>
+        </select>
+      </div>
+
+      <p role="status" aria-live="polite">
+        Selected: {selected}
+      </p>
     </main>
   );
 }
