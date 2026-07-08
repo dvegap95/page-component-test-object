@@ -33,9 +33,7 @@ PCO was born for **centralized interaction tooling** in behavioral tests. Storyb
 
 **Vitest, Jest, and Storybook** use [`@testing-library/dom`](https://testing-library.com/docs/dom-testing-library/intro) (and `@testing-library/react` where components mount). PCO getters delegate to RTL queries (`getByRole`, `getByLabelText`, …) and follow [Testing Library guiding principles](https://testing-library.com/docs/guiding-principles) — roles and accessible names over `data-testid`.
 
-**Cypress today** reuses the **same getter definitions** and the same RTL `within()` queries after `bindToRoot` — not a separate selector layer. That shares query *text* with node runners but **does not** use [`@testing-library/cypress`](https://testing-library.com/docs/cypress-testing-library/intro) (`cy.findBy*`, automatic retry). Specs must still wait for the UI (e.g. `cy.get('h1')`) before binding; chainable getters (`PCOChainable`) use Cypress commands for actions. See [docs/cypress.md](./docs/cypress.md).
-
-**Planned (not shipped):** optional `@testing-library/cypress` integration or retry-aware query helpers so E2E getters align with RTL retry semantics without duplicating roles/names. Tracked under [PLAN.md — Phase 3](./PLAN.md#phase-3--cypress-pcochainable-spike-shipped).
+**Cypress** uses [`@testing-library/cypress`](https://testing-library.com/docs/cypress-testing-library/intro) for queries wherever possible — `cy.findBy*` / `cy.findAllBy*` via `CypressComponentTestObject` helpers (`findByRole`, `findAllByRoleAt`, …). That keeps the same roles and accessible names as node runners with Cypress retry semantics. Register commands once in support: `import '@testing-library/cypress/add-commands'`. Chainable getters (`PCOChainable`) use Cypress commands for actions. See [docs/cypress.md](./docs/cypress.md).
 
 See [philosophy](./docs/philosophy.md) for the query → primitive → intent model.
 

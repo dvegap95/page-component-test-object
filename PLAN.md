@@ -27,7 +27,7 @@ See [docs/philosophy.md](./docs/philosophy.md) for the decision guide (“does t
 - **Framework provides primitives; user PCOs own intents** — no `fillLogin` in `@pco/react`.
 - **MSW for HTTP boundary** in Vitest, Jest, and Storybook only — not in Cypress E2E.
 - **Element-centric interactions** — `await view.button.userClick()`, not `await user.click(view.button)`; singleton `UserAgent` behind the scenes.
-- **Cypress: augment, don't override** — future `PCOChainable` exposes native `.type()` / `.click()` / `.should()` plus semantic `userType()` / `userClick()`; never replace Cypress command names.
+- **Cypress: Testing Library queries + native chains** — `@testing-library/cypress` (`cy.findBy*`) for getters; `PCOChainable` adds semantic `userType()` / `userClick()` without overriding Cypress `.type()` / `.click()`.
 - **Jest/Vitest: await-based** — same intent method names as Cypress; execution model may differ.
 
 ### Non-goals (v1)
@@ -46,7 +46,7 @@ See [docs/philosophy.md](./docs/philosophy.md) for the decision guide (“does t
 | **Vitest** + MSW | **Stable** | Primary demo path; `installPCOLifecycle` |
 | **Jest** + MSW | **Stable** | Parity with Vitest demos |
 | **Storybook** + MSW addon | **Stable** | `storyParameters`, `mockSession`, `pcoViewLoader` |
-| **Cypress** E2E | **Experimental** | DOM getter reuse works; hybrid `cy.wrap` patterns documented; `PCOChainable` planned |
+| **Cypress** E2E | **Experimental** | `@testing-library/cypress` queries + `PCOChainable`; legacy `ComponentTestObject` + `cy.wrap` still supported |
 | **`@pco/preset-mui`** | **Stable** | Storybook `play` demos |
 | **npm registry** | **Pending** | Tarballs via `pnpm pack:dist` until `@pco` scope is claimed |
 
@@ -142,6 +142,7 @@ Colocate PCO artifacts under **`__pco__`** per feature. See [docs/project-struct
 **Shipped (`0.1.0` spike — Option B):**
 
 - `CypressComponentTestObject` + `PCOChainable` in `@pco/adapter-cypress`
+- Queries: [`@testing-library/cypress`](https://testing-library.com/docs/cypress-testing-library/intro) (`findByRole`, `findAllByRoleAt`, …) — retry-aware, same RTL query vocabulary
 - Native: `.type()`, `.click()`, `.should()` — Cypress pass-through on chainable getters
 - Semantic: `.userType()`, `.userClick()`, `.userClear()` — PCO extensions
 - Demo: `CatalogHomeCypressTestObject` + specs in `apps/cypress-demo`
@@ -149,7 +150,7 @@ Colocate PCO artifacts under **`__pco__`** per feature. See [docs/project-struct
 **Remaining:**
 
 - Richer semantic primitives (`selectOptionByText`, …)
-- Optional [`@testing-library/cypress`](https://testing-library.com/docs/cypress-testing-library/intro) alignment — retry-aware `cy.findBy*` behind shared getters without duplicating roles/names
+- More `findBy*` helpers on `CypressComponentTestObject` (`findByLabelText`, `findByText`, …)
 - Broader demo coverage; document when to use `ComponentTestObject` vs `CypressComponentTestObject`
 - Revisit unified class (Option A) after consumer feedback
 
