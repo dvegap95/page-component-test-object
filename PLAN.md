@@ -149,6 +149,7 @@ Colocate PCO artifacts under **`__pco__`** per feature. See [docs/project-struct
 **Remaining:**
 
 - Richer semantic primitives (`selectOptionByText`, …)
+- Optional [`@testing-library/cypress`](https://testing-library.com/docs/cypress-testing-library/intro) alignment — retry-aware `cy.findBy*` behind shared getters without duplicating roles/names
 - Broader demo coverage; document when to use `ComponentTestObject` vs `CypressComponentTestObject`
 - Revisit unified class (Option A) after consumer feedback
 

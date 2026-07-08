@@ -1,25 +1,48 @@
 # Page Component Object (`@pco/*`)
 
-**Environment-agnostic Page Component Object toolkit** for behavioral UI tests. Write view-level test objects once and reuse them across **Vitest**, **Jest**, **Storybook `play`**, and **Cypress** — with shared MSW mocks where the runner supports them.
+**Page Component Object toolkit** — a component-oriented take on the Page Object pattern. Centralize **queries**, **interactions**, and **user intents** in `TestObjects` (`*.to.ts` / `*.to.tsx`) so specs stay short and widget procedures live in one place. Also provides layers for **API mocks**, **data factories**, and test app wiring. Adapters let the same objects run in **Vitest**, **Jest**, **Storybook**, and **Cypress** — a practical bonus once your PCO layer exists, not the reason the project started.
 
 > **Status:** `0.1.0` — **publish-ready** for **Vitest**, **Jest**, and **Storybook** (MSW-backed view tests). Install via `pnpm pack:dist` tarballs until `@pco` is on npm. **Cypress** getter reuse ships today; native chain integration (`PCOChainable`) is [ongoing](./PLAN.md#phase-3--cypress-pcochainable-ongoing).
 
 ## Why PCO?
 
-Teams that maintain **unit/behavioral tests**, **Storybook interaction tests**, and **Cypress E2E** often duplicate the same DOM queries and user flows in three places. PCO centralizes that logic in **TestObjects** (`*.to.ts` / `*.to.tsx`):
+PCO is a **Page Component Object** strategy: Page Object thinking applied to **components and views**, not only full pages. The goal is to stop tests from spending ten lines manipulating a date picker, a select, or a modal — you define **queries** (where things are), **interactions** (how to act on them), and **intents** (higher-level procedures your app cares about) once, then reuse and extend them.
 
-| Concern | Without PCO | With PCO |
-|--------|-------------|----------|
-| DOM queries | Copy-pasted `getByRole` in every runner | Getters on `HomeViewTestObject` |
-| API mocks | Separate MSW setup per runner | `setupMockData()` + shared handler spies |
-| Navigation flows | Re-implement clicks/assertions | Same getters; runner-specific interaction |
+| Layer | What you define | Example |
+|-------|-----------------|---------|
+| **Query** | Accessible locators | `get startDate()` → role/label query |
+| **Interaction** | Primitive user actions | `await field.userType('2026-01-15')` |
+| **Intent** | Widget- or flow-level procedure | `await datePicker.selectDate('2026-01-15')` |
 
-PCO sits **on top of** [Testing Library](https://testing-library.com/) — it does not replace accessible queries or behavioral testing principles.
+Two date pickers on the same form? Two intent calls — not two copies of open-calendar-click-day-blur. When the selection procedure changes, you fix it in **one** preset or test object.
+
+Design-system widgets get their own reusable objects (see [`@pco/preset-mui`](./packages/presets/mui)). View test objects compose them and add domain intents (`fillCheckout`, `openSettings`). Factories and API test objects keep **data** and **HTTP contracts** beside the UI layer under [`__pco__`](./docs/project-structure.md).
+
+### Multi-runner reuse (collateral, not the origin story)
+
+PCO was born for **centralized interaction tooling** in behavioral tests. Storybook and Cypress support address a second problem: even if you adopt a Page Object pattern in **each** runner, you still maintain **three parallel blocks** — the same queries, the same primitive interactions, the same intents — once for Vitest/Jest, again for Storybook `play`, again for Cypress. Different syntax, duplicated maintenance. Adapters let one `__pco__` surface drive every context that can import it, so you **deduplicate how you interact with the app**, not only standardize procedures inside a single runner.
+
+| Concern | Per-runner PCO (3×) | Shared `__pco__` + adapters |
+|--------|---------------------|-----------------------------|
+| Widget intents | Copied across bh / Storybook / Cypress TOs | One intent; runner-specific execution only |
+| DOM queries | Three getter sets | One getter definition |
+| API boundary | Three MSW / mock setups | `setupMockData()` shared with Storybook; E2E uses real HTTP |
+| Maintenance | Fix a date-picker flow in three places | Fix once in preset or view TO |
+
+### Query libraries by runner
+
+**Vitest, Jest, and Storybook** use [`@testing-library/dom`](https://testing-library.com/docs/dom-testing-library/intro) (and `@testing-library/react` where components mount). PCO getters delegate to RTL queries (`getByRole`, `getByLabelText`, …) and follow [Testing Library guiding principles](https://testing-library.com/docs/guiding-principles) — roles and accessible names over `data-testid`.
+
+**Cypress today** reuses the **same getter definitions** and the same RTL `within()` queries after `bindToRoot` — not a separate selector layer. That shares query *text* with node runners but **does not** use [`@testing-library/cypress`](https://testing-library.com/docs/cypress-testing-library/intro) (`cy.findBy*`, automatic retry). Specs must still wait for the UI (e.g. `cy.get('h1')`) before binding; chainable getters (`PCOChainable`) use Cypress commands for actions. See [docs/cypress.md](./docs/cypress.md).
+
+**Planned (not shipped):** optional `@testing-library/cypress` integration or retry-aware query helpers so E2E getters align with RTL retry semantics without duplicating roles/names. Tracked under [PLAN.md — Phase 3](./PLAN.md#phase-3--cypress-pcochainable-spike-shipped).
+
+See [philosophy](./docs/philosophy.md) for the query → primitive → intent model.
 
 ## Quick example
 
 ```ts
-// Home.to.tsx — one test object, many runners
+// Home.to.tsx — view test object: queries + render + API mocks
 export class HomeViewTestObject extends BaseViewTestObject {
   get heading() {
     return this.context.getByRole('heading', { name: /items/i });
