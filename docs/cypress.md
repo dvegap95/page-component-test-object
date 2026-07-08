@@ -30,6 +30,16 @@ import { setupPCOCypress } from '@pco/adapter-cypress';
 setupPCOCypress({ resetUserAgentEachTest: false });
 ```
 
+Enable Cypress Testing Library commands (needed for `cy.findBy*` used by PCO getters):
+
+```ts
+import '@testing-library/cypress/add-commands';
+
+import { setupPCOCypress } from '@pco/adapter-cypress';
+
+setupPCOCypress();
+```
+
 Register the adapter in the **same bundle** as your spec (webpack may duplicate modules; support-file-only setup is not always enough).
 
 After `cy.visit`, call `bindToRoot` on the AUT document — same pattern as [getting started](./getting-started.md#3-dom-only-test-object-storybook--cypress).
@@ -70,11 +80,11 @@ import { CypressComponentTestObject } from '@pco/adapter-cypress';
 
 export class CatalogHomeCypressTestObject extends CypressComponentTestObject {
   get heading() {
-    return this.chain(() => this.context.getByRole('heading', { name: /items/i }));
+    return this.findByRole('heading', { name: /items/i });
   }
 
   get firstItemLink() {
-    return this.chainAt(() => this.context.getAllByRole('link'), 0);
+    return this.findAllByRoleAt('link', 0);
   }
 }
 ```

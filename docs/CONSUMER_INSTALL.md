@@ -135,6 +135,7 @@ Install these in the **same app package** that runs tests. PCO adapters declare 
 | Package | Version |
 |---------|---------|
 | `cypress` | `^13 \|\| ^14 \|\| ^15` |
+| `@testing-library/cypress` | `^10` |
 
 ## One-shot install example (Vitest + routed MSW views, RR v7)
 
