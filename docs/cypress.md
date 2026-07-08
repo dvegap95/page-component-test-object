@@ -101,6 +101,20 @@ view.firstItemLink.userClick();
 
 See demo: [`apps/cypress-demo/cypress/e2e/home.cy.ts`](../apps/cypress-demo/cypress/e2e/home.cy.ts) and [`CatalogHomeCypress.to.ts`](../apps/demo-shared/src/views/CatalogHomeCypress.to.ts).
 
+### Query helpers (`@testing-library/cypress`)
+
+`CypressComponentTestObject` exposes protected helpers that wrap `cy.findBy*` / `cy.findAllBy*`:
+
+| Single | Indexed list |
+|--------|----------------|
+| `findByRole` | `findAllByRoleAt` |
+| `findByLabelText` | `findAllByLabelTextAt` |
+| `findByText` | `findAllByTextAt` |
+| `findByTestId` | `findAllByTestIdAt` |
+| `findByPlaceholderText` | `findAllByPlaceholderTextAt` |
+
+Use these in getters instead of sync `this.context.getBy*` — Cypress retries automatically. Legacy `chain()` / `chainAt()` remain for bridging sync RTL getters when needed.
+
 ## Hybrid interactions (HTMLElement getters)
 
 Return Cypress commands from `.then()` so they enqueue correctly:
@@ -140,7 +154,8 @@ The Cypress preprocessor resolves `@pco/*` to **source** paths so specs compile 
 |------|--------|
 | URL, visible headings, list content via getters | Re-implementing every query as raw `cy.get` |
 | Same `itemLinks` getter as Storybook | Duplicating MSW setup in Cypress |
-| `cy.visit` + wait for stable UI (`cy.get('h1')`) | Binding before the app has rendered |
+| `CypressComponentTestObject` + `cy.findBy*` (retry-aware) | Binding sync RTL getters before the UI is ready |
+| Legacy: `cy.visit` + wait (`cy.get('h1')`) before `bindToRoot` | Importing MSW-backed view classes in Cypress |
 
 ## Example
 

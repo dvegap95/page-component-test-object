@@ -43,8 +43,6 @@ describe('Catalog home (E2E + PCO)', () => {
   });
 
   it('uses native Cypress chains on PCOChainable getters', () => {
-    cy.get('h1').should('contain', 'Items');
-
     bindCypressView().then((view) => {
       view.heading.should('contain.text', 'Items');
       view.firstItemLink.should('be.visible');
@@ -52,8 +50,6 @@ describe('Catalog home (E2E + PCO)', () => {
   });
 
   it('navigates using semantic userClick on PCOChainable', () => {
-    cy.get('h1').should('contain', 'Items');
-
     bindCypressView().then((view) => {
       view.firstItemLink.userClick();
     });
