@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@semantic-matchers/jest>@semantic-matchers/core': 0.1.1
+  '@semantic-matchers/vitest>@semantic-matchers/core': 0.1.1
+  '@semantic-matchers/vitest>@semantic-matchers/jest': 0.1.1
+
 importers:
 
   .:
@@ -160,7 +165,7 @@ importers:
         version: 7.18.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       ts-jest:
         specifier: ^29.2.5
-        version: 29.4.11(@babel/core@7.29.7)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.29.7))(jest-util@29.7.0)(jest@29.7.0(@types/node@25.9.3)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.11(@babel/core@7.29.7)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.29.7))(esbuild@0.27.7)(jest-util@29.7.0)(jest@29.7.0(@types/node@25.9.3)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
@@ -308,6 +313,12 @@ importers:
       '@pco/core':
         specifier: workspace:*
         version: link:../../core
+      '@semantic-matchers/core':
+        specifier: ^0.1.1
+        version: 0.1.1
+      '@semantic-matchers/jest':
+        specifier: ^0.1.1
+        version: 0.1.1(expect@29.7.0)
     devDependencies:
       '@jest/globals':
         specifier: ^29.7.0
@@ -321,6 +332,9 @@ importers:
       '@types/jest':
         specifier: ^29.5.14
         version: 29.5.14
+      expect:
+        specifier: ^29.7.0
+        version: 29.7.0
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@25.9.3)(babel-plugin-macros@3.1.0)
@@ -332,7 +346,7 @@ importers:
         version: 6.1.3
       ts-jest:
         specifier: ^29.2.5
-        version: 29.4.11(@babel/core@7.29.7)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.29.7))(jest-util@29.7.0)(jest@29.7.0(@types/node@25.9.3)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.11(@babel/core@7.29.7)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.29.7))(esbuild@0.27.7)(jest-util@29.7.0)(jest@29.7.0(@types/node@25.9.3)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       tsup:
         specifier: ^8.3.5
         version: 8.5.1(postcss@8.5.15)(typescript@5.9.3)
@@ -356,7 +370,7 @@ importers:
         version: link:../../react
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.3.2(@testing-library/dom@10.4.0)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18.0.0 || ^19.0.0
         version: 18.3.1
@@ -394,6 +408,12 @@ importers:
       '@pco/core':
         specifier: workspace:*
         version: link:../../core
+      '@semantic-matchers/core':
+        specifier: ^0.1.1
+        version: 0.1.1
+      '@semantic-matchers/vitest':
+        specifier: ^0.1.1
+        version: 0.1.1(expect@29.7.0)(vitest@2.1.9(@types/node@25.9.3)(happy-dom@15.11.7)(jsdom@25.0.1)(msw@2.14.6(@types/node@25.9.3)(typescript@5.9.3))(terser@5.48.0))
     devDependencies:
       '@pco/msw':
         specifier: workspace:*
@@ -431,6 +451,9 @@ importers:
       '@pco/core':
         specifier: workspace:*
         version: link:../core
+      '@semantic-matchers/core':
+        specifier: ^0.1.1
+        version: 0.1.1
     devDependencies:
       msw:
         specifier: ^2.7.0
@@ -2129,6 +2152,19 @@ packages:
     resolution: {integrity: sha512-5L+T1fMX4RIEBoZzT0+sQ0PhTS36NULFmMXtl1TZo44TMAROIMHbZufSOjVWt/Y622BtxgxtaNOokbTDvfsrZA==}
     cpu: [x64]
     os: [win32]
+
+  '@semantic-matchers/core@0.1.1':
+    resolution: {integrity: sha512-durMZJYESYPnmsk2wbE7HDkfd5wI7UU/oa92fCcykgZH488O/+34pQkHqV2jHgRE+bZA7Eo9IfNSIGex/X9IHA==}
+
+  '@semantic-matchers/jest@0.1.1':
+    resolution: {integrity: sha512-lSY6Oi3SvgD7eMHWIzRWKo/Q1ytH/OPENOgWALD0JJUl2yRO9kKzN1fvqeid+JyR98Yt24reP8VdEd0KBFmTXg==}
+    peerDependencies:
+      expect: '>=29.0.0'
+
+  '@semantic-matchers/vitest@0.1.1':
+    resolution: {integrity: sha512-i1Tf0UKymsObYpNQeoPIl7dgx42L8gGhLxFwSNfHi0QSD/by9pC5JMPQmziQ2taQO1IWao2PKPMQLB56usvM6g==}
+    peerDependencies:
+      vitest: '>=2.0.0'
 
   '@sinclair/typebox@0.27.10':
     resolution: {integrity: sha512-MTBk/3jGLNB2tVxv6uLlFh1iu64iYOQ2PbdOSK3NW8JZsmlaOh2q6sdtKowBhfw8QFLmYNzTW4/oK4uATIi6ZA==}
@@ -6942,6 +6978,25 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.62.0':
     optional: true
 
+  '@semantic-matchers/core@0.1.1': {}
+
+  '@semantic-matchers/jest@0.1.1(expect@29.7.0)':
+    dependencies:
+      '@jest/expect-utils': 29.7.0
+      '@semantic-matchers/core': 0.1.1
+      expect: 29.7.0
+      jest-matcher-utils: 29.7.0
+
+  '@semantic-matchers/vitest@0.1.1(expect@29.7.0)(vitest@2.1.9(@types/node@25.9.3)(happy-dom@15.11.7)(jsdom@25.0.1)(msw@2.14.6(@types/node@25.9.3)(typescript@5.9.3))(terser@5.48.0))':
+    dependencies:
+      '@jest/expect-utils': 29.7.0
+      '@semantic-matchers/core': 0.1.1
+      '@semantic-matchers/jest': 0.1.1(expect@29.7.0)
+      jest-matcher-utils: 29.7.0
+      vitest: 2.1.9(@types/node@25.9.3)(happy-dom@15.11.7)(jsdom@25.0.1)(msw@2.14.6(@types/node@25.9.3)(typescript@5.9.3))(terser@5.48.0)
+    transitivePeerDependencies:
+      - expect
+
   '@sinclair/typebox@0.27.10': {}
 
   '@sinonjs/commons@3.0.1':
@@ -7204,6 +7259,16 @@ snapshots:
       dom-accessibility-api: 0.6.3
       lodash: 4.18.1
       redent: 3.0.0
+
+  '@testing-library/react@16.3.2(@testing-library/dom@10.4.0)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@babel/runtime': 7.29.7
+      '@testing-library/dom': 10.4.0
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    optionalDependencies:
+      '@types/react': 18.3.31
+      '@types/react-dom': 18.3.7(@types/react@18.3.31)
 
   '@testing-library/react@16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -10101,7 +10166,7 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  ts-jest@29.4.11(@babel/core@7.29.7)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.29.7))(jest-util@29.7.0)(jest@29.7.0(@types/node@25.9.3)(babel-plugin-macros@3.1.0))(typescript@5.9.3):
+  ts-jest@29.4.11(@babel/core@7.29.7)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.29.7))(esbuild@0.27.7)(jest-util@29.7.0)(jest@29.7.0(@types/node@25.9.3)(babel-plugin-macros@3.1.0))(typescript@5.9.3):
     dependencies:
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
@@ -10119,6 +10184,7 @@ snapshots:
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
       babel-jest: 29.7.0(@babel/core@7.29.7)
+      esbuild: 0.27.7
       jest-util: 29.7.0
 
   ts-loader@9.6.1(typescript@5.9.3)(webpack@5.107.2):

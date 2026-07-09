@@ -1,6 +1,9 @@
-import { describe, expect, it, vi } from 'vitest';
+import './vitestMatcherTypes';
+import '@pco/msw/matchers';
 
-import { getSharedUserAgent } from '@pco/core';
+import { describe, expect, it } from 'vitest';
+
+import { getSharedUserAgent, type MockFn } from '@pco/core';
 import { ApiTestObject } from '@pco/msw';
 
 import { setupPCO } from './index';
@@ -18,10 +21,9 @@ describe('setupPCO', () => {
 
   it('registers toHaveBeenLastCalledWithUrl matcher', () => {
     setupPCO();
-    const mock = {
-      mock: {
-        calls: [[{ request: new Request('http://localhost/api/items') }]],
-      },
+    const mock = (() => undefined) as MockFn;
+    mock.mock = {
+      calls: [[{ request: new Request('http://localhost/api/items') }]],
     };
 
     expect(mock).toHaveBeenLastCalledWithUrl('http://localhost/api/items');

@@ -6,7 +6,7 @@ export type {
   ResponseTrigger,
 } from './ApiTestObject';
 export type { HttpHandler } from 'msw';
-export { createApiMatchers } from './apiMatchers';
+export { apiMockGlobalMatchers, toHaveBeenLastCalledWithUrl } from './apiMatchers';
 export {
   buildMswParameters,
   createMockSession,

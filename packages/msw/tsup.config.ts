@@ -6,5 +6,5 @@ export default defineConfig({
   dts: true,
   clean: true,
   sourcemap: true,
-  external: ['@pco/core', 'msw', 'msw/node'],
+  external: ['@pco/core', '@semantic-matchers/core', 'msw', 'msw/node'],
 });

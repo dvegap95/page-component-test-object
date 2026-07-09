@@ -144,11 +144,12 @@ See [PLAN.md — Phases](./PLAN.md#phases) for the full plan:
 - **Phase 0 (done):** Core packages, four adapters, MSW Storybook API, `__pco__` layout
 - **Phase 1 (now):** npm publish for Vitest / Jest / Storybook at `0.1.0`
 - **Phase 3 (ongoing):** Cypress `PCOChainable` — native chains + semantic PCO methods
-- **Later:** [semantic-matchers](https://github.com/dvegap95/semantic-matchers), more UI presets
+- **Phase 4 (node runners):** [`@semantic-matchers/core`](https://www.npmjs.com/package/@semantic-matchers/core) API matchers in Vitest/Jest — see [docs/matchers.md](./docs/matchers.md)
+- **Later:** Cypress chainable matchers, more UI presets
 
 Interaction model (query → primitive → intent): [docs/philosophy.md](./docs/philosophy.md).
 
 ## Related
 
 - [Testing Library guiding principles](https://testing-library.com/docs/guiding-principles)
-- [semantic-matchers](https://github.com/dvegap95/semantic-matchers) — planned matcher integration for API assertions
+- [semantic-matchers](https://github.com/dvegap95/semantic-matchers) — API spy matchers for Vitest/Jest (`@pco/msw/matchers`); Cypress adapter planned

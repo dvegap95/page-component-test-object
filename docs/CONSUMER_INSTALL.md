@@ -113,7 +113,10 @@ Install these in the **same app package** that runs tests. PCO adapters declare 
 |---------|---------|
 | `vitest` | `^2 \|\| ^3` |
 | `@testing-library/user-event` | `^14 \|\| ^15` |
+| `@semantic-matchers/vitest` | `^0.1` (dependency of `@pco/adapter-vitest`) |
 | `@pco/msw` | tarball (listed above) |
+
+API spy matchers (`toHaveBeenLastCalledWithUrl`) register via `setupPCO()` — see [matchers.md](./matchers.md).
 
 ### Jest
 
@@ -121,6 +124,7 @@ Install these in the **same app package** that runs tests. PCO adapters declare 
 |---------|---------|
 | `jest` | `^29 \|\| ^30` |
 | `@testing-library/user-event` | `^14 \|\| ^15` |
+| `@semantic-matchers/jest` | `^0.1` (dependency of `@pco/adapter-jest`) |
 
 ### Storybook
 

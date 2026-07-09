@@ -156,9 +156,22 @@ Colocate PCO artifacts under **`__pco__`** per feature. See [docs/project-struct
 
 **Done when:** Cypress demo shows native + semantic side-by-side without `cy.wrap` for common flows. *(Spike met — polish ongoing.)*
 
-### Phase 4 — semantic-matchers
+### Phase 4 — semantic-matchers (node runners shipped)
 
-Replace interim `@pco/msw/matchers` with [semantic-matchers](https://github.com/dvegap95/semantic-matchers) for API spy assertions.
+**Goal:** API spy assertions authored once, registered via runner adapters.
+
+**Shipped (`0.1.0`):**
+
+- `@pco/msw/matchers` — `toHaveBeenLastCalledWithUrl` via `@semantic-matchers/core` `defineMatcher`
+- `@pco/adapter-vitest` / `@pco/adapter-jest` — `install*SemanticExpect` + `extendGlobal(apiMockGlobalMatchers)`
+- [docs/matchers.md](./docs/matchers.md)
+
+**Deferred:**
+
+- **Cypress chainable matchers** on `PCOChainable` (`.should()` / semantic host adapter) — same matcher definitions, different host; see [matchers.md](./docs/matchers.md#future-cypress-chainable-matchers)
+- Class-scoped matchers on consumer PCOs (domain packs) — follow semantic-matchers `defineClassMatchers` pattern
+
+**Done when:** Vitest/Jest demos assert API spies with `toHaveBeenLastCalledWithUrl` without manual `expect.extend`. *(Met for node runners.)*
 
 ### Phase 5 — Ecosystem expansion
 

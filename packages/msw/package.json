@@ -25,7 +25,8 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@pco/core": "workspace:*"
+    "@pco/core": "workspace:*",
+    "@semantic-matchers/core": "^0.1.1"
   },
   "peerDependencies": {
     "msw": "^2.0.0"

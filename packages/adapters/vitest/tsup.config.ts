@@ -6,5 +6,13 @@ export default defineConfig({
   dts: true,
   clean: true,
   sourcemap: true,
-  external: ['@pco/core', '@pco/msw', '@pco/msw/matchers', '@testing-library/user-event', 'vitest'],
+  external: [
+    '@pco/core',
+    '@pco/msw',
+    '@pco/msw/matchers',
+    '@semantic-matchers/core',
+    '@semantic-matchers/vitest',
+    '@testing-library/user-event',
+    'vitest',
+  ],
 });
