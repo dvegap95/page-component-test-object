@@ -55,6 +55,7 @@ function rewriteWorkspaceDeps(pkgJson, packVersion) {
     dependencies: rewriteRecord(pkgJson.dependencies),
     peerDependencies: rewriteRecord(pkgJson.peerDependencies),
     optionalDependencies: rewriteRecord(pkgJson.optionalDependencies),
+    devDependencies: rewriteRecord(pkgJson.devDependencies),
   };
 }
 

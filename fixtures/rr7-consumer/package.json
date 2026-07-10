@@ -27,5 +27,14 @@
     "react-router-dom": "^7.6.2",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
+  },
+  "overrides": {
+    "@semantic-matchers/vitest": {
+      "@semantic-matchers/core": "0.1.1",
+      "@semantic-matchers/jest": "0.1.1"
+    },
+    "@semantic-matchers/jest": {
+      "@semantic-matchers/core": "0.1.1"
+    }
   }
 }
