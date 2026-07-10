@@ -17,6 +17,7 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @page-component-object/cypress-demo exec cypress install
       - run: pnpm build
       - run: pnpm test
 
