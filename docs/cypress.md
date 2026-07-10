@@ -25,7 +25,7 @@ Peer dependency: `cypress` ^13 or ^14.
 In support or spec entry:
 
 ```ts
-import { setupPCOCypress } from '@pco/adapter-cypress';
+import { setupPCOCypress } from '@page-component-object/adapter-cypress';
 
 setupPCOCypress({ resetUserAgentEachTest: false });
 ```
@@ -35,7 +35,7 @@ Enable Cypress Testing Library commands (needed for `cy.findBy*` used by PCO get
 ```ts
 import '@testing-library/cypress/add-commands';
 
-import { setupPCOCypress } from '@pco/adapter-cypress';
+import { setupPCOCypress } from '@page-component-object/adapter-cypress';
 
 setupPCOCypress();
 ```
@@ -66,7 +66,7 @@ Use **MSW-free** test objects and import paths that do not pull node MSW into th
 |----------|--------------|-------|
 | `CypressComponentTestObject` + chainable getters | **Yes (E2E)** | Native `.should()` + semantic `userClick()` — see below |
 | Import getters from `ComponentTestObject` only | **Yes** | Storybook / legacy `cy.wrap` hybrid |
-| Import `BaseViewTestObject` subclasses | **No** | Pulls `@pco/msw` node server into the browser bundle |
+| Import `BaseViewTestObject` subclasses | **No** | Pulls `@page-component-object/msw` node server into the browser bundle |
 | Separate `*.story.to.tsx` export for Cypress/Storybook | Optional | When view TO mixes MSW + JSX in one class |
 
 There is no separate “Cypress export” path — reuse the **DOM-only** test object class (or a thin subclass without MSW) from your `*.to.tsx` files.
@@ -76,7 +76,7 @@ There is no separate “Cypress export” path — reuse the **DOM-only** test o
 **Option B (shipped in `0.1.0` spike):** use a separate Cypress base class so node runners keep `HTMLElement` getters.
 
 ```ts
-import { CypressComponentTestObject } from '@pco/adapter-cypress';
+import { CypressComponentTestObject } from '@page-component-object/adapter-cypress';
 
 export class CatalogHomeCypressTestObject extends CypressComponentTestObject {
   get heading() {
@@ -161,7 +161,7 @@ bindView().then((view) => cy.wrap(view.itemLinks[0]).click());
 
 `apps/cypress-demo` uses **`BrowserRouter`** (not `MemoryRouter`) so `cy.url()` reflects client-side navigation. The app must include routes for destinations you assert on (e.g. `/items/:id`).
 
-The Cypress preprocessor resolves `@pco/*` to **source** paths so specs compile without pre-built `dist` exports. When using tarballs, point aliases at `node_modules/@pco/*/dist` or rely on package exports directly.
+The Cypress preprocessor resolves `@page-component-object/*` to **source** paths so specs compile without pre-built `dist` exports. When using tarballs, point aliases at `node_modules/@page-component-object/*/dist` or rely on package exports directly.
 
 ## What to assert
 

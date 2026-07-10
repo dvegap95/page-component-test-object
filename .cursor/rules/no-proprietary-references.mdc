@@ -5,7 +5,7 @@ alwaysApply: true
 
 # No proprietary project references
 
-This repository (`page-component-object` / `@pco/*`) is **public and standalone**. It must not reference proprietary codebases, employers, or client products.
+This repository (`page-component-object` / `@page-component-object/*`, **PCO** pattern alias) is **public and standalone**. It must not reference proprietary codebases, employers, or client products.
 
 ## Do not include in this repo
 

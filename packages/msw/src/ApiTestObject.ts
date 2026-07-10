@@ -1,7 +1,7 @@
 import { http, HttpResponse, type HttpHandler, type PathParams } from 'msw';
 import { setupServer, type SetupServer } from 'msw/node';
 
-import { getRuntime, type MockFn } from '@pco/core';
+import { getRuntime, type MockFn } from '@page-component-object/core';
 
 type JsonBodyType = Record<string, unknown> | unknown[];
 type DefaultBodyType = JsonBodyType | string | null | void;

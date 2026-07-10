@@ -1,7 +1,7 @@
 import { applyRequestHandlers } from 'msw-storybook-addon';
 
-import type { MockSession } from '@pco/msw';
-import { BaseViewTestObject } from '@pco/react';
+import type { MockSession } from '@page-component-object/msw';
+import { BaseViewTestObject } from '@page-component-object/react';
 
 export type PcoViewConfig<T extends BaseViewTestObject = BaseViewTestObject> = {
   view: ViewTestObjectClass<T>;

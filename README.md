@@ -1,22 +1,21 @@
-# Page Component Object (`@pco/*`)
+# Page Component Object (PCO)
 
-**Page Component Object toolkit** — shared TestObjects for React UI tests.
+**npm:** [`@page-component-object/*`](https://www.npmjs.com/org/page-component-object) — shared TestObjects for React UI tests. The pattern and folder layout go by **PCO** (`__pco__`, `*.to.ts`, `PCOChainable`).
 
 Cross-runner suites often maintain **three parallel copies** of the same work: selectors in Vitest, the same getters again in Storybook `play`, and another set in Cypress. When a date picker or modal flow changes, that fix lands in three places. PCO applies Page Object thinking at the **component and view** level — centralize **queries**, **interactions**, and **intents** in `TestObjects` (`*.to.ts` / `*.to.tsx`) beside your features, then let **adapters** run them in **Vitest**, **Jest**, **Storybook**, and **Cypress**. API mocks, data factories, and test-app wiring live in the same `__pco__` layer.
 
-> **Status:** `0.1.0` — stable for **Vitest**, **Jest**, and **Storybook** (MSW-backed view tests). Publish via `v*` tag or the **Publish** GitHub Actions workflow ([docs/PUBLISH.md](./docs/PUBLISH.md)). Tarballs (`pnpm pack:dist`) remain for pre-release consumers. **Cypress** getter reuse ships today; native chain integration (`PCOChainable`) is [ongoing](./PLAN.md#phase-3--cypress-pcochainable-ongoing).
+> **Status:** `0.1.1` — stable for **Vitest**, **Jest**, and **Storybook** (MSW-backed view tests). **Cypress** getter reuse ships today; native chain integration (`PCOChainable`) is [ongoing](./PLAN.md#phase-3--cypress-pcochainable-ongoing).
 
 ## Technical context
 
 | Area | In this repo |
 |------|----------------|
 | Monorepo | pnpm workspaces, Turborepo, tsup builds across 10+ scoped packages |
-| Release CI | Reusable test gate; `v*` tag or manual **Publish** workflow → npm ([PUBLISH.md](./docs/PUBLISH.md)) |
 | Library design | Adapter pattern — one TestObject surface, four test runners |
 | Test layering | Query → primitive interaction → domain intent ([philosophy](./docs/philosophy.md)) |
 | Selectors | Testing Library roles and accessible names; Cypress via `@testing-library/cypress` |
 | HTTP boundary | MSW v2 registry — handlers shared between node tests and Storybook |
-| Widget reuse | Composable presets (e.g. [`@pco/preset-mui`](./packages/presets/mui)) in view test objects |
+| Widget reuse | Composable presets (e.g. [`@page-component-object/preset-mui`](./packages/presets/mui)) in view test objects |
 | API assertions | [`@semantic-matchers`](https://github.com/dvegap95/semantic-matchers) integration for Vitest/Jest spy matchers |
 
 ## Why PCO?
@@ -31,7 +30,7 @@ PCO is a **Page Component Object** strategy: Page Object thinking applied to **c
 
 Two date pickers on the same form? Two intent calls — not two copies of open-calendar-click-day-blur. When the selection procedure changes, you fix it in **one** preset or test object.
 
-Design-system widgets get their own reusable objects (see [`@pco/preset-mui`](./packages/presets/mui)). View test objects compose them and add domain intents (`fillCheckout`, `openSettings`). Factories and API test objects keep **data** and **HTTP contracts** beside the UI layer under [`__pco__`](./docs/project-structure.md).
+Design-system widgets get their own reusable objects (see [`@page-component-object/preset-mui`](./packages/presets/mui)). View test objects compose them and add domain intents (`fillCheckout`, `openSettings`). Factories and API test objects keep **data** and **HTTP contracts** beside the UI layer under [`__pco__`](./docs/project-structure.md).
 
 ### Multi-runner reuse (collateral, not the origin story)
 
@@ -88,16 +87,16 @@ See [docs/getting-started.md](./docs/getting-started.md) for the full walkthroug
 
 | Package | Description |
 |---------|-------------|
-| [`@pco/core`](./packages/core) | Types, `ObjectFactory`, `App` singleton, runtime injection |
-| [`@pco/queries`](./packages/queries) | `ComponentTestObject` — RTL queries + user agent |
-| [`@pco/msw`](./packages/msw) | MSW v2 API mock registry and session helpers |
-| [`@pco/react`](./packages/react) | `BaseViewTestObject`, `BaseAppManager` |
-| [`@pco/router-react`](./packages/router-react) | React Router v6/v7 test shell (`MemoryRouter`, `Routes`, `useNavigate`) |
-| [`@pco/preset-mui`](./packages/presets/mui) | MUI widget test objects (Button, Select, Snackbar, TimePicker, TableRow, …) |
-| [`@pco/adapter-vitest`](./packages/adapters/vitest) | Vitest lifecycle + user agent |
-| [`@pco/adapter-jest`](./packages/adapters/jest) | Jest lifecycle + user agent |
-| [`@pco/adapter-storybook`](./packages/adapters/storybook) | `createStoryPlay`, `storyParameters`, `pcoViewLoader`, MSW bridge |
-| [`@pco/adapter-cypress`](./packages/adapters/cypress) | Cypress runtime, `CypressComponentTestObject`, `PCOChainable` |
+| [`@page-component-object/core`](./packages/core) | Types, `ObjectFactory`, `App` singleton, runtime injection |
+| [`@page-component-object/queries`](./packages/queries) | `ComponentTestObject` — RTL queries + user agent |
+| [`@page-component-object/msw`](./packages/msw) | MSW v2 API mock registry and session helpers |
+| [`@page-component-object/react`](./packages/react) | `BaseViewTestObject`, `BaseAppManager` |
+| [`@page-component-object/router-react`](./packages/router-react) | React Router v6/v7 test shell (`MemoryRouter`, `Routes`, `useNavigate`) |
+| [`@page-component-object/preset-mui`](./packages/presets/mui) | MUI widget test objects (Button, Select, Snackbar, TimePicker, TableRow, …) |
+| [`@page-component-object/adapter-vitest`](./packages/adapters/vitest) | Vitest lifecycle + user agent |
+| [`@page-component-object/adapter-jest`](./packages/adapters/jest) | Jest lifecycle + user agent |
+| [`@page-component-object/adapter-storybook`](./packages/adapters/storybook) | `createStoryPlay`, `storyParameters`, `pcoViewLoader`, MSW bridge |
+| [`@page-component-object/adapter-cypress`](./packages/adapters/cypress) | Cypress runtime, `CypressComponentTestObject`, `PCOChainable` |
 
 ## Demo apps (not published)
 
@@ -116,8 +115,7 @@ Fictitious catalog domain under [`apps/demo-shared`](./apps/demo-shared) — **n
 |-----|-------|
 | [Getting started](./docs/getting-started.md) | Adapters, TestObject hierarchy, first test |
 | [Project structure](./docs/project-structure.md) | `__pco__` layout, factories vs API mocks |
-| [Consumer install manifest](./docs/CONSUMER_INSTALL.md) | Tarballs + full peer dependency list |
-| [Architecture & roadmap](./PLAN.md) | Vision, phases, `App` singleton, publish tiers |
+| [Architecture & roadmap](./PLAN.md) | Vision, phases, `App` singleton |
 | [MSW in tests vs Storybook](./docs/msw-storybook.md) | Shared handlers, `createMockSession`, story parameters |
 | [Cypress integration](./docs/cypress.md) | `bindToRoot`, hybrid `cy` + getter patterns |
 | [Philosophy](./docs/philosophy.md) | Behavioral tests, Testing Trophy, RTL alignment |
@@ -130,34 +128,18 @@ Fictitious catalog domain under [`apps/demo-shared`](./apps/demo-shared) — **n
 pnpm install
 pnpm build
 pnpm test                    # Vitest + Jest demos (excludes slow Cypress E2E)
-pnpm --filter @pco/cypress-demo test   # Cypress E2E
+pnpm --filter @page-component-object/cypress-demo test   # Cypress E2E
 pnpm test:consumer-smoke   # tarball install smoke test (RR v7 fixture)
-pnpm --filter @pco/storybook-demo storybook
+pnpm --filter @page-component-object/storybook-demo storybook
 ```
 
 Monorepo tooling: **pnpm workspaces**, **Turborepo**, **tsup** for package builds.
-
-### Consumer install (tarballs)
-
-Packages are not on npm yet. After cloning, build and pack tarballs for external monorepos:
-
-```bash
-pnpm install
-pnpm pack:dist   # bumps 0.1.0-dev.N, writes dist/packs/manifest.json
-```
-
-Copy `dist/packs/` into your consumer repo, update `file:` paths from **`manifest.json`** (or run `node scripts/apply-pack-manifest.mjs`), then `yarn install`. Each repack gets a new `dev.N` suffix so Yarn lockfile checksums stay valid.
-
-See [Consumer install manifest](./docs/CONSUMER_INSTALL.md) for the full peer list, checksum refresh workflow, and install examples.
-
-
 
 ## Roadmap
 
 See [PLAN.md — Phases](./PLAN.md#phases) for the full plan:
 
 - **Phase 0 (done):** Core packages, four adapters, MSW Storybook API, `__pco__` layout
-- **Phase 1 (now):** npm publish for Vitest / Jest / Storybook at `0.1.0`
 - **Phase 3 (ongoing):** Cypress `PCOChainable` — native chains + semantic PCO methods
 - **Phase 4 (node runners):** [`@semantic-matchers/core`](https://www.npmjs.com/package/@semantic-matchers/core) API matchers in Vitest/Jest — see [docs/matchers.md](./docs/matchers.md)
 - **Later:** Cypress chainable matchers, more UI presets
@@ -167,4 +149,4 @@ Interaction model (query → primitive → intent): [docs/philosophy.md](./docs/
 ## Related
 
 - [Testing Library guiding principles](https://testing-library.com/docs/guiding-principles)
-- [semantic-matchers](https://github.com/dvegap95/semantic-matchers) — API spy matchers for Vitest/Jest (`@pco/msw/matchers`); Cypress adapter planned
+- [semantic-matchers](https://github.com/dvegap95/semantic-matchers) — API spy matchers for Vitest/Jest (`@page-component-object/msw/matchers`); Cypress adapter planned

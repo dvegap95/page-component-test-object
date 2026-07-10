@@ -9,9 +9,9 @@ const mswSrc = path.resolve(dirname, '../../msw/src');
 export default defineConfig({
   resolve: {
     alias: [
-      { find: '@pco/core', replacement: path.resolve(dirname, '../../core/src/index.ts') },
-      { find: '@pco/msw/matchers', replacement: path.join(mswSrc, 'apiMatchers.ts') },
-      { find: '@pco/msw', replacement: path.join(mswSrc, 'index.ts') },
+      { find: '@page-component-object/core', replacement: path.resolve(dirname, '../../core/src/index.ts') },
+      { find: '@page-component-object/msw/matchers', replacement: path.join(mswSrc, 'apiMatchers.ts') },
+      { find: '@page-component-object/msw', replacement: path.join(mswSrc, 'index.ts') },
     ],
   },
   test: {

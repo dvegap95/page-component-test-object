@@ -6,5 +6,5 @@ export default defineConfig({
   dts: true,
   clean: true,
   sourcemap: true,
-  external: ['@pco/queries', '@testing-library/dom', '@testing-library/react'],
+  external: ['@page-component-object/queries', '@testing-library/dom', '@testing-library/react'],
 });

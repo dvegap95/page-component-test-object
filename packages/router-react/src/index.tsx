@@ -8,7 +8,7 @@ import {
   useNavigate,
 } from 'react-router-dom';
 
-import type { RouterHistory } from '@pco/core';
+import type { RouterHistory } from '@page-component-object/core';
 
 export type HistoryCaptureProps = {
   children: ReactNode;

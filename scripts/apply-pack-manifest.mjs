@@ -1,5 +1,5 @@
 /**
- * Point @pco/* file: deps in a consumer package.json at the latest pack tarballs.
+ * Point @page-component-object/* file: deps in a consumer package.json at the latest pack tarballs.
  * Usage: node scripts/apply-pack-manifest.mjs <target-package.json> [manifest.json]
  */
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -26,7 +26,7 @@ for (const section of ['dependencies', 'devDependencies']) {
   const deps = pkg[section];
   if (!deps) continue;
   for (const name of Object.keys(deps)) {
-    if (!name.startsWith('@pco/')) continue;
+    if (!name.startsWith('@page-component-object/')) continue;
     const entry = tarballByName[name];
     if (!entry) continue;
     const tarballPath = join(packsDir, entry.tarball);

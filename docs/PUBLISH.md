@@ -1,6 +1,6 @@
-# Publishing `@pco/*` to npm
+# Publishing `@page-component-object/*` to npm
 
-Release automation for this monorepo: **CI proves the tree**, **tags or manual dispatch trigger publish**, **`scripts/release-version.json` is the single version source**.
+npm scope **`@page-component-object`** (org [page-component-object](https://www.npmjs.com/org/page-component-object)). The **PCO** name remains the pattern alias in code (`__pco__`, adapters, docs). **CI proves the tree**, **tags or manual dispatch trigger publish**, **`scripts/release-version.json` is the single version source**.
 
 ## Prerequisites
 
@@ -59,20 +59,23 @@ Tag / input version must match `release-version.json` exactly.
 | Storybook + MSW addon | Stable |
 | Cypress | Experimental — see [cypress.md](./cypress.md) |
 
-## Manual publish (local)
+## Manual publish (local, first release)
+
+From the **monorepo root** — not `npm publish` (the root package is private).
 
 ```bash
 pnpm install
 pnpm build
 pnpm test
-node scripts/prepare-publish.mjs
-pnpm -r publish --access public
+pnpm publish:packages
 ```
+
+`publish:packages` runs `prepare-publish.mjs` then `pnpm -r publish` for each `@page-component-object/*` package under `packages/`.
 
 ## After first npm publish
 
 ```bash
-pnpm add @pco/core @pco/queries @pco/msw @pco/react @pco/router-react @pco/adapter-vitest
+pnpm add @page-component-object/core @page-component-object/queries @page-component-object/msw @page-component-object/react @page-component-object/router-react @page-component-object/adapter-vitest
 ```
 
 Tarball workflow (`pnpm pack:dist`) remains for pre-release testing — see [CONSUMER_INSTALL.md](./CONSUMER_INSTALL.md).

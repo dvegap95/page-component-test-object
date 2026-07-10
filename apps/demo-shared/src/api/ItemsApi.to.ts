@@ -1,5 +1,5 @@
-import { ObjectFactory } from '@pco/core';
-import { ApiTestObject } from '@pco/msw';
+import { ObjectFactory } from '@page-component-object/core';
+import { ApiTestObject } from '@page-component-object/msw';
 
 import type { Item } from '../types';
 

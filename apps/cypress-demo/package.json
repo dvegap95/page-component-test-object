@@ -1,5 +1,5 @@
 {
-  "name": "@pco/cypress-demo",
+  "name": "@page-component-object/cypress-demo",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -13,9 +13,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@pco/adapter-cypress": "workspace:*",
-    "@pco/demo-shared": "workspace:*",
-    "@pco/queries": "workspace:*"
+    "@page-component-object/adapter-cypress": "workspace:*",
+    "@page-component-object/demo-shared": "workspace:*",
+    "@page-component-object/queries": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^18.3.18",

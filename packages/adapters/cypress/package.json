@@ -1,7 +1,6 @@
 {
-  "name": "@pco/adapter-cypress",
-  "version": "0.1.0",
-  "private": true,
+  "name": "@page-component-object/adapter-cypress",
+  "version": "0.1.1",
   "type": "module",
   "exports": {
     ".": {
@@ -12,7 +11,9 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup",
@@ -20,8 +21,8 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@pco/core": "workspace:*",
-    "@pco/queries": "workspace:*"
+    "@page-component-object/core": "workspace:*",
+    "@page-component-object/queries": "workspace:*"
   },
   "peerDependencies": {
     "@testing-library/cypress": "^10.0.0",
@@ -46,5 +47,24 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "description": "Cypress E2E adapter — CypressComponentTestObject and PCOChainable",
+  "keywords": [
+    "adapter",
+    "behavioral-testing",
+    "cypress",
+    "cypress-adapter",
+    "e2e",
+    "jest",
+    "msw",
+    "page-component-object",
+    "page-object",
+    "pco",
+    "react",
+    "storybook",
+    "test-object",
+    "testing-library",
+    "vitest"
+  ],
+  "private": true
 }

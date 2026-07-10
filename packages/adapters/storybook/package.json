@@ -1,7 +1,6 @@
 {
-  "name": "@pco/adapter-storybook",
-  "version": "0.1.0",
-  "private": true,
+  "name": "@page-component-object/adapter-storybook",
+  "version": "0.1.1",
   "type": "module",
   "exports": {
     ".": {
@@ -12,7 +11,9 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup",
@@ -20,10 +21,10 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@pco/core": "workspace:*",
-    "@pco/msw": "workspace:*",
-    "@pco/queries": "workspace:*",
-    "@pco/react": "workspace:*"
+    "@page-component-object/core": "workspace:*",
+    "@page-component-object/msw": "workspace:*",
+    "@page-component-object/queries": "workspace:*",
+    "@page-component-object/react": "workspace:*"
   },
   "peerDependencies": {
     "@storybook/test": "^8.0.0 || ^9.0.0",
@@ -56,5 +57,24 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "description": "Storybook play, MSW bridge, and PCO view loader",
+  "keywords": [
+    "adapter",
+    "behavioral-testing",
+    "cypress",
+    "jest",
+    "msw",
+    "page-component-object",
+    "page-object",
+    "pco",
+    "react",
+    "story-play",
+    "storybook",
+    "storybook-adapter",
+    "test-object",
+    "testing-library",
+    "vitest"
+  ],
+  "private": true
 }

@@ -1,6 +1,6 @@
 import { fn, userEvent } from '@storybook/test';
 
-import { configureRuntime, type UserAgent } from '@pco/core';
+import { configureRuntime, type UserAgent } from '@page-component-object/core';
 
 export function setupPCOStorybook(): void {
   configureRuntime({

@@ -18,7 +18,7 @@ let mswInitialized = false;
  *
  * @example
  * ```ts
- * import { setupPCOStorybook, getStorybookMswPreviewConfig } from '@pco/adapter-storybook';
+ * import { setupPCOStorybook, getStorybookMswPreviewConfig } from '@page-component-object/adapter-storybook';
  *
  * const msw = getStorybookMswPreviewConfig({ onUnhandledRequest: 'warn' });
  * setupPCOStorybook();

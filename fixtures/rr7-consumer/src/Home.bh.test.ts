@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { AppRoutesViewTestObject, HomeViewTestObject } from './Home.to';
 
 describe('tarball consumer on react-router-dom v7', () => {
-  it('renders a shallow view through @pco/react', async () => {
+  it('renders a shallow view through @page-component-object/react', async () => {
     const view = new HomeViewTestObject();
     await view.render();
 

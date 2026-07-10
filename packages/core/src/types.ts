@@ -62,7 +62,7 @@ export interface RouterHistory {
 }
 
 /**
- * App shell contract — apps extend via `BaseAppManager` in `@pco/react`.
+ * App shell contract — apps extend via `BaseAppManager` in `@page-component-object/react`.
  * Access globally through `App.get()` after `App.register()`.
  */
 export interface AppManager {

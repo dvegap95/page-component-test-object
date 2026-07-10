@@ -1,7 +1,6 @@
 {
-  "name": "@pco/msw",
-  "version": "0.1.0",
-  "private": true,
+  "name": "@page-component-object/msw",
+  "version": "0.1.1",
   "type": "module",
   "exports": {
     ".": {
@@ -16,7 +15,9 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup",
@@ -25,7 +26,7 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@pco/core": "workspace:*",
+    "@page-component-object/core": "workspace:*",
     "@semantic-matchers/core": "^0.1.1"
   },
   "peerDependencies": {
@@ -50,5 +51,23 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "description": "MSW v2 API mock registry, ApiTestObject, and semantic API matchers",
+  "keywords": [
+    "api-mock",
+    "behavioral-testing",
+    "cypress",
+    "jest",
+    "msw",
+    "page-component-object",
+    "page-object",
+    "pco",
+    "react",
+    "semantic-matchers",
+    "storybook",
+    "test-object",
+    "testing-library",
+    "vitest"
+  ],
+  "private": true
 }

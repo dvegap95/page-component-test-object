@@ -1,5 +1,5 @@
 /**
- * Build all @pco/* packages and emit versioned tarballs under dist/packs/.
+ * Build all @page-component-object/* packages and emit versioned tarballs under dist/packs/.
  *
  * Each run bumps scripts/pack-version.json to {release}-dev.N (release from scripts/release-version.json) so consumers get
  * new filenames and Yarn lockfile checksums stay valid after a repack.

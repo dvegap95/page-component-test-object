@@ -1,5 +1,5 @@
 {
-  "name": "@pco/vitest-demo",
+  "name": "@page-component-object/vitest-demo",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -8,9 +8,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@pco/adapter-vitest": "workspace:*",
-    "@pco/demo-shared": "workspace:*",
-    "@pco/react": "workspace:*"
+    "@page-component-object/adapter-vitest": "workspace:*",
+    "@page-component-object/demo-shared": "workspace:*",
+    "@page-component-object/react": "workspace:*"
   },
   "devDependencies": {
     "@testing-library/react": "^16.1.0",

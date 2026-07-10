@@ -1,6 +1,6 @@
 import { act, fireEvent, screen, within, queries, type BoundFunctions } from '@testing-library/react';
 
-import { getSharedUserAgent, type QueryContext } from '@pco/core';
+import { getSharedUserAgent, type QueryContext } from '@page-component-object/core';
 
 export type TestObjectContext = BoundFunctions<typeof queries>;
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import type { MockFn } from '@pco/core';
+import type { MockFn } from '@page-component-object/core';
 
 import { toHaveBeenLastCalledWithUrl } from './apiMatchers';
 import type { HttpHandlerInfo } from './ApiTestObject';

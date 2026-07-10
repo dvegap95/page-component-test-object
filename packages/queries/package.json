@@ -1,7 +1,6 @@
 {
-  "name": "@pco/queries",
-  "version": "0.1.0",
-  "private": true,
+  "name": "@page-component-object/queries",
+  "version": "0.1.1",
   "type": "module",
   "exports": {
     ".": {
@@ -12,7 +11,9 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup",
@@ -20,7 +21,7 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@pco/core": "workspace:*"
+    "@page-component-object/core": "workspace:*"
   },
   "peerDependencies": {
     "@testing-library/dom": "^10.0.0",
@@ -45,5 +46,23 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "description": "ComponentTestObject — Testing Library queries and primitive user interactions",
+  "keywords": [
+    "behavioral-testing",
+    "component-test-object",
+    "cypress",
+    "jest",
+    "msw",
+    "page-component-object",
+    "page-object",
+    "pco",
+    "queries",
+    "react",
+    "storybook",
+    "test-object",
+    "testing-library",
+    "vitest"
+  ],
+  "private": true
 }

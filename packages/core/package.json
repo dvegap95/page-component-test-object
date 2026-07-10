@@ -1,7 +1,6 @@
 {
-  "name": "@pco/core",
-  "version": "0.1.0",
-  "private": true,
+  "name": "@page-component-object/core",
+  "version": "0.1.1",
   "type": "module",
   "exports": {
     ".": {
@@ -12,7 +11,9 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup",
@@ -36,5 +37,22 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "description": "PCO core types, App singleton, ObjectFactory, and runtime injection",
+  "keywords": [
+    "behavioral-testing",
+    "core",
+    "cypress",
+    "jest",
+    "msw",
+    "page-component-object",
+    "page-object",
+    "pco",
+    "react",
+    "storybook",
+    "test-object",
+    "testing-library",
+    "vitest"
+  ],
+  "private": true
 }

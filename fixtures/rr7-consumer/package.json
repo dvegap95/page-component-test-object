@@ -6,12 +6,12 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@pco/core": "file:../../dist/packs/pco-core-0.0.0-dev.3.tgz",
-    "@pco/queries": "file:../../dist/packs/pco-queries-0.0.0-dev.3.tgz",
-    "@pco/msw": "file:../../dist/packs/pco-msw-0.0.0-dev.3.tgz",
-    "@pco/router-react": "file:../../dist/packs/pco-router-react-0.0.0-dev.3.tgz",
-    "@pco/react": "file:../../dist/packs/pco-react-0.0.0-dev.3.tgz",
-    "@pco/adapter-vitest": "file:../../dist/packs/pco-adapter-vitest-0.0.0-dev.3.tgz"
+    "@page-component-object/core": "file:../../dist/packs/pco-core-0.0.0-dev.3.tgz",
+    "@page-component-object/queries": "file:../../dist/packs/pco-queries-0.0.0-dev.3.tgz",
+    "@page-component-object/msw": "file:../../dist/packs/pco-msw-0.0.0-dev.3.tgz",
+    "@page-component-object/router-react": "file:../../dist/packs/pco-router-react-0.0.0-dev.3.tgz",
+    "@page-component-object/react": "file:../../dist/packs/pco-react-0.0.0-dev.3.tgz",
+    "@page-component-object/adapter-vitest": "file:../../dist/packs/pco-adapter-vitest-0.0.0-dev.3.tgz"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.0",

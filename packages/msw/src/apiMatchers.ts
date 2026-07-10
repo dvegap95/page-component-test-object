@@ -1,6 +1,6 @@
 import { defineMatcher } from '@semantic-matchers/core';
 
-import type { MockFn } from '@pco/core';
+import type { MockFn } from '@page-component-object/core';
 
 import type { HttpHandlerInfo } from './ApiTestObject';
 

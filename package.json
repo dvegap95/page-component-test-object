@@ -6,10 +6,13 @@
     "build": "turbo run build",
     "pack:dist": "node scripts/pack.mjs",
     "version:sync": "node scripts/sync-package-versions.mjs",
+    "sync:readmes": "node scripts/sync-package-readmes.mjs",
     "test:consumer-smoke": "node scripts/consumer-smoke.mjs",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
-    "clean": "turbo run clean && rimraf node_modules dist"
+    "clean": "turbo run clean && rimraf node_modules dist",
+    "publish:packages": "node scripts/sync-package-readmes.mjs && node scripts/prepare-publish.mjs && pnpm -r publish --access public --no-git-checks",
+    "prepublishOnly": "node -e \"console.error('\\n  Do not npm publish from the monorepo root.\\n  Use: pnpm build && pnpm test && pnpm publish:packages\\n'); process.exit(1)\""
   },
   "devDependencies": {
     "rimraf": "^6.0.1",

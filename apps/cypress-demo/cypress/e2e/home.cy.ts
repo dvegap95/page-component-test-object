@@ -1,6 +1,6 @@
-import { setupPCOCypress } from '@pco/adapter-cypress';
-import { CatalogHomeCypressTestObject } from '@pco/demo-shared/cypress-objects';
-import { CatalogHomeStoryTestObject } from '@pco/demo-shared/story-objects';
+import { setupPCOCypress } from '@page-component-object/adapter-cypress';
+import { CatalogHomeCypressTestObject } from '@page-component-object/demo-shared/cypress-objects';
+import { CatalogHomeStoryTestObject } from '@page-component-object/demo-shared/story-objects';
 
 setupPCOCypress({ resetUserAgentEachTest: false });
 

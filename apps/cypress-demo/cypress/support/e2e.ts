@@ -1,4 +1,4 @@
-import { setupPCOCypress } from '@pco/adapter-cypress';
+import { setupPCOCypress } from '@page-component-object/adapter-cypress';
 
 import '@testing-library/cypress/add-commands';
 

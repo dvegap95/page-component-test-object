@@ -6,5 +6,5 @@ export default defineConfig({
   dts: true,
   clean: true,
   sourcemap: true,
-  external: ['@pco/core', '@pco/msw', '@pco/queries', '@pco/react', '@storybook/test', 'storybook'],
+  external: ['@page-component-object/core', '@page-component-object/msw', '@page-component-object/queries', '@page-component-object/react', '@storybook/test', 'storybook'],
 });

@@ -4,7 +4,7 @@ PCO registers HTTP mocks through `ApiTestObject` on the **same handler instances
 
 ## Storybook preview setup (consumer)
 
-`@pco/adapter-storybook` expects [msw-storybook-addon](https://storybook.js.org/addons/msw-storybook-addon) to load `parameters.msw.handlers` from each story. Install peers in your app:
+`@page-component-object/adapter-storybook` expects [msw-storybook-addon](https://storybook.js.org/addons/msw-storybook-addon) to load `parameters.msw.handlers` from each story. Install peers in your app:
 
 ```bash
 yarn add msw msw-storybook-addon
@@ -19,7 +19,7 @@ import type { Preview } from '@storybook/react';
 import {
   setupPCOStorybook,
   getStorybookMswPreviewConfig,
-} from '@pco/adapter-storybook';
+} from '@page-component-object/adapter-storybook';
 
 const msw = getStorybookMswPreviewConfig({ onUnhandledRequest: 'warn' });
 

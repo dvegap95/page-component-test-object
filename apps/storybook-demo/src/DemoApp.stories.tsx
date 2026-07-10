@@ -4,8 +4,8 @@ import { MemoryRouter } from 'react-router-dom';
 import {
   createViewAssertionPlay,
   expect,
-} from '@pco/adapter-storybook';
-import { DemoApp, DemoAppViewTestObject } from '@pco/demo-shared';
+} from '@page-component-object/adapter-storybook';
+import { DemoApp, DemoAppViewTestObject } from '@page-component-object/demo-shared';
 
 const meta: Meta<typeof DemoApp> = {
   title: 'Catalog/DemoApp (MSW)',

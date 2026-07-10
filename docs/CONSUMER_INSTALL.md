@@ -16,10 +16,10 @@ npm publish (Phase 1) targets the **stable** rows first. Tarball workflow remain
 ### npm (after `@pco` scope is claimed)
 
 ```bash
-pnpm add @pco/core @pco/queries @pco/msw @pco/react @pco/router-react @pco/adapter-vitest
+pnpm add @page-component-object/core @page-component-object/queries @page-component-object/msw @page-component-object/react @page-component-object/router-react @page-component-object/adapter-vitest
 ```
 
-Add `@pco/adapter-jest`, `@pco/adapter-storybook`, or `@pco/adapter-cypress` for other runners. Peer dependencies: see tables below.
+Add `@page-component-object/adapter-jest`, `@page-component-object/adapter-storybook`, or `@page-component-object/adapter-cypress` for other runners. Peer dependencies: see tables below.
 
 Build packs from a PCO checkout:
 
@@ -50,7 +50,7 @@ Each `pack:dist` bumps **`0.1.0-dev.N`** (`scripts/pack-version.json` + `scripts
 | Yarn | Command |
 |------|---------|
 | Yarn 4 | `yarn install --refresh-lockfile` |
-| Yarn 1 | Delete the `@pco/*` resolution blocks in `yarn.lock`, then `yarn install` |
+| Yarn 1 | Delete the `@page-component-object/*` resolution blocks in `yarn.lock`, then `yarn install` |
 
 ## Tarballs by use case
 
@@ -81,9 +81,9 @@ yarn add \
 
 | Package | Tarball prefix |
 |---------|----------------|
-| `@pco/adapter-vitest` | `pco-adapter-vitest-0.1.0-dev.N.tgz` |
-| `@pco/adapter-storybook` | `pco-adapter-storybook-0.1.0-dev.N.tgz` |
-| `@pco/adapter-cypress` | `pco-adapter-cypress-0.1.0-dev.N.tgz` |
+| `@page-component-object/adapter-vitest` | `pco-adapter-vitest-0.1.0-dev.N.tgz` |
+| `@page-component-object/adapter-storybook` | `pco-adapter-storybook-0.1.0-dev.N.tgz` |
+| `@page-component-object/adapter-cypress` | `pco-adapter-cypress-0.1.0-dev.N.tgz` |
 
 ## Peer dependencies (install in the consumer app)
 
@@ -93,17 +93,17 @@ Install these in the **same app package** that runs tests. PCO adapters declare 
 
 | Package | Version | Used by |
 |---------|---------|---------|
-| `react` | `^18 \|\| ^19` | `@pco/react`, `@pco/router-react`, adapters |
+| `react` | `^18 \|\| ^19` | `@page-component-object/react`, `@page-component-object/router-react`, adapters |
 | `react-dom` | `^18 \|\| ^19` | same |
-| `@testing-library/dom` | `^10` | `@pco/queries` |
-| `@testing-library/react` | `^16` | `@pco/queries`, `@pco/react`, Storybook adapter |
+| `@testing-library/dom` | `^10` | `@page-component-object/queries` |
+| `@testing-library/react` | `^16` | `@page-component-object/queries`, `@page-component-object/react`, Storybook adapter |
 
 ### Routed + MSW view tests
 
 | Package | Version | Used by |
 |---------|---------|---------|
-| `react-router-dom` | **`^6.4 \|\| ^7`** | `@pco/router-react` |
-| `msw` | `^2` | `@pco/msw`, `@pco/react`, Storybook adapter |
+| `react-router-dom` | **`^6.4 \|\| ^7`** | `@page-component-object/router-react` |
+| `msw` | `^2` | `@page-component-object/msw`, `@page-component-object/react`, Storybook adapter |
 
 > **React Router v5 is not supported.**
 
@@ -113,8 +113,8 @@ Install these in the **same app package** that runs tests. PCO adapters declare 
 |---------|---------|
 | `vitest` | `^2 \|\| ^3` |
 | `@testing-library/user-event` | `^14 \|\| ^15` |
-| `@semantic-matchers/vitest` | `^0.1` (dependency of `@pco/adapter-vitest`) |
-| `@pco/msw` | tarball (listed above) |
+| `@semantic-matchers/vitest` | `^0.1` (dependency of `@page-component-object/adapter-vitest`) |
+| `@page-component-object/msw` | tarball (listed above) |
 
 API spy matchers (`toHaveBeenLastCalledWithUrl`) register via `setupPCO()` — see [matchers.md](./matchers.md).
 
@@ -124,7 +124,7 @@ API spy matchers (`toHaveBeenLastCalledWithUrl`) register via `setupPCO()` — s
 |---------|---------|
 | `jest` | `^29 \|\| ^30` |
 | `@testing-library/user-event` | `^14 \|\| ^15` |
-| `@semantic-matchers/jest` | `^0.1` (dependency of `@pco/adapter-jest`) |
+| `@semantic-matchers/jest` | `^0.1` (dependency of `@page-component-object/adapter-jest`) |
 
 ### Storybook
 
@@ -161,8 +161,8 @@ yarn add \
 ## Required test setup (Vitest)
 ```ts
 // vitest.setup.ts
-import { installPCOLifecycle } from '@pco/adapter-vitest';
-import { BaseAppManager, configureViewTestObjects } from '@pco/react';
+import { installPCOLifecycle } from '@page-component-object/adapter-vitest';
+import { BaseAppManager, configureViewTestObjects } from '@page-component-object/react';
 
 class AppManager extends BaseAppManager {
   constructor() {
@@ -180,7 +180,7 @@ installPCOLifecycle({ apiBaseUrl: 'http://localhost:3000' });
 
 ## `apiBaseUrl`
 
-`@pco/adapter-vitest` / `@pco/adapter-jest` set `ApiTestObject.apiBaseUrl` during `setupPCO()` (default **`http://localhost`**). Override when API test objects register paths via `resolveApiUrl()` instead of MSW wildcards (`*/api/items`).
+`@page-component-object/adapter-vitest` / `@page-component-object/adapter-jest` set `ApiTestObject.apiBaseUrl` during `setupPCO()` (default **`http://localhost`**). Override when API test objects register paths via `resolveApiUrl()` instead of MSW wildcards (`*/api/items`).
 
 ## Full-app routing convention
 

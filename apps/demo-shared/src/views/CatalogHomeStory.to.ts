@@ -1,4 +1,4 @@
-import { ComponentTestObject } from '@pco/queries';
+import { ComponentTestObject } from '@page-component-object/queries';
 
 /** Storybook-only test object — queries canvas, no AppManager or MSW. */
 export class CatalogHomeStoryTestObject extends ComponentTestObject {

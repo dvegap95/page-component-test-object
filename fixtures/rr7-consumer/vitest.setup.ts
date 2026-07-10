@@ -1,5 +1,5 @@
-import { installPCOLifecycle } from '@pco/adapter-vitest';
-import { BaseAppManager, configureViewTestObjects } from '@pco/react';
+import { installPCOLifecycle } from '@page-component-object/adapter-vitest';
+import { BaseAppManager, configureViewTestObjects } from '@page-component-object/react';
 
 class FixtureAppManager extends BaseAppManager {
   constructor() {

@@ -1,10 +1,10 @@
 import './vitestMatcherTypes';
-import '@pco/msw/matchers';
+import '@page-component-object/msw/matchers';
 
 import { describe, expect, it } from 'vitest';
 
-import { getSharedUserAgent, type MockFn } from '@pco/core';
-import { ApiTestObject } from '@pco/msw';
+import { getSharedUserAgent, type MockFn } from '@page-component-object/core';
+import { ApiTestObject } from '@page-component-object/msw';
 
 import { setupPCO } from './index';
 

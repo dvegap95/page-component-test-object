@@ -1,8 +1,8 @@
 import { waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { DemoAppViewTestObject, HomeViewTestObject } from '@pco/demo-shared';
-import { resetDemoAppManager } from '@pco/demo-shared/testing';
+import { DemoAppViewTestObject, HomeViewTestObject } from '@page-component-object/demo-shared';
+import { resetDemoAppManager } from '@page-component-object/demo-shared/testing';
 
 describe('Home view (shallow)', () => {
   it('renders items from mocked API', async () => {

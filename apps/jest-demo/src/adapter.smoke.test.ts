@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { setupPCO } from '@pco/adapter-jest';
-import { ObjectFactory, getRuntime } from '@pco/core';
+import { setupPCO } from '@page-component-object/adapter-jest';
+import { ObjectFactory, getRuntime } from '@page-component-object/core';
 
 describe('Jest adapter smoke', () => {
   it('configures PCO runtime with jest.fn spy factory', () => {

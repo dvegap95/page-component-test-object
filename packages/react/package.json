@@ -1,7 +1,6 @@
 {
-  "name": "@pco/react",
-  "version": "0.1.0",
-  "private": true,
+  "name": "@page-component-object/react",
+  "version": "0.1.1",
   "type": "module",
   "exports": {
     ".": {
@@ -12,7 +11,9 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup",
@@ -20,10 +21,10 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@pco/core": "workspace:*",
-    "@pco/msw": "workspace:*",
-    "@pco/queries": "workspace:*",
-    "@pco/router-react": "workspace:*"
+    "@page-component-object/core": "workspace:*",
+    "@page-component-object/msw": "workspace:*",
+    "@page-component-object/queries": "workspace:*",
+    "@page-component-object/router-react": "workspace:*"
   },
   "peerDependencies": {
     "@testing-library/react": "^16.0.0",
@@ -53,5 +54,23 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "description": "BaseViewTestObject and BaseAppManager for React view tests",
+  "keywords": [
+    "behavioral-testing",
+    "cypress",
+    "jest",
+    "msw",
+    "page-component-object",
+    "page-object",
+    "pco",
+    "react",
+    "react-testing",
+    "storybook",
+    "test-object",
+    "testing-library",
+    "view-test-object",
+    "vitest"
+  ],
+  "private": true
 }

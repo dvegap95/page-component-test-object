@@ -1,7 +1,6 @@
 {
-  "name": "@pco/adapter-vitest",
-  "version": "0.1.0",
-  "private": true,
+  "name": "@page-component-object/adapter-vitest",
+  "version": "0.1.1",
   "type": "module",
   "exports": {
     ".": {
@@ -12,7 +11,9 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup",
@@ -21,17 +22,17 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@pco/core": "workspace:*",
+    "@page-component-object/core": "workspace:*",
     "@semantic-matchers/core": "^0.1.1",
     "@semantic-matchers/vitest": "^0.1.1"
   },
   "peerDependencies": {
-    "@pco/msw": "workspace:*",
+    "@page-component-object/msw": "workspace:*",
     "@testing-library/user-event": "^14.0.0 || ^15.0.0",
     "vitest": "^2.0.0 || ^3.0.0"
   },
   "devDependencies": {
-    "@pco/msw": "workspace:*",
+    "@page-component-object/msw": "workspace:*",
     "@testing-library/user-event": "^14.5.2",
     "rimraf": "^6.0.1",
     "tsup": "^8.3.5",
@@ -50,5 +51,23 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "description": "Vitest lifecycle and user agent adapter for PCO",
+  "keywords": [
+    "adapter",
+    "behavioral-testing",
+    "cypress",
+    "jest",
+    "msw",
+    "page-component-object",
+    "page-object",
+    "pco",
+    "react",
+    "storybook",
+    "test-object",
+    "testing-library",
+    "vitest",
+    "vitest-adapter"
+  ],
+  "private": true
 }

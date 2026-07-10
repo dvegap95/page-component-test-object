@@ -11,7 +11,7 @@ const fixtureDir = join(root, 'fixtures', 'rr7-consumer');
 const fixturePkg = join(fixtureDir, 'package.json');
 const manifestPath = join(root, 'dist', 'packs', 'manifest.json');
 
-console.log('Packing @pco/* tarballs…');
+console.log('Packing @page-component-object/* tarballs…');
 execSync('pnpm run pack:dist', { cwd: root, stdio: 'inherit' });
 
 console.log('Syncing fixture package.json from manifest…');

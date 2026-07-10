@@ -10,7 +10,7 @@ import {
   type RenderResult,
   type RouterHistory,
   type ShallowRenderOptions,
-} from '@pco/core';
+} from '@page-component-object/core';
 import {
   buildMswParameters,
   createMockSession,
@@ -18,9 +18,9 @@ import {
   ApiTestObject,
   type HttpHandler,
   type MockSession,
-} from '@pco/msw';
-import { ComponentTestObject } from '@pco/queries';
-import { buildShallowRouteTree, RoutedShell } from '@pco/router-react';
+} from '@page-component-object/msw';
+import { ComponentTestObject } from '@page-component-object/queries';
+import { buildShallowRouteTree, RoutedShell } from '@page-component-object/router-react';
 
 import { getViewTestConfig } from './viewTestConfig';
 

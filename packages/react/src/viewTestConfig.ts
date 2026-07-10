@@ -1,4 +1,4 @@
-import type { AppManager } from '@pco/core';
+import type { AppManager } from '@page-component-object/core';
 
 export type ViewTestConfig = {
   createAppManager: () => AppManager;

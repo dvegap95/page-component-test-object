@@ -1,4 +1,4 @@
-import { CypressComponentTestObject } from '@pco/adapter-cypress';
+import { CypressComponentTestObject } from '@page-component-object/adapter-cypress';
 
 /** Cypress E2E test object — chainable getters via `CypressComponentTestObject`. */
 export class CatalogHomeCypressTestObject extends CypressComponentTestObject {

@@ -10,9 +10,9 @@ import {
   configureRuntime,
   resetSharedUserAgent,
   type UserAgent,
-} from '@pco/core';
-import { ApiTestObject } from '@pco/msw';
-import { apiMockGlobalMatchers } from '@pco/msw/matchers';
+} from '@page-component-object/core';
+import { ApiTestObject } from '@page-component-object/msw';
+import { apiMockGlobalMatchers } from '@page-component-object/msw/matchers';
 
 export interface SetupPCOOptions {
   /** Base URL for `resolveApiUrl()` when API test objects use relative paths. Default: `http://localhost` */

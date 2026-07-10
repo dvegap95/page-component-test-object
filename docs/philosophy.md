@@ -4,7 +4,7 @@ PCO is a **structure layer** for behavioral UI tests. It does not change what yo
 
 ## Query, primitive, intent
 
-PCO separates three concerns. Only the first two belong in `@pco/*`; **intents** belong in your `__pco__` test objects.
+PCO separates three concerns. Only the first two belong in `@page-component-object/*`; **intents** belong in your `__pco__` test objects.
 
 | Layer | Example | Owner |
 |-------|---------|-------|
@@ -13,7 +13,7 @@ PCO separates three concerns. Only the first two belong in `@pco/*`; **intents**
 | **Intent** | `await view.fillLogin(email, password)` | **Your PCO** — composes primitives into domain flows |
 
 ```ts
-// @pco/queries — primitive (framework)
+// @page-component-object/queries — primitive (framework)
 await this.email.userType('a@b.com');
 await this.submit.userClick();
 
@@ -27,12 +27,12 @@ async fillLogin(email: string, password: string) {
 
 ### When to add a method to the library vs your `*.to.*`
 
-| Question | Add to `@pco/*` | Add to consumer `*.to.*` |
+| Question | Add to `@page-component-object/*` | Add to consumer `*.to.*` |
 |----------|-----------------|---------------------------|
 | Is it a DOM query (role, label, text)? | Yes — getter on `ComponentTestObject` | Rarely — only if app-specific scoping |
 | Is it a generic interaction (click, type, hover)? | Yes — primitive on `ComponentTestObject` | No |
 | Does it encode a business workflow (login, checkout, tab switch)? | **No** | **Yes** — intent method |
-| Is it MUI/Radix widget-specific? | Yes — `@pco/preset-*` | No |
+| Is it MUI/Radix widget-specific? | Yes — `@page-component-object/preset-*` | No |
 
 If you are unsure, default to **consumer intent**. The framework should stay runner- and domain-agnostic.
 
@@ -67,7 +67,7 @@ Primitive interactions (`userClick`, `userType`, …) are element-centric. A sha
 
 ## One TestObject per view (usually)
 
-A view test object maps to a **screen or meaningful UI region**, not every leaf component. Nested widgets can use smaller `ComponentTestObject` subclasses (see `@pco/preset-mui`).
+A view test object maps to a **screen or meaningful UI region**, not every leaf component. Nested widgets can use smaller `ComponentTestObject` subclasses (see `@page-component-object/preset-mui`).
 
 For multi-step flows across routes, use **separate view test objects** per route and `view.getHistory()` when you need the current path.
 

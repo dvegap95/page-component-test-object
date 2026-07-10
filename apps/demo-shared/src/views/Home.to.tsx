@@ -1,4 +1,4 @@
-import { BaseViewTestObject } from '@pco/react';
+import { BaseViewTestObject } from '@page-component-object/react';
 
 import { ItemsApiTestObject, ItemFactory } from '../api/ItemsApi.to';
 import { DemoApp, Home } from '../views/DemoApp';

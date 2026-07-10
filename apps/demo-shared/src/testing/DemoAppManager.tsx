@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BaseAppManager } from '@pco/react';
+import { BaseAppManager } from '@page-component-object/react';
 
 let manager: DemoAppManager | null = null;
 

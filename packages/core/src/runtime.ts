@@ -14,7 +14,7 @@ export function configureRuntime(config: RuntimeConfig): void {
 export function getRuntime(): RuntimeConfig {
   if (!runtime) {
     throw new Error(
-      'PCO runtime not configured. Call setupPCO() from @pco/adapter-vitest or @pco/adapter-jest.',
+      'PCO runtime not configured. Call setupPCO() from @page-component-object/adapter-vitest or @page-component-object/adapter-jest.',
     );
   }
   return runtime;

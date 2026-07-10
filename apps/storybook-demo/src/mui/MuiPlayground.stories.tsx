@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { userEvent, waitFor } from '@storybook/test';
-import { createStoryPlay, expect } from '@pco/adapter-storybook';
+import { createStoryPlay, expect } from '@page-component-object/adapter-storybook';
 import {
   MuiButtonTestObject,
   MuiFormFieldTestObject,
@@ -8,8 +8,8 @@ import {
   MuiSnackbarTestObject,
   MuiTableRowTestObject,
   MuiTimePickerTestObject,
-} from '@pco/preset-mui';
-import { ComponentTestObject } from '@pco/queries';
+} from '@page-component-object/preset-mui';
+import { ComponentTestObject } from '@page-component-object/queries';
 
 import { MuiPlayground } from './MuiPlayground';
 

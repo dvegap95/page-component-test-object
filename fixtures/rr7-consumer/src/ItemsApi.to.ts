@@ -1,4 +1,4 @@
-import { ApiTestObject } from '@pco/msw';
+import { ApiTestObject } from '@page-component-object/msw';
 
 import type { Item } from './types';
 

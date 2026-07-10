@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { configureRuntime } from '@pco/core';
+import { configureRuntime } from '@page-component-object/core';
 
 import ApiTestObject from './ApiTestObject';
 

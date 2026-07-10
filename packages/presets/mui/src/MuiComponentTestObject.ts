@@ -1,10 +1,10 @@
-import { ComponentTestObject } from '@pco/queries';
+import { ComponentTestObject } from '@page-component-object/queries';
 
 import { hasMuiClass, hasMuiState, muiClass, type MuiState } from './muiClasses';
 
 /**
  * Base for Material UI widget test objects.
- * Presets for other libraries can mirror this pattern (`@pco/preset-*`).
+ * Presets for other libraries can mirror this pattern (`@page-component-object/preset-*`).
  */
 export class MuiComponentTestObject<
   T extends HTMLElement = HTMLElement,

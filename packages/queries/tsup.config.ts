@@ -6,5 +6,5 @@ export default defineConfig({
   dts: true,
   clean: true,
   sourcemap: true,
-  external: ['@pco/core', '@testing-library/dom', '@testing-library/react'],
+  external: ['@page-component-object/core', '@testing-library/dom', '@testing-library/react'],
 });

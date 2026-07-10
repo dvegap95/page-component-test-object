@@ -7,9 +7,9 @@ export default defineConfig({
   clean: true,
   sourcemap: true,
   external: [
-    '@pco/core',
-    '@pco/msw',
-    '@pco/msw/matchers',
+    '@page-component-object/core',
+    '@page-component-object/msw',
+    '@page-component-object/msw/matchers',
     '@semantic-matchers/core',
     '@semantic-matchers/jest',
     '@testing-library/user-event',

@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import {
   setupPCOStorybook,
   getStorybookMswPreviewConfig,
-} from '@pco/adapter-storybook';
+} from '@page-component-object/adapter-storybook';
 
 const msw = getStorybookMswPreviewConfig({ onUnhandledRequest: 'warn' });
 

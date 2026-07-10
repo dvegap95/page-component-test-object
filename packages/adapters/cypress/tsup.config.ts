@@ -6,5 +6,5 @@ export default defineConfig({
   dts: true,
   clean: true,
   sourcemap: true,
-  external: ['@pco/core', '@pco/queries', 'cypress'],
+  external: ['@page-component-object/core', '@page-component-object/queries', 'cypress'],
 });

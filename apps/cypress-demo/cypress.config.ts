@@ -21,17 +21,17 @@ export default defineConfig({
             resolve: {
               extensions: ['.ts', '.tsx', '.js'],
               alias: {
-                '@pco/core': path.join(repoRoot, 'packages/core/src/index.ts'),
-                '@pco/queries': path.join(repoRoot, 'packages/queries/src/index.ts'),
-                '@pco/adapter-cypress': path.join(
+                '@page-component-object/core': path.join(repoRoot, 'packages/core/src/index.ts'),
+                '@page-component-object/queries': path.join(repoRoot, 'packages/queries/src/index.ts'),
+                '@page-component-object/adapter-cypress': path.join(
                   repoRoot,
                   'packages/adapters/cypress/src/index.ts',
                 ),
-                '@pco/demo-shared/story-objects': path.join(
+                '@page-component-object/demo-shared/story-objects': path.join(
                   repoRoot,
                   'apps/demo-shared/src/views/CatalogHomeStory.to.ts',
                 ),
-                '@pco/demo-shared/cypress-objects': path.join(
+                '@page-component-object/demo-shared/cypress-objects': path.join(
                   repoRoot,
                   'apps/demo-shared/src/views/CatalogHomeCypress.to.ts',
                 ),

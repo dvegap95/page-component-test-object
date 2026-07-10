@@ -1,4 +1,4 @@
-import { configureRuntime, resetSharedUserAgent, type UserAgent } from '@pco/core';
+import { configureRuntime, resetSharedUserAgent, type UserAgent } from '@page-component-object/core';
 
 import { runCypressCommand } from './cypressCommand';
 

@@ -1,4 +1,4 @@
-import { ComponentTestObject } from '@pco/queries';
+import { ComponentTestObject } from '@page-component-object/queries';
 
 import { MuiInputWrapperTestObject } from './MuiInputWrapperTestObject';
 

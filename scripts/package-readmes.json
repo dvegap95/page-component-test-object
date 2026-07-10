@@ -1,0 +1,68 @@
+{
+  "_shared": {
+    "keywords": [
+      "pco",
+      "page-component-object",
+      "test-object",
+      "page-object",
+      "testing-library",
+      "react",
+      "behavioral-testing",
+      "msw",
+      "vitest",
+      "jest",
+      "storybook",
+      "cypress"
+    ]
+  },
+  "@page-component-object/core": {
+    "description": "PCO core types, App singleton, ObjectFactory, and runtime injection",
+    "summary": "Foundation package for the Page Component Object stack — shared types, the `App` singleton, `ObjectFactory`, and adapter runtime injection.",
+    "keywords": ["core"]
+  },
+  "@page-component-object/queries": {
+    "description": "ComponentTestObject — Testing Library queries and primitive user interactions",
+    "summary": "`ComponentTestObject` base class: RTL-style getters (`getByRole`, …) and element-centric primitives (`userClick`, `userType`, …).",
+    "keywords": ["queries", "component-test-object"]
+  },
+  "@page-component-object/msw": {
+    "description": "MSW v2 API mock registry, ApiTestObject, and semantic API matchers",
+    "summary": "HTTP boundary for PCO view tests — `ApiTestObject` route registration, mock sessions, and `@semantic-matchers` API spy matchers.",
+    "keywords": ["api-mock", "semantic-matchers"]
+  },
+  "@page-component-object/react": {
+    "description": "BaseViewTestObject and BaseAppManager for React view tests",
+    "summary": "View-level test objects — `BaseViewTestObject` with `setupMockData()`, render helpers, and `BaseAppManager` test app shell.",
+    "keywords": ["view-test-object", "react-testing"]
+  },
+  "@page-component-object/router-react": {
+    "description": "React Router v6/v7 test shell for PCO view tests",
+    "summary": "Router test utilities — `MemoryRouter`, `Routes`, and navigation wiring for behavioral view tests.",
+    "keywords": ["react-router", "memory-router"]
+  },
+  "@page-component-object/preset-mui": {
+    "description": "Reusable MUI widget test objects for PCO",
+    "summary": "Composable MUI presets — Button, Select, Dialog, Snackbar, TimePicker, TableRow, and related widget test objects.",
+    "keywords": ["mui", "material-ui", "preset"]
+  },
+  "@page-component-object/adapter-vitest": {
+    "description": "Vitest lifecycle and user agent adapter for PCO",
+    "summary": "Vitest integration — `installPCOLifecycle`, `setupPCO()`, and semantic API matchers for MSW-backed view tests.",
+    "keywords": ["adapter", "vitest-adapter"]
+  },
+  "@page-component-object/adapter-jest": {
+    "description": "Jest lifecycle and user agent adapter for PCO",
+    "summary": "Jest integration — parity with the Vitest adapter for MSW-backed behavioral view tests.",
+    "keywords": ["adapter", "jest-adapter"]
+  },
+  "@page-component-object/adapter-storybook": {
+    "description": "Storybook play, MSW bridge, and PCO view loader",
+    "summary": "Storybook adapter — `createStoryPlay`, `storyParameters`, `pcoViewLoader`, and shared MSW handlers with node tests.",
+    "keywords": ["adapter", "storybook-adapter", "story-play"]
+  },
+  "@page-component-object/adapter-cypress": {
+    "description": "Cypress E2E adapter — CypressComponentTestObject and PCOChainable",
+    "summary": "Cypress integration — `@testing-library/cypress` queries, getter reuse from shared test objects, and `PCOChainable` semantic actions. Experimental in 0.1.0.",
+    "keywords": ["adapter", "cypress-adapter", "e2e"]
+  }
+}

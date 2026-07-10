@@ -1,4 +1,4 @@
-import { BaseViewTestObject } from '@pco/react';
+import { BaseViewTestObject } from '@page-component-object/react';
 
 import { ItemsApiTestObject } from './ItemsApi.to';
 import { AppRoutes, CatalogHome } from './AppRoutes';

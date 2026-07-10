@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { createStoryPlay, expect } from '@pco/adapter-storybook';
+import { createStoryPlay, expect } from '@page-component-object/adapter-storybook';
 import { userEvent } from '@storybook/test';
 import {
   CatalogHomeStoryTestObject,
   Home,
   ItemFactory,
-} from '@pco/demo-shared';
+} from '@page-component-object/demo-shared';
 
 const items = ItemFactory.defaultList(3);
 

@@ -1,6 +1,6 @@
-import type { HttpHandler } from '@pco/msw';
-import { BaseViewTestObject } from '@pco/react';
-import { ComponentTestObject } from '@pco/queries';
+import type { HttpHandler } from '@page-component-object/msw';
+import { BaseViewTestObject } from '@page-component-object/react';
+import { ComponentTestObject } from '@page-component-object/queries';
 
 export type StoryPlayContext = {
   canvasElement: HTMLElement;

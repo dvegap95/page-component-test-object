@@ -5,7 +5,7 @@ Hands-on walkthrough for wiring PCO in your app — adapters, TestObject types, 
 ## Prerequisites
 
 - React 18+
-- **React Router v6 or v7** (`@pco/router-react` uses `Routes`, `useNavigate` — v5 is not supported)
+- **React Router v6 or v7** (`@page-component-object/router-react` uses `Routes`, `useNavigate` — v5 is not supported)
 - A test runner adapter: Vitest, Jest, Storybook, and/or Cypress
 - MSW v2 (for API-backed view tests in node or Storybook)
 
@@ -18,14 +18,14 @@ Full peer list for tarball consumers: [CONSUMER_INSTALL.md](./CONSUMER_INSTALL.m
 ```json
 {
   "dependencies": {
-    "@pco/core": "workspace:*",
-    "@pco/queries": "workspace:*",
-    "@pco/react": "workspace:*",
-    "@pco/router-react": "workspace:*",
-    "@pco/msw": "workspace:*"
+    "@page-component-object/core": "workspace:*",
+    "@page-component-object/queries": "workspace:*",
+    "@page-component-object/react": "workspace:*",
+    "@page-component-object/router-react": "workspace:*",
+    "@page-component-object/msw": "workspace:*"
   },
   "devDependencies": {
-    "@pco/adapter-vitest": "workspace:*"
+    "@page-component-object/adapter-vitest": "workspace:*"
   }
 }
 ```
@@ -47,7 +47,7 @@ yarn add \
 
 Add `pco-adapter-storybook-0.0.0.tgz` and/or `pco-adapter-cypress-0.0.0.tgz` when you use those runners. See [CONSUMER_INSTALL.md](./CONSUMER_INSTALL.md) for the complete tarball + peer manifest.
 
-**View-level tests** need `@pco/react` and `@pco/router-react` — do not reimplement `BaseAppManager` / `BaseViewTestObject` locally.
+**View-level tests** need `@page-component-object/react` and `@page-component-object/router-react` — do not reimplement `BaseAppManager` / `BaseViewTestObject` locally.
 
 ### Adapter setup
 
@@ -55,8 +55,8 @@ Call the adapter setup **once** per runner. For MSW-backed view tests, also regi
 
 ```ts
 // vitest — src/setup.ts
-import { installPCOLifecycle } from '@pco/adapter-vitest';
-import { configureViewTestObjects } from '@pco/react';
+import { installPCOLifecycle } from '@page-component-object/adapter-vitest';
+import { configureViewTestObjects } from '@page-component-object/react';
 import { createDemoAppManager } from './testing/DemoAppManager';
 
 configureViewTestObjects({ createAppManager: createDemoAppManager });
@@ -67,7 +67,7 @@ installPCOLifecycle({ apiBaseUrl: 'http://localhost' });
 
 ```ts
 // vitest — alternative one-shot setup without lifecycle hooks
-import { setupPCO } from '@pco/adapter-vitest';
+import { setupPCO } from '@page-component-object/adapter-vitest';
 
 setupPCO({ apiBaseUrl: 'http://localhost' });
 ```
@@ -85,7 +85,7 @@ Equivalent entry points: `setupPCO()` / `installPCOLifecycle()` (Vitest), `setup
 
 **BaseView** = routed view under `AppManager` with HTTP mocked through `setupMockData()` (MSW in Vitest/Jest/Storybook is an implementation detail).
 
-**Intent methods** (e.g. `fillLogin`, `openSettings`) belong on **your** `*.to.*` classes — not in `@pco/*`. They compose primitives. See [philosophy.md](./philosophy.md#query-primitive-intent).
+**Intent methods** (e.g. `fillLogin`, `openSettings`) belong on **your** `*.to.*` classes — not in `@page-component-object/*`. They compose primitives. See [philosophy.md](./philosophy.md#query-primitive-intent).
 
 ### Where to put PCO files
 
@@ -100,7 +100,7 @@ Naming convention: `*ViewTestObject` or `*StoryTestObject` in `*.to.ts` / `*.to.
 ## 3. DOM-only test object (Storybook / Cypress)
 
 ```ts
-import { ComponentTestObject } from '@pco/queries';
+import { ComponentTestObject } from '@page-component-object/queries';
 
 export class CatalogHomeStoryTestObject extends ComponentTestObject {
   get heading() {
@@ -127,7 +127,7 @@ See [cypress.md](./cypress.md) for command-queue patterns and tarball install.
 ## 4. BaseView test object (Vitest / Jest)
 
 ```tsx
-import { BaseViewTestObject } from '@pco/react';
+import { BaseViewTestObject } from '@page-component-object/react';
 
 export class HomeViewTestObject extends BaseViewTestObject {
   itemsApi = new ItemsApiTestObject();
@@ -164,7 +164,7 @@ After navigation in a full-app test, **create a new view test object** (or call 
 
 #### Route subtree, not production shell
 
-`BaseAppManager` wraps your tree in `MemoryRouter` (`@pco/router-react`). Pass the **route subtree** — not the component that already includes `BrowserRouter` / `RouterProvider`:
+`BaseAppManager` wraps your tree in `MemoryRouter` (`@page-component-object/router-react`). Pass the **route subtree** — not the component that already includes `BrowserRouter` / `RouterProvider`:
 
 | Component | Role | Use in `renderApp()`? |
 |-----------|------|------------------------|
@@ -201,7 +201,7 @@ async renderApp() {
 }
 ```
 
-**React Router v5:** not supported by `@pco/router-react`. Upgrade to v6/v7 or stay on a local test shell until you migrate.
+**React Router v5:** not supported by `@page-component-object/router-react`. Upgrade to v6/v7 or stay on a local test shell until you migrate.
 
 **Troubleshooting:** `You cannot render a <Router> inside another <Router>` — you passed the production `App` (or any component that already owns a router) to `renderApp()`. Mount `AppRoutes` instead.
 
@@ -216,7 +216,7 @@ expect(view.mocks.getItems).toBeTruthy();
 
 ## 5. Storybook with shared mock handlers
 
-Install `@pco/adapter-storybook`, `msw`, and `msw-storybook-addon` (peer dependencies).
+Install `@page-component-object/adapter-storybook`, `msw`, and `msw-storybook-addon` (peer dependencies).
 
 Wire MSW once in `.storybook/preview.ts` — see [msw-storybook.md](./msw-storybook.md) for the full snippet. Use `storyParameters()` so the same `setupMockData()` handlers appear in `parameters.msw` — **no `play` required** for visual stories:
 
@@ -236,7 +236,7 @@ For optional test-runner spy checks, use `mockSession()` or `parameters.pco` —
 
 ## 6. MUI widget helpers
 
-`@pco/preset-mui` provides typed wrappers for common MUI components — used in `apps/storybook-demo/src/mui/`:
+`@page-component-object/preset-mui` provides typed wrappers for common MUI components — used in `apps/storybook-demo/src/mui/`:
 
 ```ts
 const field = MuiFormFieldTestObject.getInstanceByLabel('Name', root);
@@ -250,10 +250,10 @@ expect(field.inputValue).toBe('Alice');
 # From repo root
 pnpm install && pnpm build
 
-pnpm --filter @pco/vitest-demo test
-pnpm --filter @pco/jest-demo test
-pnpm --filter @pco/storybook-demo storybook
-pnpm --filter @pco/cypress-demo test
+pnpm --filter @page-component-object/vitest-demo test
+pnpm --filter @page-component-object/jest-demo test
+pnpm --filter @page-component-object/storybook-demo storybook
+pnpm --filter @page-component-object/cypress-demo test
 ```
 
 ## Next steps

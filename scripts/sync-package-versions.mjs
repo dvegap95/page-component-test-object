@@ -1,5 +1,5 @@
-﻿/**
- * Sync all @pco/* package.json versions from scripts/release-version.json.
+/**
+ * Sync all @page-component-object/* package.json versions from scripts/release-version.json.
  *
  * Usage: pnpm version:sync
  */
@@ -42,7 +42,7 @@ function main() {
   let count = 0;
   for (const pkgPath of paths) {
     const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
-    if (!pkg.name?.startsWith('@pco/')) continue;
+    if (!pkg.name?.startsWith('@page-component-object/')) continue;
     if (pkg.version === version) continue;
     pkg.version = version;
     writeFileSync(pkgPath, `${JSON.stringify(pkg, null, 2)}\n`);
