@@ -7,9 +7,26 @@ npm scope **`@page-component-object`** (org [page-component-object](https://www.
 | Requirement | Notes |
 |-------------|--------|
 | **npm organization** | Scope in `package.json` must match your org (see `scripts/publish-config.json`) |
-| **Trusted publisher** | Link this GitHub repo on npm ([trusted publishers](https://docs.npmjs.com/trusted-publishers)) — no `NPM_TOKEN` |
-| **First publish** | Manual from your machine (`pnpm -r publish --access public`) to register packages; CI takes over after |
+| **Trusted publisher** | Link this GitHub repo on npm ([trusted publishers](https://docs.npmjs.com/trusted-publishers)) — no `NPM_TOKEN` when configured |
+| **Node 22 + npm 11.5+** | Required for OIDC trusted publishing in CI (see `publish.yml`) |
+| **NPM_TOKEN (optional)** | Granular **Automation** publish token in repo secrets — fallback if trusted publisher is not linked yet |
+| **First publish** | Manual from your machine (`pnpm publish:packages`) to register packages; CI takes over after |
 | **Node 20+ / pnpm 9+** | Same as local development |
+
+## Trusted publisher (recommended)
+
+On [npm](https://www.npmjs.com) → **Packages** → `@page-component-object/core` → **Settings** → **Trusted publishing** → **GitHub Actions**:
+
+| Field | Value |
+|-------|--------|
+| Organization or user | `dvegap95` |
+| Repository | `page-component-test-object` |
+| Workflow filename | `publish.yml` |
+| Allowed actions | `npm publish` |
+
+Repeat for each package in the org (or link at org level if your npm plan supports it). The workflow filename must match exactly — not `test.yml`.
+
+If CI still returns `404 Not Found` on `PUT`, either trusted publishing is not linked for that package, or add a granular **Automation** publish token as the `NPM_TOKEN` repository secret (CI uses OIDC first, then falls back to the token).
 
 ## How releases run
 
