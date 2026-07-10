@@ -36,5 +36,18 @@
     "rimraf": "^6.0.1",
     "tsup": "^8.3.5",
     "typescript": "^5.7.2"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dvegap95/page-component-test-object.git",
+    "directory": "packages/router-react"
+  },
+  "homepage": "https://github.com/dvegap95/page-component-test-object#readme",
+  "bugs": {
+    "url": "https://github.com/dvegap95/page-component-test-object/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

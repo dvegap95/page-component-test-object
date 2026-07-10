@@ -121,8 +121,8 @@ Colocate PCO artifacts under **`__pco__`** per feature. See [docs/project-struct
 - [x] Document publish tiers and Cypress experimental status
 - [x] Package-level unit tests (`@pco/msw`, `@pco/adapter-vitest`)
 - [x] CI workflow (test + consumer smoke)
-- [x] Publish workflow + [PUBLISH.md](./docs/PUBLISH.md)
-- [ ] Claim `@pco` npm org (manual — see PUBLISH.md)
+- [x] Publish workflow + [PUBLISH.md](./docs/PUBLISH.md) — reusable `test.yml`, `v*` tags, `workflow_dispatch`, OIDC trusted publisher
+- [ ] npm trusted publisher linked to this repo; first manual publish done
 
 **Done when:** `pnpm add @pco/react @pco/adapter-vitest @pco/adapter-storybook` works from npm; CONSUMER_INSTALL documents both npm and tarball paths.
 

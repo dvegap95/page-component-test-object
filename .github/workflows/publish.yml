@@ -4,15 +4,30 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version — must match scripts/release-version.json (e.g. 0.1.0)'
+        required: true
+        type: string
 
 jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
   publish:
     runs-on: ubuntu-latest
+    needs: test
     permissions:
       contents: read
       id-token: write
     steps:
       - uses: actions/checkout@v4
+
+      - name: Verify release version
+        env:
+          INPUT_VERSION: ${{ github.event_name == 'workflow_dispatch' && inputs.version || '' }}
+        run: node scripts/verify-release-version.mjs "$INPUT_VERSION"
 
       - uses: pnpm/action-setup@v4
         with:
@@ -28,6 +43,4 @@ jobs:
       - run: pnpm build
       - run: pnpm test
       - run: node scripts/prepare-publish.mjs
-      - run: pnpm -r publish --access public --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: pnpm -r publish --access public --no-git-checks --provenance

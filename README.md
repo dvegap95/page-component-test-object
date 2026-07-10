@@ -4,13 +4,14 @@
 
 Cross-runner suites often maintain **three parallel copies** of the same work: selectors in Vitest, the same getters again in Storybook `play`, and another set in Cypress. When a date picker or modal flow changes, that fix lands in three places. PCO applies Page Object thinking at the **component and view** level — centralize **queries**, **interactions**, and **intents** in `TestObjects` (`*.to.ts` / `*.to.tsx`) beside your features, then let **adapters** run them in **Vitest**, **Jest**, **Storybook**, and **Cypress**. API mocks, data factories, and test-app wiring live in the same `__pco__` layer.
 
-> **Status:** `0.1.0` — **publish-ready** for **Vitest**, **Jest**, and **Storybook** (MSW-backed view tests). Install via `pnpm pack:dist` tarballs until `@pco` is on npm. **Cypress** getter reuse ships today; native chain integration (`PCOChainable`) is [ongoing](./PLAN.md#phase-3--cypress-pcochainable-ongoing).
+> **Status:** `0.1.0` — stable for **Vitest**, **Jest**, and **Storybook** (MSW-backed view tests). Publish via `v*` tag or the **Publish** GitHub Actions workflow ([docs/PUBLISH.md](./docs/PUBLISH.md)). Tarballs (`pnpm pack:dist`) remain for pre-release consumers. **Cypress** getter reuse ships today; native chain integration (`PCOChainable`) is [ongoing](./PLAN.md#phase-3--cypress-pcochainable-ongoing).
 
 ## Technical context
 
 | Area | In this repo |
 |------|----------------|
 | Monorepo | pnpm workspaces, Turborepo, tsup builds across 10+ scoped packages |
+| Release CI | Reusable test gate; `v*` tag or manual **Publish** workflow → npm ([PUBLISH.md](./docs/PUBLISH.md)) |
 | Library design | Adapter pattern — one TestObject surface, four test runners |
 | Test layering | Query → primitive interaction → domain intent ([philosophy](./docs/philosophy.md)) |
 | Selectors | Testing Library roles and accessible names; Cypress via `@testing-library/cypress` |

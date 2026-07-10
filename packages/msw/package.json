@@ -37,5 +37,18 @@
     "tsup": "^8.3.5",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dvegap95/page-component-test-object.git",
+    "directory": "packages/msw"
+  },
+  "homepage": "https://github.com/dvegap95/page-component-test-object#readme",
+  "bugs": {
+    "url": "https://github.com/dvegap95/page-component-test-object/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
