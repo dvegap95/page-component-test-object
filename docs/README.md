@@ -1,5 +1,7 @@
 # Documentation
 
+**New here?** Start with the [repository README](../README.md) for the problem statement, technical context, and a quick example — then follow [Getting started](./getting-started.md) to wire your first behavioral test.
+
 | Guide | Description |
 |-------|-------------|
 | [Getting started](./getting-started.md) | Adapters, TestObject types, first behavioral test |

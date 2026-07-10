@@ -1,8 +1,22 @@
 # Page Component Object (`@pco/*`)
 
-**Page Component Object toolkit** — a component-oriented take on the Page Object pattern. Centralize **queries**, **interactions**, and **user intents** in `TestObjects` (`*.to.ts` / `*.to.tsx`) so specs stay short and widget procedures live in one place. Also provides layers for **API mocks**, **data factories**, and test app wiring. Adapters let the same objects run in **Vitest**, **Jest**, **Storybook**, and **Cypress** — a practical bonus once your PCO layer exists, not the reason the project started.
+**Page Component Object toolkit** — shared TestObjects for React UI tests.
+
+Cross-runner suites often maintain **three parallel copies** of the same work: selectors in Vitest, the same getters again in Storybook `play`, and another set in Cypress. When a date picker or modal flow changes, that fix lands in three places. PCO applies Page Object thinking at the **component and view** level — centralize **queries**, **interactions**, and **intents** in `TestObjects` (`*.to.ts` / `*.to.tsx`) beside your features, then let **adapters** run them in **Vitest**, **Jest**, **Storybook**, and **Cypress**. API mocks, data factories, and test-app wiring live in the same `__pco__` layer.
 
 > **Status:** `0.1.0` — **publish-ready** for **Vitest**, **Jest**, and **Storybook** (MSW-backed view tests). Install via `pnpm pack:dist` tarballs until `@pco` is on npm. **Cypress** getter reuse ships today; native chain integration (`PCOChainable`) is [ongoing](./PLAN.md#phase-3--cypress-pcochainable-ongoing).
+
+## Technical context
+
+| Area | In this repo |
+|------|----------------|
+| Monorepo | pnpm workspaces, Turborepo, tsup builds across 10+ scoped packages |
+| Library design | Adapter pattern — one TestObject surface, four test runners |
+| Test layering | Query → primitive interaction → domain intent ([philosophy](./docs/philosophy.md)) |
+| Selectors | Testing Library roles and accessible names; Cypress via `@testing-library/cypress` |
+| HTTP boundary | MSW v2 registry — handlers shared between node tests and Storybook |
+| Widget reuse | Composable presets (e.g. [`@pco/preset-mui`](./packages/presets/mui)) in view test objects |
+| API assertions | [`@semantic-matchers`](https://github.com/dvegap95/semantic-matchers) integration for Vitest/Jest spy matchers |
 
 ## Why PCO?
 

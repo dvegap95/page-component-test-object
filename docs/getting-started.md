@@ -1,6 +1,6 @@
 # Getting started
 
-This guide walks through the core PCO concepts using the fictitious `apps/demo-shared` catalog example.
+Hands-on walkthrough for wiring PCO in your app — adapters, TestObject types, and a first behavioral test. Uses the fictitious `apps/demo-shared` catalog example (no proprietary domain references).
 
 ## Prerequisites
 
