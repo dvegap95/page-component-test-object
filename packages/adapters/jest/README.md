@@ -2,7 +2,7 @@
 
 > **Start here:** [Page Component Object (PCO) — main README](https://github.com/dvegap95/page-component-test-object#readme)
 
-Jest integration — parity with the Vitest adapter for MSW-backed behavioral view tests.
+Jest parity with Vitest adapter. **Do I need this?** If you run Jest instead of Vitest.
 
 ## Install
 

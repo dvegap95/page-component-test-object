@@ -22,53 +22,91 @@
     "preserveReadme": true
   },
   "@page-component-object/core": {
-    "description": "PCO core types, App singleton, ObjectFactory, and runtime injection",
-    "summary": "Foundation package for the Page Component Object stack — shared types, the `App` singleton, `ObjectFactory`, and adapter runtime injection.",
+    "description": "PCO core types, App singleton, DataFactory, and runtime injection",
+    "summary": "Foundation package — shared types, `App` singleton, `DataFactory` for fixture data, `PCOContext`/`PCOTarget` adapter contracts, and runtime injection. **Do I need this?** Yes — every other `@page-component-object/*` package depends on it.",
+    "doINeedThis": "Required foundation for all PCO packages.",
+    "minimalExample": "import { DataFactory, App } from '@page-component-object/core';\nconst item = new DataFactory({ id: '1' }).build();",
+    "nextPackage": "@page-component-object/queries",
     "keywords": ["core"]
   },
   "@page-component-object/queries": {
-    "description": "ComponentTestObject — Testing Library queries and primitive user interactions",
-    "summary": "`ComponentTestObject` base class: RTL-style getters (`getByRole`, …) and element-centric primitives (`userClick`, `userType`, …).",
+    "description": "ComponentTestObject — resolver-based Testing Library queries and primitive interactions",
+    "summary": "`ComponentTestObject` base: `rootResolver`, `this.context` (PCOContext), and `userClick`/`userType` on PCOTarget handles. **Do I need this?** Yes for any DOM test object (Storybook, Cypress, or as base for view TOs).",
+    "doINeedThis": "Required for DOM-scoped test objects and presets.",
+    "minimalExample": "class MyTO extends ComponentTestObject {\n  get heading() { return this.context.getByRole('heading'); }\n}",
+    "nextPackage": "@page-component-object/react (for MSW view tests) or @page-component-object/adapter-vitest",
     "keywords": ["queries", "component-test-object"]
   },
   "@page-component-object/msw": {
     "description": "MSW v2 API mock registry, ApiTestObject, and semantic API matchers",
-    "summary": "HTTP boundary for PCO view tests — `ApiTestObject` route registration, mock sessions, and `@semantic-matchers` API spy matchers.",
+    "summary": "HTTP boundary for view tests — `ApiTestObject`, mock sessions, semantic-matchers integration. **Do I need this?** Only for Vitest/Jest/Storybook view tests with mocked APIs.",
+    "doINeedThis": "Add when view tests mock HTTP (not needed for DOM-only Storybook plays).",
+    "minimalExample": "class ItemsApi extends ApiTestObject {\n  registerGetItems(data) { return this.registerRestHandler('get', '*/api/items', () => data); }\n}",
+    "nextPackage": "@page-component-object/react",
     "keywords": ["api-mock", "semantic-matchers"]
   },
   "@page-component-object/react": {
     "description": "BaseViewTestObject and BaseAppManager for React view tests",
-    "summary": "View-level test objects — `BaseViewTestObject` with `setupMockData()`, render helpers, and `BaseAppManager` test app shell.",
+    "summary": "View-level test objects — `setupMockData()`, `render()`, `BaseAppManager`. **Do I need this?** For Vitest/Jest/Storybook MSW-backed behavioral tests.",
+    "doINeedThis": "Add for routed view tests with `render()` and MSW.",
+    "minimalExample": "class HomeTO extends BaseViewTestObject {\n  async render() { return this.app.renderView(<Home />, { route: '/' }); }\n}",
+    "nextPackage": "@page-component-object/router-react",
     "keywords": ["view-test-object", "react-testing"]
   },
   "@page-component-object/router-react": {
     "description": "React Router v6/v7 test shell for PCO view tests",
-    "summary": "Router test utilities — `MemoryRouter`, `Routes`, and navigation wiring for behavioral view tests.",
+    "summary": "MemoryRouter test shell for behavioral navigation tests. **Do I need this?** When views use React Router v6/v7 (not v5).",
+    "doINeedThis": "Required with @page-component-object/react for routed apps.",
+    "minimalExample": "Used via BaseAppManager — pass AppRoutes to renderApp(), not production BrowserRouter shell.",
+    "nextPackage": "@page-component-object/adapter-vitest",
     "keywords": ["react-router", "memory-router"]
   },
   "@page-component-object/preset-mui": {
     "description": "Reusable MUI widget test objects for PCO",
-    "summary": "Composable MUI presets — Button, Select, Dialog, Snackbar, TimePicker, TableRow, and related widget test objects.",
+    "summary": "MUI widget presets (Select, Dialog, TimePicker, …). **Do I need this?** Optional — high value if you use MUI and repeat widget flows.",
+    "doINeedThis": "Optional adoption wedge for Material UI teams.",
+    "minimalExample": "const field = MuiFormFieldTestObject.getInstanceByLabel('Name', root);\nawait field.input.userType('Alice');",
+    "nextPackage": "docs/presets/mui.md",
     "keywords": ["mui", "material-ui", "preset"]
   },
   "@page-component-object/adapter-vitest": {
     "description": "Vitest lifecycle and user agent adapter for PCO",
-    "summary": "Vitest integration — `installPCOLifecycle`, `setupPCO()`, and semantic API matchers for MSW-backed view tests.",
+    "summary": "Vitest integration — `installPCOLifecycle`, semantic API matchers. **Do I need this?** If you run Vitest behavioral view tests.",
+    "doINeedThis": "Pick one runner adapter matching your test runner.",
+    "minimalExample": "installPCOLifecycle({ apiBaseUrl: 'http://localhost' });",
+    "nextPackage": "docs/getting-started.md",
     "keywords": ["adapter", "vitest-adapter"]
   },
   "@page-component-object/adapter-jest": {
     "description": "Jest lifecycle and user agent adapter for PCO",
-    "summary": "Jest integration — parity with the Vitest adapter for MSW-backed behavioral view tests.",
+    "summary": "Jest parity with Vitest adapter. **Do I need this?** If you run Jest instead of Vitest.",
+    "doINeedThis": "Pick one runner adapter matching your test runner.",
+    "minimalExample": "setupPCOJest({ apiBaseUrl: 'http://localhost' });",
+    "nextPackage": "docs/getting-started.md",
     "keywords": ["adapter", "jest-adapter"]
   },
   "@page-component-object/adapter-storybook": {
     "description": "Storybook play, MSW bridge, and PCO view loader",
-    "summary": "Storybook adapter — `createStoryPlay`, `storyParameters`, `pcoViewLoader`, and shared MSW handlers with node tests.",
+    "summary": "Storybook — `createStoryPlay`, `storyParameters`, MSW bridge. **Do I need this?** For Storybook `play` functions and shared MSW stories.",
+    "doINeedThis": "Add for Storybook integration (Level 1–3 onboarding).",
+    "minimalExample": "play: createStoryPlay(() => new MyTO(), async (_c, view) => { ... })",
+    "nextPackage": "docs/msw-storybook.md",
     "keywords": ["adapter", "storybook-adapter", "story-play"]
   },
   "@page-component-object/adapter-cypress": {
-    "description": "Cypress E2E adapter — CypressComponentTestObject and PCOChainable",
-    "summary": "Cypress integration — `@testing-library/cypress` queries, getter reuse from shared test objects, and `PCOChainable` semantic actions. Experimental in 0.1.2.",
+    "description": "Cypress E2E adapter — PCOContext, PCOChainable, unified test objects",
+    "summary": "Cypress — registers `cypressPcoAdapter`, `PCOChainable`, `@testing-library/cypress`. **Do I need this?** For Cypress E2E using shared test object getters.",
+    "doINeedThis": "Add for Cypress E2E only (not for Vitest/Storybook).",
+    "minimalExample": "setupPCOCypress(); // cypress/support/e2e.ts",
+    "nextPackage": "docs/cypress-adoption.md",
     "keywords": ["adapter", "cypress-adapter", "e2e"]
+  },
+  "@page-component-object/adapter-playwright": {
+    "description": "Playwright adapter research spike — Locator-backed PCOTarget",
+    "summary": "Experimental Playwright adapter comparing Locator + await model vs Cypress chains. **Do I need this?** Not for production — research only; both E2E paths stay open.",
+    "doINeedThis": "Evaluate only — no production requirement.",
+    "minimalExample": "import { playwrightPcoAdapter } from '@page-component-object/adapter-playwright';",
+    "nextPackage": "docs/cypress-adoption.md",
+    "keywords": ["adapter", "playwright", "research"]
   }
 }

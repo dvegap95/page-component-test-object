@@ -2,7 +2,7 @@
 
 > **Start here:** [Page Component Object (PCO) — main README](https://github.com/dvegap95/page-component-test-object#readme)
 
-`ComponentTestObject` base class: RTL-style getters (`getByRole`, …) and element-centric primitives (`userClick`, `userType`, …).
+`ComponentTestObject` base: `rootResolver`, `this.context` (PCOContext), and `userClick`/`userType` on PCOTarget handles. **Do I need this?** Yes for any DOM test object (Storybook, Cypress, or as base for view TOs).
 
 ## Install
 

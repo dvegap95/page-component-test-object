@@ -22,6 +22,31 @@ pnpm add react react-dom react-router-dom@^7 \
 
 Then follow [getting-started.md](./getting-started.md) for adapter setup and your first view test object.
 
+## Compatibility matrix
+
+Versions below match the repo's `0.1.2` release and current peer ranges. Patch/minor updates within these ranges are expected to work; open an issue if a peer major breaks.
+
+| Dependency | Supported versions | Required for |
+|------------|-------------------|--------------|
+| `react` / `react-dom` | `^18 \|\| ^19` | All runners |
+| `react-router-dom` | `^6.4 \|\| ^7` | Level 3 view tests (not v5) |
+| `@testing-library/react` | `^16` | Vitest, Jest, Storybook |
+| `@testing-library/dom` | `^10` | All runners |
+| `@testing-library/user-event` | `^14 \|\| ^15` | Vitest, Jest |
+| `@testing-library/cypress` | `^10` | Cypress E2E |
+| `vitest` | `^2 \|\| ^3` | Vitest adapter |
+| `jest` | `^29 \|\| ^30` | Jest adapter |
+| `storybook` / `@storybook/test` | `^8 \|\| ^9` | Storybook adapter |
+| `cypress` | `^13 \|\| ^14 \|\| ^15` | Cypress adapter |
+| `msw` | `^2` | Vitest, Jest, Storybook MSW |
+| `msw-storybook-addon` | `^2` | Storybook MSW bridge |
+| `@mui/material` | `^5 \|\| ^6` (app peer) | `preset-mui` demos |
+| `@semantic-matchers/core` | bundled via adapter | API spy matchers (Vitest/Jest) |
+
+**PCO packages (`0.1.2`):** all `@page-component-object/*` packages release in lockstep — see [CHANGELOG.md](../CHANGELOG.md).
+
+**Playwright:** research spike only — not required for production use.
+
 ## Packages by use case
 
 | Goal | Packages |

@@ -38,7 +38,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "description": "PCO core types, App singleton, ObjectFactory, and runtime injection",
+  "description": "PCO core types, App singleton, DataFactory, and runtime injection",
   "keywords": [
     "behavioral-testing",
     "core",

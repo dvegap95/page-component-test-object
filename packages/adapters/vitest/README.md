@@ -2,7 +2,7 @@
 
 > **Start here:** [Page Component Object (PCO) — main README](https://github.com/dvegap95/page-component-test-object#readme)
 
-Vitest integration — `installPCOLifecycle`, `setupPCO()`, and semantic API matchers for MSW-backed view tests.
+Vitest integration — `installPCOLifecycle`, semantic API matchers. **Do I need this?** If you run Vitest behavioral view tests.
 
 ## Install
 

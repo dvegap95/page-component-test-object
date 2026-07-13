@@ -2,7 +2,7 @@
 
 > **Start here:** [Page Component Object (PCO) — main README](https://github.com/dvegap95/page-component-test-object#readme)
 
-Composable MUI presets — Button, Select, Dialog, Snackbar, TimePicker, TableRow, and related widget test objects.
+MUI widget presets (Select, Dialog, TimePicker, …). **Do I need this?** Optional — high value if you use MUI and repeat widget flows.
 
 ## Install
 

@@ -2,7 +2,7 @@
 
 > **Start here:** [Page Component Object (PCO) — main README](https://github.com/dvegap95/page-component-test-object#readme)
 
-Storybook adapter — `createStoryPlay`, `storyParameters`, `pcoViewLoader`, and shared MSW handlers with node tests.
+Storybook — `createStoryPlay`, `storyParameters`, MSW bridge. **Do I need this?** For Storybook `play` functions and shared MSW stories.
 
 ## Install
 

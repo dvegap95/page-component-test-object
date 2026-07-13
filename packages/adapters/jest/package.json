@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@page-component-object/core": "workspace:*",
+    "@page-component-object/queries": "workspace:*",
     "@semantic-matchers/core": "^0.1.1",
     "@semantic-matchers/jest": "^0.1.1"
   },

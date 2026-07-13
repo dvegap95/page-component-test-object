@@ -40,7 +40,7 @@ Apply the same pattern at whatever granularity fits your app: per route, per vie
 | `*View.to.tsx` | `BaseViewTestObject` | `setupMockData()`, getters, `render()` / `renderApp()` |
 | `*Story.to.ts` | `ComponentTestObject` | DOM getters only — no MSW, no `BaseViewTestObject` |
 | `*Api.to.ts` | `ApiTestObject` | `registerGet*` / `registerPost*` — handler paths and spies |
-| `*.factory.ts` | `ObjectFactory` or plain helpers | Default lists, edge-case payloads — **no HTTP, no MSW** |
+| `*.factory.ts` | `DataFactory` or plain helpers | Default lists, edge-case payloads — **no HTTP, no MSW** |
 
 Use `*.to.ts` when the file has no JSX; use `*.to.tsx` when it calls `renderView(<Component />)` or `renderApp(<Routes />)`.
 

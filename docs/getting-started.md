@@ -1,96 +1,20 @@
 # Getting started
 
-Hands-on walkthrough for wiring PCO in your app — adapters, TestObject types, and a first behavioral test. Uses the fictitious `apps/demo-shared` catalog example.
+Progressive onboarding for PCO — start at the level that matches your runner, then go deeper when you need MSW and routing.
 
-## Prerequisites
+| Level | You learn | Good first demo |
+|-------|-----------|-----------------|
+| [**Level 1**](#level-1--component-test-objects) | `ComponentTestObject` + getters + primitives | [MuiPlayground.stories.tsx](../apps/storybook-demo/src/mui/MuiPlayground.stories.tsx) |
+| [**Level 2**](#level-2--cross-runner-dom-getters) | Same DOM getters in Storybook + Cypress | [cross-runner-tutorial.md](./cross-runner-tutorial.md) |
+| [**Level 3**](#level-3--app-harness-msw-and-routing) | `BaseViewTestObject`, MSW, router shell | [vitest-demo](../apps/vitest-demo) |
 
-- React 18+
-- **React Router v6 or v7** (`@page-component-object/router-react` uses `Routes`, `useNavigate` — v5 is not supported)
-- A test runner adapter: Vitest, Jest, Storybook, and/or Cypress
-- MSW v2 (for API-backed view tests in node or Storybook)
+**Prerequisites:** React 18+, React Router v6/v7 for Level 3. Install: [install.md](./install.md).
 
-Install commands and peer dependencies: [install.md](./install.md).
+---
 
-## 1. Install packages in your app
+## Level 1 — Component test objects
 
-### npm (recommended)
-
-```bash
-pnpm add @page-component-object/core @page-component-object/queries @page-component-object/msw \
-  @page-component-object/react @page-component-object/router-react \
-  @page-component-object/adapter-vitest
-```
-
-Add `@page-component-object/adapter-jest`, `@page-component-object/adapter-storybook`, or `@page-component-object/adapter-cypress` for other runners.
-
-**View-level tests** need `@page-component-object/react` and `@page-component-object/router-react` — do not reimplement `BaseAppManager` / `BaseViewTestObject` locally.
-
-### Monorepo workspace (this repo)
-
-```json
-{
-  "dependencies": {
-    "@page-component-object/core": "workspace:*",
-    "@page-component-object/queries": "workspace:*",
-    "@page-component-object/react": "workspace:*",
-    "@page-component-object/router-react": "workspace:*",
-    "@page-component-object/msw": "workspace:*"
-  },
-  "devDependencies": {
-    "@page-component-object/adapter-vitest": "workspace:*"
-  }
-}
-```
-
-### Adapter setup
-
-Call the adapter setup **once** per runner. For MSW-backed view tests, also register your `AppManager` factory once (replaces per-view `createAppManager()` boilerplate):
-
-```ts
-// vitest — src/setup.ts
-import { installPCOLifecycle } from '@page-component-object/adapter-vitest';
-import { configureViewTestObjects } from '@page-component-object/react';
-import { createDemoAppManager } from './testing/DemoAppManager';
-
-configureViewTestObjects({ createAppManager: createDemoAppManager });
-
-// apiBaseUrl defaults to http://localhost; override to match your API test objects
-installPCOLifecycle({ apiBaseUrl: 'http://localhost' });
-```
-
-```ts
-// vitest — alternative one-shot setup without lifecycle hooks
-import { setupPCO } from '@page-component-object/adapter-vitest';
-
-setupPCO({ apiBaseUrl: 'http://localhost' });
-```
-
-Equivalent entry points: `setupPCO()` / `installPCOLifecycle()` (Vitest), `setupPCOJest()` (Jest), `setupPCOStorybook()` (Storybook), `setupPCOCypress()` (Cypress).
-
-**Cypress does not use the node MSW server.** API mocking in Cypress is out of scope — reuse DOM getters from MSW-free test objects against a real app. See [cypress.md](./cypress.md).
-
-## 2. TestObject hierarchy
-
-| Layer | Class | Role | Use when |
-|-------|-------|------|----------|
-| Query + primitive | `ComponentTestObject` | Getters + `userClick` / `userType` | Storybook canvas, Cypress-bound root, props-only stories |
-| View + app + API mocks | `BaseViewTestObject` | Above + `setupMockData()` + `render()` | Vitest/Jest/Storybook MSW view tests via `App.get()` |
-
-**BaseView** = routed view under `AppManager` with HTTP mocked through `setupMockData()` (MSW in Vitest/Jest/Storybook is an implementation detail).
-
-**Intent methods** (e.g. `fillLogin`, `openSettings`) belong on **your** `*.to.*` classes — not in `@page-component-object/*`. They compose primitives. See [philosophy.md](./philosophy.md#query-primitive-intent).
-
-### Where to put PCO files
-
-Use a **`__pco__`** directory beside the feature (not `__tests__`) so Storybook and behavioral tests import the same surface. Keep **data factories** in `*.factory.ts` separate from **API mock** classes in `*Api.to.ts`. Full layout: [project-structure.md](./project-structure.md).
-
-Naming convention: `*ViewTestObject` or `*StoryTestObject` in `*.to.ts` / `*.to.tsx`.
-
-### File extension rule
-
-**If `render()`, `renderApp()`, or any method in the file contains JSX, the file must be `*.to.tsx`.** TypeScript/Babel will fail to parse JSX in a `.to.ts` file with a non-obvious error. API-only test objects (`ItemsApi.to.ts`) stay `.ts`; view test objects that call `renderView(<Home />)` use `.to.tsx`.
-
-## 3. DOM-only test object (Storybook / Cypress)
+DOM-only test objects — **no `App`, no MSW, no router**. Ideal for Storybook `play` and MUI preset demos.
 
 ```ts
 import { ComponentTestObject } from '@page-component-object/queries';
@@ -106,18 +30,100 @@ export class CatalogHomeStoryTestObject extends ComponentTestObject {
 }
 ```
 
-**Storybook:** `createStoryPlay` binds the object to the story canvas.
-
-**Cypress:** after `cy.visit`, bind to the AUT document. Import from the same `*.to.tsx` getters as Storybook, but use a **DOM-only** class (no `BaseViewTestObject` / node MSW in the Cypress bundle):
+**Storybook:** `createStoryPlay` binds the story canvas:
 
 ```ts
-const view = new CatalogHomeStoryTestObject();
-view.bindToRoot(document.body);
+play: createStoryPlay(
+  () => new CatalogHomeStoryTestObject(),
+  async (_canvas, view) => {
+    expect(view.heading).toBeTruthy();
+    await view.itemLinks[0].userClick();
+  },
+),
 ```
 
-For Cypress E2E, prefer `CypressComponentTestObject` + `PCOChainable` — see [cypress.md](./cypress.md).
+**MUI widgets:** `@page-component-object/preset-mui` — see [presets/mui.md](./presets/mui.md).
 
-## 4. BaseView test object (Vitest / Jest)
+### Level 1 adapter setup
+
+Storybook only:
+
+```ts
+// .storybook/preview.ts
+import { setupPCOStorybook } from '@page-component-object/adapter-storybook';
+setupPCOStorybook();
+```
+
+Vitest/Jest not required at this level.
+
+---
+
+## Level 2 — Cross-runner DOM getters
+
+Reuse **getter definitions** across Storybook and Cypress. Cypress does **not** use MSW — bind to the live AUT document.
+
+```ts
+// Cypress — after cy.visit
+const view = new CatalogHomeStoryTestObject();
+view.bindToRoot(document.body);
+// Prefer CatalogHomeCypressTestObject + PCOChainable for retry — see cypress-adoption.md
+```
+
+Full walkthrough: [cross-runner-tutorial.md](./cross-runner-tutorial.md).
+
+**Cypress setup:**
+
+```ts
+// cypress/support/e2e.ts
+import '@testing-library/cypress/add-commands';
+import { setupPCOCypress } from '@page-component-object/adapter-cypress';
+setupPCOCypress();
+```
+
+---
+
+## Level 3 — App harness, MSW, and routing
+
+View test objects with `render()`, API mocks, and optional full-app navigation.
+
+### Install (Vitest example)
+
+```bash
+pnpm add @page-component-object/core @page-component-object/queries @page-component-object/msw \
+  @page-component-object/react @page-component-object/router-react \
+  @page-component-object/adapter-vitest
+```
+
+### Adapter setup (once per runner)
+
+```ts
+// vitest — src/setup.ts
+import { installPCOLifecycle } from '@page-component-object/adapter-vitest';
+import { configureViewTestObjects } from '@page-component-object/react';
+import { createDemoAppManager } from './testing/DemoAppManager';
+
+configureViewTestObjects({ createAppManager: createDemoAppManager });
+installPCOLifecycle({ apiBaseUrl: 'http://localhost' });
+```
+
+Equivalent: `setupPCO()` (Vitest), `setupPCOJest()` (Jest), `setupPCOStorybook()` (Storybook).
+
+### TestObject hierarchy
+
+| Layer | Class | Role |
+|-------|-------|------|
+| Query + primitive | `ComponentTestObject` | Getters + `userClick` / `userType` |
+| View + app + API mocks | `BaseViewTestObject` | Above + `setupMockData()` + `render()` |
+
+**Intent methods** (`fillLogin`, `openSettings`) belong on **your** `*.to.*` classes — see [philosophy.md](./philosophy.md).
+
+### Where to put PCO files
+
+Colocate under **`__pco__`** beside features. **Data factories** in `*.factory.ts`; **API mocks** in `*Api.to.ts`. Layout: [project-structure.md](./project-structure.md).
+
+**JSX rule:** files with `render()` / JSX must be `*.to.tsx`.
+
+### BaseView example
 
 ```tsx
 import { BaseViewTestObject } from '@page-component-object/react';
@@ -144,62 +150,6 @@ export class HomeViewTestObject extends BaseViewTestObject {
 }
 ```
 
-### Shallow vs full app
-
-| Mode | API | When |
-|------|-----|------|
-| Shallow | `view.render()` → `app.renderView(<View />, { route, routePath })` | Single screen, isolated view |
-| Full app | `view.renderApp()` → `app.renderApp(<AppRoutes />, { initialRoute })` | Multi-route navigation |
-
-After navigation in a full-app test, **create a new view test object** (or call `view.getHistory()`) — views do not carry router state on the object instance.
-
-`getHistory()` is public on `BaseViewTestObject`; `app` is also public when you need the full `AppManager` (e.g. `isRendered()`).
-
-#### Route subtree, not production shell
-
-`BaseAppManager` wraps your tree in `MemoryRouter` (`@page-component-object/router-react`). Pass the **route subtree** — not the component that already includes `BrowserRouter` / `RouterProvider`:
-
-| Component | Role | Use in `renderApp()`? |
-|-----------|------|------------------------|
-| `App` | Production shell (`BrowserRouter`, layout, providers) | **No** — nested router error |
-| `AppRoutes` | `<Switch>` / `<Routes>` + page components only | **Yes** |
-
-Recommended layout:
-
-```tsx
-// App.tsx — production
-export function App() {
-  return (
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
-  );
-}
-
-// AppRoutes.tsx — shared route tree (prod + tests)
-export function AppRoutes() {
-  return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      {/* … */}
-    </Routes>
-  );
-}
-```
-
-```tsx
-// HomeViewTestObject — full-app test
-async renderApp() {
-  return this.app.renderApp(<AppRoutes />, { initialRoute: '/' });
-}
-```
-
-**React Router v5:** not supported by `@page-component-object/router-react`. Upgrade to v6/v7 or stay on a local test shell until you migrate.
-
-**Troubleshooting:** `You cannot render a <Router> inside another <Router>` — you passed the production `App` (or any component that already owns a router) to `renderApp()`. Mount `AppRoutes` instead.
-
-Example (Vitest):
-
 ```ts
 const view = new HomeViewTestObject();
 await view.render();
@@ -207,40 +157,51 @@ expect(view.heading).toBeTruthy();
 expect(view.mocks.getItems).toBeTruthy();
 ```
 
-## 5. Storybook with shared mock handlers
+### Shallow vs full app
 
-Install `@page-component-object/adapter-storybook`, `msw`, and `msw-storybook-addon` (peer dependencies).
+| Mode | API | When |
+|------|-----|------|
+| Shallow | `view.render()` | Single screen |
+| Full app | `view.renderApp()` | Multi-route navigation |
 
-Wire MSW once in `.storybook/preview.ts` — see [msw-storybook.md](./msw-storybook.md) for the full snippet. Use `storyParameters()` so the same `setupMockData()` handlers appear in `parameters.msw` — **no `play` required** for visual stories:
+After navigation, create a **new** view test object or use `view.getHistory()`.
+
+#### Route subtree, not production shell
+
+Pass **`AppRoutes`** (route tree only) to `renderApp()` — not production `App` with `BrowserRouter`. See troubleshooting in prior docs if you see nested router errors.
+
+### Storybook + shared MSW handlers
 
 ```ts
 export const Default: Story = {
   parameters: HomeViewTestObject.storyParameters(),
 };
-
-export const EmptyList: Story = {
-  parameters: HomeViewTestObject.storyParameters((view) => {
-    view.items = [];
-  }),
-};
 ```
 
-For optional test-runner spy checks, use `mockSession()` or `parameters.pco` — see [msw-storybook.md](./msw-storybook.md).
+Details: [msw-storybook.md](./msw-storybook.md).
 
-## 6. MUI widget helpers
+---
 
-`@page-component-object/preset-mui` provides typed wrappers for common MUI components — used in `apps/storybook-demo/src/mui/`:
+## App runtime contract
 
-```ts
-const field = MuiFormFieldTestObject.getInstanceByLabel('Name', root);
-await field.input.userType('Alice');
-expect(field.inputValue).toBe('Alice');
-```
+`App.get()` is a **module singleton** for the test app shell. View test objects call `this.app.renderView()` — they do not own the manager.
 
-## 7. Run the demos
+| Rule | Detail |
+|------|--------|
+| Registration | `configureViewTestObjects({ createAppManager })` in test setup |
+| Access | `BaseViewTestObject` uses `App.get()` internally |
+| Isolation | Adapters call `App.reset()` in `afterEach` — always use `installPCOLifecycle` / Jest equivalent |
+| Parallel tests | Same-file concurrent view tests sharing `App` are unsupported — rare in practice |
+
+DOM-only test objects (Level 1–2) never touch `App`.
+
+`DataFactory` (formerly `ObjectFactory`) builds fixture **data** — not test object instances. See [project-structure.md](./project-structure.md).
+
+---
+
+## Run the demos
 
 ```bash
-# From repo root
 pnpm install && pnpm build
 
 pnpm --filter @page-component-object/vitest-demo test
@@ -249,9 +210,15 @@ pnpm --filter @page-component-object/storybook-demo storybook
 pnpm --filter @page-component-object/cypress-demo test
 ```
 
+---
+
 ## Next steps
 
-- [Install](./install.md) — peer dependencies by runner
-- [MSW in Storybook](./msw-storybook.md) — `msw-storybook-addon` preview wiring
-- [Cypress integration](./cypress.md) — `PCOChainable`, `bindToRoot`, getter reuse
-- [Philosophy](./philosophy.md) — what belongs in a behavioral test
+| Doc | Topic |
+|-----|-------|
+| [Why PCO](./why-pco.md) | Central thesis |
+| [Cross-runner tutorial](./cross-runner-tutorial.md) | One view, three runners |
+| [Install](./install.md) | Peers + compatibility matrix |
+| [Resolver model](./resolver-model.md) | `rootResolver` architecture |
+| [Cypress adoption](./cypress-adoption.md) | Chainables + E2E path |
+| [Philosophy](./philosophy.md) | Query → primitive → intent |

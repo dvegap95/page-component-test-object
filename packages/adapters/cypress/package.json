@@ -48,7 +48,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "description": "Cypress E2E adapter — CypressComponentTestObject and PCOChainable",
+  "description": "Cypress E2E adapter — PCOContext, PCOChainable, unified test objects",
   "keywords": [
     "adapter",
     "behavioral-testing",

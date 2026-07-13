@@ -2,7 +2,7 @@
 
 > **Start here:** [Page Component Object (PCO) — main README](https://github.com/dvegap95/page-component-test-object#readme)
 
-Foundation package for the Page Component Object stack — shared types, the `App` singleton, `ObjectFactory`, and adapter runtime injection.
+Foundation package — shared types, `App` singleton, `DataFactory` for fixture data, `PCOContext`/`PCOTarget` adapter contracts, and runtime injection. **Do I need this?** Yes — every other `@page-component-object/*` package depends on it.
 
 ## Install
 

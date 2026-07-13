@@ -2,7 +2,7 @@
 
 > **Start here:** [Page Component Object (PCO) — main README](https://github.com/dvegap95/page-component-test-object#readme)
 
-Router test utilities — `MemoryRouter`, `Routes`, and navigation wiring for behavioral view tests.
+MemoryRouter test shell for behavioral navigation tests. **Do I need this?** When views use React Router v6/v7 (not v5).
 
 ## Install
 

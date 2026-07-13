@@ -2,7 +2,7 @@
 
 > **Start here:** [Page Component Object (PCO) — main README](https://github.com/dvegap95/page-component-test-object#readme)
 
-View-level test objects — `BaseViewTestObject` with `setupMockData()`, render helpers, and `BaseAppManager` test app shell.
+View-level test objects — `setupMockData()`, `render()`, `BaseAppManager`. **Do I need this?** For Vitest/Jest/Storybook MSW-backed behavioral tests.
 
 ## Install
 

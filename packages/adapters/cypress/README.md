@@ -2,7 +2,7 @@
 
 > **Start here:** [Page Component Object (PCO) — main README](https://github.com/dvegap95/page-component-test-object#readme)
 
-Cypress integration — `@testing-library/cypress` queries, getter reuse from shared test objects, and `PCOChainable` semantic actions. Experimental in 0.1.2.
+Cypress — registers `cypressPcoAdapter`, `PCOChainable`, `@testing-library/cypress`. **Do I need this?** For Cypress E2E using shared test object getters.
 
 ## Install
 

@@ -2,7 +2,7 @@
 
 > **Start here:** [Page Component Object (PCO) — main README](https://github.com/dvegap95/page-component-test-object#readme)
 
-HTTP boundary for PCO view tests — `ApiTestObject` route registration, mock sessions, and `@semantic-matchers` API spy matchers.
+HTTP boundary for view tests — `ApiTestObject`, mock sessions, semantic-matchers integration. **Do I need this?** Only for Vitest/Jest/Storybook view tests with mocked APIs.
 
 ## Install
 
