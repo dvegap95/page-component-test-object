@@ -8,7 +8,7 @@ PCO ships **global matchers** for MSW API spies via [`@semantic-matchers/core`](
 |--------|--------|--------------|
 | **Vitest** | **Stable** | `installVitestSemanticExpect` + `extendGlobal(apiMockGlobalMatchers)` in `@page-component-object/adapter-vitest` |
 | **Jest** | **Stable** | `installSemanticExpect` + `extendGlobal(apiMockGlobalMatchers)` in `@page-component-object/adapter-jest` |
-| **Cypress** | **Planned** | Chainable `.should()` matchers on `PCOChainable` — not in `0.1.0` |
+| **Cypress** | **Planned** | Chainable `.should()` matchers on `PCOChainable` |
 
 ### Available matchers
 
@@ -56,5 +56,4 @@ Add to `packages/msw/src/apiMatchers.ts` with `defineMatcher`, export from `apiM
 ## Related
 
 - [getting-started.md](./getting-started.md) — view tests + `mocks`
-- [PLAN.md](../PLAN.md#phase-4--semantic-matchers) — phase status
 - [@semantic-matchers/core on npm](https://www.npmjs.com/package/@semantic-matchers/core)

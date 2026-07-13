@@ -1,5 +1,5 @@
 ---
-description: Keep @pco repo free of proprietary employer/client project references
+description: Keep page-component-object repo free of proprietary employer/client project references
 alwaysApply: true
 ---
 
@@ -23,7 +23,7 @@ This repository (`page-component-object` / `@page-component-object/*`, **PCO** p
 
 ## Documentation & commits
 
-- `PLAN.md`, `README.md`, package docs, and commit messages must stay generic
+- `README.md`, package docs, and commit messages must stay generic
 - Examples in code comments should use the demo app (`HomeViewTestObject`, `ItemsApiTestObject`) only
 
 ## Allowed

@@ -44,6 +44,7 @@ function readmeBody(name, { summary }) {
     'All guides live in the monorepo — this page is a package entry point on npm.',
     '',
     `- [**Main README** — overview, quick example, package list](${mainReadme})`,
+    `- [Install](${repoWeb}/blob/master/docs/install.md)`,
     `- [Getting started](${repoWeb}/blob/master/docs/getting-started.md)`,
     `- [Project structure (\`__pco__\`)](${repoWeb}/blob/master/docs/project-structure.md)`,
     `- [Philosophy (query → primitive → intent)](${repoWeb}/blob/master/docs/philosophy.md)`,
@@ -76,7 +77,9 @@ for (const pkgPath of paths) {
   if (!entry) continue;
 
   const pkgDir = dirname(pkgPath);
-  writeFileSync(join(pkgDir, 'README.md'), readmeBody(pkg.name, entry));
+  if (!entry.preserveReadme) {
+    writeFileSync(join(pkgDir, 'README.md'), readmeBody(pkg.name, entry));
+  }
 
   pkg.description = entry.description;
   pkg.keywords = mergeKeywords(sharedKeywords, entry.keywords ?? []);

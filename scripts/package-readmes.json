@@ -15,6 +15,12 @@
       "cypress"
     ]
   },
+  "@page-component-object/page": {
+    "description": "Page Component Object (PCO) — npm org landing package",
+    "summary": "npm org landing README for @page-component-object — lists all published packages. Install scoped packages like @page-component-object/react instead.",
+    "keywords": ["landing", "meta"],
+    "preserveReadme": true
+  },
   "@page-component-object/core": {
     "description": "PCO core types, App singleton, ObjectFactory, and runtime injection",
     "summary": "Foundation package for the Page Component Object stack — shared types, the `App` singleton, `ObjectFactory`, and adapter runtime injection.",
@@ -62,7 +68,7 @@
   },
   "@page-component-object/adapter-cypress": {
     "description": "Cypress E2E adapter — CypressComponentTestObject and PCOChainable",
-    "summary": "Cypress integration — `@testing-library/cypress` queries, getter reuse from shared test objects, and `PCOChainable` semantic actions. Experimental in 0.1.0.",
+    "summary": "Cypress integration — `@testing-library/cypress` queries, getter reuse from shared test objects, and `PCOChainable` semantic actions. Experimental in 0.1.2.",
     "keywords": ["adapter", "cypress-adapter", "e2e"]
   }
 }

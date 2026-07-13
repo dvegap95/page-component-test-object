@@ -1,6 +1,6 @@
 # Getting started
 
-Hands-on walkthrough for wiring PCO in your app — adapters, TestObject types, and a first behavioral test. Uses the fictitious `apps/demo-shared` catalog example (no proprietary domain references).
+Hands-on walkthrough for wiring PCO in your app — adapters, TestObject types, and a first behavioral test. Uses the fictitious `apps/demo-shared` catalog example.
 
 ## Prerequisites
 
@@ -9,9 +9,21 @@ Hands-on walkthrough for wiring PCO in your app — adapters, TestObject types, 
 - A test runner adapter: Vitest, Jest, Storybook, and/or Cypress
 - MSW v2 (for API-backed view tests in node or Storybook)
 
-Full peer list for tarball consumers: [CONSUMER_INSTALL.md](./CONSUMER_INSTALL.md).
+Install commands and peer dependencies: [install.md](./install.md).
 
 ## 1. Install packages in your app
+
+### npm (recommended)
+
+```bash
+pnpm add @page-component-object/core @page-component-object/queries @page-component-object/msw \
+  @page-component-object/react @page-component-object/router-react \
+  @page-component-object/adapter-vitest
+```
+
+Add `@page-component-object/adapter-jest`, `@page-component-object/adapter-storybook`, or `@page-component-object/adapter-cypress` for other runners.
+
+**View-level tests** need `@page-component-object/react` and `@page-component-object/router-react` — do not reimplement `BaseAppManager` / `BaseViewTestObject` locally.
 
 ### Monorepo workspace (this repo)
 
@@ -29,25 +41,6 @@ Full peer list for tarball consumers: [CONSUMER_INSTALL.md](./CONSUMER_INSTALL.m
   }
 }
 ```
-
-### External consumer (tarballs)
-
-Build packs from a PCO checkout (`pnpm pack:dist`), copy `dist/packs/` + `manifest.json`, update `file:` paths to `0.1.0-dev.N` (see [CONSUMER_INSTALL.md](./CONSUMER_INSTALL.md)), then:
-
-```bash
-# Replace 0.1.0-dev.N with version from dist/packs/manifest.json
-yarn add \
-  file:./vendor/pco/pco-core-0.1.0-dev.N.tgz \
-  file:./vendor/pco/pco-queries-0.1.0-dev.N.tgz \
-  file:./vendor/pco/pco-msw-0.1.0-dev.N.tgz \
-  file:./vendor/pco/pco-router-react-0.1.0-dev.N.tgz \
-  file:./vendor/pco/pco-react-0.1.0-dev.N.tgz \
-  file:./vendor/pco/pco-adapter-vitest-0.1.0-dev.N.tgz
-```
-
-Add `pco-adapter-storybook-0.0.0.tgz` and/or `pco-adapter-cypress-0.0.0.tgz` when you use those runners. See [CONSUMER_INSTALL.md](./CONSUMER_INSTALL.md) for the complete tarball + peer manifest.
-
-**View-level tests** need `@page-component-object/react` and `@page-component-object/router-react` — do not reimplement `BaseAppManager` / `BaseViewTestObject` locally.
 
 ### Adapter setup
 
@@ -122,7 +115,7 @@ const view = new CatalogHomeStoryTestObject();
 view.bindToRoot(document.body);
 ```
 
-See [cypress.md](./cypress.md) for command-queue patterns and tarball install.
+For Cypress E2E, prefer `CypressComponentTestObject` + `PCOChainable` — see [cypress.md](./cypress.md).
 
 ## 4. BaseView test object (Vitest / Jest)
 
@@ -258,7 +251,7 @@ pnpm --filter @page-component-object/cypress-demo test
 
 ## Next steps
 
-- [Architecture plan](../PLAN.md) — `App` singleton, checklist, monorepo map
+- [Install](./install.md) — peer dependencies by runner
 - [MSW in Storybook](./msw-storybook.md) — `msw-storybook-addon` preview wiring
-- [Cypress integration](./cypress.md) — tarball install, `bindToRoot`, getter reuse
+- [Cypress integration](./cypress.md) — `PCOChainable`, `bindToRoot`, getter reuse
 - [Philosophy](./philosophy.md) — what belongs in a behavioral test

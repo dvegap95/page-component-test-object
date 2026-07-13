@@ -7,9 +7,10 @@ PCO registers HTTP mocks through `ApiTestObject` on the **same handler instances
 `@page-component-object/adapter-storybook` expects [msw-storybook-addon](https://storybook.js.org/addons/msw-storybook-addon) to load `parameters.msw.handlers` from each story. Install peers in your app:
 
 ```bash
-yarn add msw msw-storybook-addon
-yarn add file:./vendor/pco/pco-adapter-storybook-0.0.0.tgz
-# plus core stack: pco-core, pco-queries, pco-msw, pco-react, pco-router-react
+pnpm add msw msw-storybook-addon \
+  @page-component-object/adapter-storybook \
+  @page-component-object/core @page-component-object/queries @page-component-object/msw \
+  @page-component-object/react @page-component-object/router-react
 ```
 
 Minimal `.storybook/preview.ts`:

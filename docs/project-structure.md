@@ -103,4 +103,4 @@ src/
     setupPco.ts               # configureViewTestObjects + installPCOLifecycle
 ```
 
-See [getting-started.md](./getting-started.md) for adapter setup and [CONSUMER_INSTALL.md](./CONSUMER_INSTALL.md) for tarball consumers.
+See [getting-started.md](./getting-started.md) for adapter setup and [install.md](./install.md) for npm packages and peers.

@@ -2,23 +2,17 @@
 
 Cypress runs against a **real app** with **no MSW**. PCO’s role is to **reuse TestObject getters** and optional `UserAgent` bridging — not to duplicate Cypress’s strengths (network, screenshots, real navigation).
 
-> **Stability (`0.1.0`):** Cypress support is **experimental**. DOM getter reuse, `setupPCOCypress()`, and the **`PCOChainable` spike** (`CypressComponentTestObject`) work today. See [PCOChainable](#pcochainable-cypresscomponenttestobject) below.
+> **Stability (`0.1.2`):** Cypress support is **experimental**. DOM getter reuse, `setupPCOCypress()`, and **`PCOChainable`** (`CypressComponentTestObject`) work today. See [PCOChainable](#pcochainable-cypresscomponenttestobject) below.
 
 > **Important:** Cypress never uses the node MSW server or `BaseViewTestObject` constructors. Share **DOM getters** from `ComponentTestObject` subclasses; keep API mock setup in Vitest/Storybook only.
 
-## Consumer install
+## Install
 
 ```bash
-yarn add file:./vendor/pco/pco-core-0.1.0-dev.N.tgz \
-  file:./vendor/pco/pco-queries-0.1.0-dev.N.tgz \
-  file:./vendor/pco/pco-adapter-cypress-0.1.0-dev.N.tgz
+pnpm add @page-component-object/core @page-component-object/queries @page-component-object/adapter-cypress
 ```
 
-Replace `0.1.0-dev.N` with the version from `dist/packs/manifest.json` after `pnpm pack:dist`.
-
-You do **not** need `pco-msw` or `pco-react` in Cypress specs unless you import MSW-backed view classes (avoid that — see [import paths](#which-test-objects-to-import)).
-
-Peer dependency: `cypress` ^13 or ^14.
+Peer dependencies: `cypress` ^13–^15, `@testing-library/cypress` ^10. Full list: [install.md](./install.md).
 
 ## Setup
 
@@ -73,7 +67,7 @@ There is no separate “Cypress export” path — reuse the **DOM-only** test o
 
 ## PCOChainable (`CypressComponentTestObject`)
 
-**Option B (shipped in `0.1.0` spike):** use a separate Cypress base class so node runners keep `HTMLElement` getters.
+**Option B (current):** use a separate Cypress base class so node runners keep `HTMLElement` getters.
 
 ```ts
 import { CypressComponentTestObject } from '@page-component-object/adapter-cypress';
@@ -161,7 +155,7 @@ bindView().then((view) => cy.wrap(view.itemLinks[0]).click());
 
 `apps/cypress-demo` uses **`BrowserRouter`** (not `MemoryRouter`) so `cy.url()` reflects client-side navigation. The app must include routes for destinations you assert on (e.g. `/items/:id`).
 
-The Cypress preprocessor resolves `@page-component-object/*` to **source** paths so specs compile without pre-built `dist` exports. When using tarballs, point aliases at `node_modules/@page-component-object/*/dist` or rely on package exports directly.
+The Cypress preprocessor resolves `@page-component-object/*` to **source** paths in this monorepo so specs compile without pre-built `dist` exports. When installed from npm, rely on package `exports` directly.
 
 ## What to assert
 

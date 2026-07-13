@@ -1,7 +1,8 @@
 {
-  "name": "@page-component-object/router-react",
+  "name": "@page-component-object/page",
   "version": "0.1.2",
   "type": "module",
+  "description": "Page Component Object (PCO) — npm org landing package",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -20,20 +21,7 @@
     "typecheck": "tsc --noEmit",
     "clean": "rimraf dist"
   },
-  "dependencies": {
-    "@page-component-object/core": "workspace:*"
-  },
-  "peerDependencies": {
-    "react": "^18.0.0 || ^19.0.0",
-    "react-dom": "^18.0.0 || ^19.0.0",
-    "react-router-dom": "^6.4.0 || ^7.0.0"
-  },
   "devDependencies": {
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^7.6.2",
     "rimraf": "^6.0.1",
     "tsup": "^8.3.5",
     "typescript": "^5.7.2"
@@ -42,7 +30,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dvegap95/page-component-test-object.git",
-    "directory": "packages/router-react"
+    "directory": "packages/page"
   },
   "homepage": "https://github.com/dvegap95/page-component-test-object#readme",
   "bugs": {
@@ -51,18 +39,17 @@
   "publishConfig": {
     "access": "public"
   },
-  "description": "React Router v6/v7 test shell for PCO view tests",
   "keywords": [
     "behavioral-testing",
     "cypress",
     "jest",
-    "memory-router",
+    "landing",
+    "meta",
     "msw",
     "page-component-object",
     "page-object",
     "pco",
     "react",
-    "react-router",
     "storybook",
     "test-object",
     "testing-library",
