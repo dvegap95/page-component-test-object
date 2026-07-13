@@ -8,6 +8,7 @@ export default defineConfig({
   sourcemap: true,
   external: [
     '@page-component-object/core',
+    '@page-component-object/queries',
     '@page-component-object/msw',
     '@page-component-object/msw/matchers',
     '@semantic-matchers/core',

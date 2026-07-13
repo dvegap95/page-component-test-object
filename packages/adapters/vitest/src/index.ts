@@ -1,6 +1,5 @@
 import './vitestMatcherTypes';
 
-import userEvent from '@testing-library/user-event';
 import { afterEach, beforeAll, expect, vi } from 'vitest';
 import { installVitestSemanticExpect } from '@semantic-matchers/vitest';
 import type { SemanticMatcherFn } from '@semantic-matchers/core';
@@ -13,6 +12,7 @@ import {
 } from '@page-component-object/core';
 import { ApiTestObject } from '@page-component-object/msw';
 import { apiMockGlobalMatchers } from '@page-component-object/msw/matchers';
+import { createRtlUserAgent } from '@page-component-object/queries';
 
 export interface SetupPCOOptions {
   /** Base URL for `resolveApiUrl()` when API test objects use relative paths. Default: `http://localhost` */
@@ -38,7 +38,7 @@ export function setupPCO(options: SetupPCOOptions = {}): void {
 
   configureRuntime({
     spyFactory: { fn: (impl) => vi.fn(impl) as never },
-    createUserAgent: (): UserAgent => userEvent.setup() as unknown as UserAgent,
+    createUserAgent: (): UserAgent => createRtlUserAgent(),
   });
 }
 

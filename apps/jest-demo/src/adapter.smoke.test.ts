@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 
 import { setupPCO } from '@page-component-object/adapter-jest';
-import { ObjectFactory, getRuntime } from '@page-component-object/core';
+import { DataFactory, getRuntime } from '@page-component-object/core';
 
 describe('Jest adapter smoke', () => {
   it('configures PCO runtime with jest.fn spy factory', () => {
@@ -12,9 +12,9 @@ describe('Jest adapter smoke', () => {
   });
 });
 
-describe('ObjectFactory', () => {
+describe('DataFactory', () => {
   it('builds frozen test data', () => {
-    const item = new ObjectFactory({ id: '1', name: 'Test' }).build();
+    const item = new DataFactory({ id: '1', name: 'Test' }).build();
     expect(item.name).toBe('Test');
     expect(Object.isFrozen(item)).toBe(true);
   });

@@ -1,11 +1,23 @@
 import type { SpyFactory, UserAgent } from './types';
+import type { PCOAdapterRuntime } from './pcoTypes';
 
 export interface RuntimeConfig {
   createUserAgent: () => UserAgent;
   spyFactory: SpyFactory;
+  /** Adapter for `this.context` / `PCOTarget` — defaults to RTL when unset. */
+  pcoAdapter?: PCOAdapterRuntime;
 }
 
 let runtime: RuntimeConfig | null = null;
+let defaultPcoAdapter: PCOAdapterRuntime | null = null;
+
+export function registerDefaultPcoAdapter(adapter: PCOAdapterRuntime): void {
+  defaultPcoAdapter = adapter;
+}
+
+export function getPcoAdapter(): PCOAdapterRuntime | null {
+  return runtime?.pcoAdapter ?? defaultPcoAdapter;
+}
 
 export function configureRuntime(config: RuntimeConfig): void {
   runtime = config;

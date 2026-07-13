@@ -38,10 +38,10 @@ export class MuiFormFieldTestObject extends MuiInputWrapperTestObject {
   ) {
     let root = parent.context.queryByRole('textbox', { name: label });
     if (root) {
-      return this.fromInput(root as HTMLInputElement) as InstanceType<T>;
+      return this.fromInput(root as unknown as HTMLInputElement) as InstanceType<T>;
     }
     root = parent.context.queryByLabelText(label);
-    return new this(root as HTMLElement) as InstanceType<T>;
+    return new this(root as unknown as HTMLElement) as InstanceType<T>;
   }
 
   static byPlaceholder<T extends typeof MuiFormFieldTestObject>(
@@ -50,6 +50,6 @@ export class MuiFormFieldTestObject extends MuiInputWrapperTestObject {
     parent: ComponentTestObject,
   ) {
     const inputNode = parent.context.queryByPlaceholderText(placeholder);
-    return this.fromInput(inputNode as HTMLInputElement) as InstanceType<T>;
+    return this.fromInput(inputNode as unknown as HTMLInputElement) as InstanceType<T>;
   }
 }

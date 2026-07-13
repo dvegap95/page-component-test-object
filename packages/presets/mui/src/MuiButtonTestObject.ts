@@ -11,7 +11,7 @@ export class MuiButtonTestObject<
     root: ComponentTestObject = new ComponentTestObject(),
   ) {
     const buttonRoot = root.context.queryByRole('button', { name, hidden: true });
-    return new this(buttonRoot as HTMLButtonElement) as InstanceType<T>;
+    return new this(buttonRoot as unknown as HTMLButtonElement) as InstanceType<T>;
   }
 
   isDisabled() {

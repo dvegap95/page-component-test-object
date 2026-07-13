@@ -19,7 +19,7 @@ export class MuiCheckboxTestObject extends MuiInputWrapperTestObject {
   ) {
     const root =
       input?.closest('.MuiFormControlLabel-root') ?? input?.closest('.MuiCheckbox-root');
-    return new this(root as HTMLElement) as InstanceType<T>;
+    return new this(root as unknown as HTMLElement) as InstanceType<T>;
   }
 
   static getInstanceByLabel<T extends typeof MuiCheckboxTestObject>(
@@ -28,6 +28,6 @@ export class MuiCheckboxTestObject extends MuiInputWrapperTestObject {
     parent: ComponentTestObject = new ComponentTestObject(),
   ) {
     const input = parent.context.queryByRole('checkbox', { name: label });
-    return this.fromInput(input as HTMLInputElement) as InstanceType<T>;
+    return this.fromInput(input as unknown as HTMLInputElement) as InstanceType<T>;
   }
 }

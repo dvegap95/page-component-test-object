@@ -70,7 +70,7 @@ export class MuiComboBoxTestObject extends MuiComponentTestObject {
     parent: ComponentTestObject,
     label: string | RegExp,
   ): MuiComboBoxTestObject {
-    const input = parent.context.queryByLabelText(label) as HTMLInputElement;
+    const input = parent.context.queryByLabelText(label) as unknown as HTMLInputElement;
     return this.fromInput(input);
   }
 
@@ -78,7 +78,7 @@ export class MuiComboBoxTestObject extends MuiComponentTestObject {
     parent: ComponentTestObject,
     placeholder: string | RegExp,
   ): MuiComboBoxTestObject {
-    const input = parent.context.queryByPlaceholderText(placeholder) as HTMLInputElement;
+    const input = parent.context.queryByPlaceholderText(placeholder) as unknown as HTMLInputElement;
     return this.fromInput(input);
   }
 

@@ -8,6 +8,8 @@
     "./views": "./src/views/DemoApp.tsx",
     "./story-objects": "./src/views/CatalogHomeStory.to.ts",
     "./cypress-objects": "./src/views/CatalogHomeCypress.to.ts",
+    "./views/ReRenderTable": "./src/views/ReRenderTable.tsx",
+    "./views/ReRenderTable.to": "./src/views/ReRenderTable.to.tsx",
     "./testing": "./src/testing/index.ts"
   },
   "scripts": {

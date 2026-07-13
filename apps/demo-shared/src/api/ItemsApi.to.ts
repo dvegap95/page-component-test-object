@@ -1,4 +1,4 @@
-import { ObjectFactory } from '@page-component-object/core';
+import { DataFactory } from '@page-component-object/core';
 import { ApiTestObject } from '@page-component-object/msw';
 
 import type { Item } from '../types';
@@ -10,7 +10,7 @@ export class ItemsApiTestObject extends ApiTestObject {
   }
 }
 
-export class ItemFactory extends ObjectFactory<Item> {
+export class ItemFactory extends DataFactory<Item> {
   constructor() {
     super({ id: '1', name: 'Alpha' });
   }

@@ -18,6 +18,6 @@ export class MuiDialogTestObject extends MuiComponentTestObject {
     title: string | RegExp,
   ): InstanceType<T> {
     const root = this.globalContext.queryByRole('dialog', { name: title });
-    return new this(root as HTMLElement) as InstanceType<T>;
+    return new this(root as unknown as HTMLElement) as InstanceType<T>;
   }
 }

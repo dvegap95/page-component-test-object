@@ -1,5 +1,6 @@
 import { configureRuntime, resetSharedUserAgent, type UserAgent } from '@page-component-object/core';
 
+import { cypressPcoAdapter } from './cypressPcoContext';
 import { runCypressCommand } from './cypressCommand';
 
 export { CypressComponentTestObject } from './CypressComponentTestObject';
@@ -39,6 +40,7 @@ export function setupPCOCypress(options: SetupPCOCypressOptions = {}): void {
       },
     },
     createUserAgent: createCypressUserAgent,
+    pcoAdapter: cypressPcoAdapter,
   });
 
   if (options.resetUserAgentEachTest !== false) {

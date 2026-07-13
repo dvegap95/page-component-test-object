@@ -44,7 +44,7 @@ export class MuiMenuTestObject extends MuiComponentTestObject {
   }
 
   getOptionByText(text: string | RegExp) {
-    return new MuiMenuOptionTestObject(this.context.queryByText(text) as HTMLLIElement);
+    return new MuiMenuOptionTestObject(this.context.queryByText(text) as unknown as HTMLLIElement);
   }
 
   async close() {

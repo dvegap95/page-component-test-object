@@ -96,7 +96,7 @@ export class MuiSelectTestObject extends MuiFormFieldTestObject {
       input?.closest('[class*="MuiAutocomplete-root"]') ??
       input?.closest('[class*="MuiInputBase-root"]') ??
       input;
-    return new this(root as HTMLElement) as InstanceType<T>;
+    return new this(root as unknown as HTMLElement) as InstanceType<T>;
   }
 
   static selectByLabel(
@@ -106,7 +106,7 @@ export class MuiSelectTestObject extends MuiFormFieldTestObject {
     const input =
       parent.context.queryByRole('combobox', { name: label, hidden: true }) ??
       parent.context.queryByLabelText(label);
-    return this.fromSelectInput(input as HTMLInputElement);
+    return this.fromSelectInput(input as unknown as HTMLInputElement);
   }
 
   static selectByPlaceholder(
@@ -114,6 +114,6 @@ export class MuiSelectTestObject extends MuiFormFieldTestObject {
     placeholder: string | RegExp,
   ): MuiSelectTestObject {
     const input = parent.context.queryByPlaceholderText(placeholder);
-    return this.fromSelectInput(input as HTMLInputElement);
+    return this.fromSelectInput(input as unknown as HTMLInputElement);
   }
 }

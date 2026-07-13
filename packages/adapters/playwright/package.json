@@ -1,0 +1,59 @@
+{
+  "name": "@page-component-object/adapter-playwright",
+  "version": "0.1.2",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@page-component-object/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "@playwright/test": "^1.40.0"
+  },
+  "peerDependenciesMeta": {
+    "@playwright/test": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "rimraf": "^6.0.1",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2"
+  },
+  "license": "MIT",
+  "description": "Playwright adapter research spike — Locator-backed PCOTarget",
+  "private": true,
+  "keywords": [
+    "adapter",
+    "behavioral-testing",
+    "cypress",
+    "jest",
+    "msw",
+    "page-component-object",
+    "page-object",
+    "pco",
+    "playwright",
+    "react",
+    "research",
+    "storybook",
+    "test-object",
+    "testing-library",
+    "vitest"
+  ]
+}

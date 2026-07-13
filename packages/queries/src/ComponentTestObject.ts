@@ -1,50 +1,78 @@
-import { act, fireEvent, screen, within, queries, type BoundFunctions } from '@testing-library/react';
+import { act, fireEvent } from '@testing-library/react';
 
-import { getSharedUserAgent, type QueryContext } from '@page-component-object/core';
+import {
+  getPcoAdapter,
+  getSharedUserAgent,
+  type ContextResolver,
+  type PCOContext,
+  type QueryContext,
+} from '@page-component-object/core';
 
-export type TestObjectContext = BoundFunctions<typeof queries>;
+import { createPcoContext } from './pco';
+
+export type TestObjectContext = PCOContext;
 
 /**
- * DOM-scoped test object base. Only for elements in the tree — not APIs or factories.
- * Default context is `screen` so ViewTestObjects work after router navigation without binding.
+ * DOM-scoped test object base. Scope is resolver-driven — no stored HTMLElement.
+ * Default scope is `screen` / document body so view TOs work after router navigation.
  */
 export default class ComponentTestObject<T extends HTMLElement = HTMLElement> {
-  protected _context: TestObjectContext | null;
-  protected _root: T | null;
+  protected _rootResolver: ContextResolver<HTMLElement> | null;
+  protected _pcoContext: PCOContext | null;
   static verbose = false;
-  static readonly globalContext: TestObjectContext = screen;
+  /** Document-level PCOContext — presets/dialogs that query portals. */
+  static readonly globalContext: PCOContext = createPcoContext(() => document.body);
 
   constructor(root?: T | null | undefined) {
     if (root === undefined) {
-      this._context = screen;
-      this._root = document.body as T;
+      this._rootResolver = () => document.body as T;
+      this._pcoContext = createPcoContext(this._rootResolver);
     } else if (root === null) {
-      this._context = null;
-      this._root = null;
+      this._rootResolver = null;
+      this._pcoContext = null;
     } else {
-      this._context = within(root);
-      this._root = root;
+      const el = root;
+      this._rootResolver = () => el;
+      this._pcoContext = createPcoContext(this._rootResolver);
     }
   }
 
-  get root(): T | null {
-    return this._root;
+  get rootResolver(): ContextResolver<HTMLElement> {
+    if (!this._rootResolver) {
+      throw new Error(
+        `Element of type ${this.constructor.name} has no valid root resolver.`,
+      );
+    }
+    return this._rootResolver;
   }
 
-  get context(): TestObjectContext {
-    if (!this._context) {
+  /** Materializes `rootResolver` on access — RTL convenience. */
+  get root(): T | null {
+    if (!this._rootResolver) return null;
+    const adapter = getPcoAdapter();
+    const materialized = adapter?.materializeRoot(this._rootResolver) ?? this._rootResolver();
+    return materialized as T;
+  }
+
+  get context(): PCOContext {
+    if (!this._pcoContext) {
       throw new Error(
         `Element of type ${this.constructor.name} has no valid root in the DOM.`,
       );
     }
-    return this._context;
+    return this._pcoContext;
   }
 
-  /** Optional: scope queries to a Storybook canvas or mounted subtree. */
-  bindToRoot(root: HTMLElement): this {
-    this._context = within(root);
-    this._root = root as T;
+  /** Preferred: bind a sync scope resolver (canvas, mounted subtree, cy chain factory). */
+  bindResolver(resolver: ContextResolver<HTMLElement>): this {
+    this._rootResolver = resolver;
+    this._pcoContext = createPcoContext(resolver);
     return this;
+  }
+
+  /** @deprecated Use `bindResolver(() => element)`. */
+  bindToRoot(root: HTMLElement): this {
+    return this.bindResolver(() => root as T);
   }
 
   protected getUser() {
@@ -76,6 +104,20 @@ export default class ComponentTestObject<T extends HTMLElement = HTMLElement> {
     if (!this.root) throw new Error('Cannot fire change on null root');
     fireEvent.change(this.root, { target: { value } });
     if (blurAfter) fireEvent.blur(this.root);
+  }
+
+  /**
+   * Child test object with composed resolver.
+   * @example this.child(RowTO, (p) => p.context.findByRole('row', { name: /x/i }))
+   */
+  child<TO extends ComponentTestObject>(
+    ChildCtor: new (root?: HTMLElement | null) => TO,
+    compose: (parent: this) => { rootResolver: ContextResolver<HTMLElement> },
+  ): TO {
+    const { rootResolver } = compose(this);
+    const child = new ChildCtor(null);
+    child.bindResolver(rootResolver);
+    return child;
   }
 
   static async dndTo(
@@ -112,6 +154,7 @@ export default class ComponentTestObject<T extends HTMLElement = HTMLElement> {
   }
 }
 
+/** @deprecated Use `this.context` (PCOContext). Legacy RTL shape for interop. */
 export function bindQueries(root: HTMLElement): QueryContext {
-  return within(root) as unknown as QueryContext;
+  return createPcoContext(() => root) as unknown as QueryContext;
 }
