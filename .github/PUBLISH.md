@@ -28,9 +28,44 @@ On [npm](https://www.npmjs.com) → **Packages** → `@page-component-object/cor
 
 Repeat for each package in the org (or link at org level if your npm plan supports it). The workflow filename must match exactly — not `test.yml`.
 
-Include **`@page-component-object/page`** (org landing package) in the first publish batch so [npmjs.com/org/page-component-object](https://www.npmjs.com/org/page-component-object) is not empty.
+Include **`@page-component-object/page`** (org landing package) when bootstrapping new package names — see [First publish of a new scoped package](#first-publish-of-a-new-scoped-package).
 
 If CI still returns `404 Not Found` on `PUT`, either trusted publishing is not linked for that package, or add a granular **Automation** publish token as the `NPM_TOKEN` repository secret (CI uses OIDC first, then falls back to the token).
+
+## First publish of a **new** scoped package
+
+Adding a new name under `@page-component-object/*` (e.g. `@page-component-object/page`) requires **creating** that package on npm once. Trusted publishing on existing packages does **not** automatically apply to names that have never been published — CI often fails on the first `PUT` with `404`.
+
+**One-time local bootstrap** (from repo root, after `npm login`):
+
+```bash
+pnpm install
+pnpm build
+node scripts/sync-package-readmes.mjs
+node scripts/prepare-publish.mjs
+
+# Publish only the new package first
+pnpm --filter @page-component-object/page publish --access public --no-git-checks
+```
+
+Then either:
+
+- Re-run the **Publish** workflow (`workflow_dispatch`, version `0.1.2`) to finish the release — already-published versions (e.g. `core@0.1.2`) are skipped, or
+- Run `pnpm publish:packages` locally to publish the rest.
+
+`prepare-publish.mjs` clears `private` on package manifests in your working tree — **do not commit** those edits; discard with `git checkout -- packages/**/package.json` after local publish.
+
+Optional: on npm → **Organizations** → **page-component-object** → link trusted publishing at **org level** so future new package names work from CI without a local bootstrap.
+
+## Recovering from a partial publish
+
+`pnpm -r publish` stops on the first failure. Example: `core@0.1.2` published, then `@page-component-object/page` failed — everything else stays on the previous version.
+
+1. Fix the root cause (first-publish bootstrap above, or `NPM_TOKEN` / trusted publisher).
+2. Re-run **Publish** with the **same** version from `release-version.json` (no tag needed — use `workflow_dispatch`).
+3. npm skips packages whose version already exists; only missing versions are uploaded.
+
+Do **not** bump the version unless you intend a new release — partial `0.1.2` can be completed without `0.1.3`.
 
 ## How releases run
 
