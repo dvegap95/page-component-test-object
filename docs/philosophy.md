@@ -1,6 +1,6 @@
 # Testing philosophy
 
-PCO is a **structure layer** for behavioral UI tests. It does not change what you should test — only where you put the selectors and flows.
+PCO is a **structure layer for behavioral integration tests**. It centralizes scoped queries and user interactions in TestObjects so specs assert observable outcomes — not inline DOM chains. Runners consume the same surface through adapters when you extend to Storybook or Cypress.
 
 ## Query, primitive, intent
 
@@ -61,7 +61,7 @@ Use the cheapest runner that still gives confidence for the risk you care about.
 
 TestObjects expose **getters** that delegate to Testing Library queries (`getByRole`, `getByLabelText`, …). Prefer roles and accessible names over `data-testid`.
 
-Primitive interactions (`userClick`, `userType`, …) are element-centric. A shared `UserAgent` singleton implements them per runner (RTL `user-event` in node; Cypress bridge in E2E).
+Primitive interactions (`userClick`, `userType`, …) are available on PCO targets and via the shared `UserAgent` (`getUser()`). Examples often use `target.userClick()`; both styles are supported. See [authoring-philosophy.md](./authoring-philosophy.md).
 
 ## One TestObject per view (usually)
 
@@ -75,7 +75,9 @@ Colocate test objects, API mocks, and factories under **`__pco__`** (not `__test
 
 ## MSW as boundary
 
-HTTP mocks define the **API contract** your UI depends on. Register handlers in `setupMockData()` and assert spies on `view.mocks.*` — not fetch implementation details.
+HTTP mocks define the **API contract** your UI depends on. Register handlers in `setupMockData()` via `*Api.to.ts` and assert spies on `view.mocks.*` — not fetch implementation details.
+
+PCO favors MSW at the network edge over blind round-trip tests, but supports asserting outbound requests when the **product of the interaction** is the request itself. See [http-boundary.md](./http-boundary.md).
 
 Storybook reuses the same handler definitions via `storyParameters()` / `mockSession()`; see [msw-storybook.md](./msw-storybook.md).
 

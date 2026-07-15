@@ -1,14 +1,20 @@
 # Why PCO?
 
-Page Component Object (PCO) exists to answer one question:
+This page expands the [README](../README.md#what-it-is) with diagrams and adoption signals. For install and a quick example, stay on the README.
+
+Page Component Object (PCO) is a **toolset for behavioral integration tests** — TestObjects centralize scoped queries and user interactions so specs do not accumulate fragile `queryByRole` chains. The cross-runner adapter layer extends that same contract to Vitest, Storybook, and Cypress.
+
+The core question PCO answers:
 
 > **Where does the application’s test-facing contract live — and who maintains it when the UI changes?**
 
-Without a deliberate structure, that contract fragments across runners. The same date picker, modal, or catalog list gets re-described in Vitest specs, Storybook `play` functions, Cypress E2E, and sometimes manual QA scripts. Each surface uses different syntax, but the **knowledge** is identical: which role, which label, which steps to open the widget and confirm the outcome.
+Without TestObjects, integration specs inline DOM queries and interaction blocks. A new "Accept" button elsewhere on the page breaks an unrelated test. Modal flows reappear as nested `within()` scopes copy-pasted across files. The **knowledge** of how to reach a widget in context never gets a home.
 
-PCO centralizes that knowledge in **`__pco__`** test objects (`*.to.ts` / `*.to.tsx`) beside your features. Runners consume the description through **adapters**; they do not each own a copy of it.
+PCO centralizes that knowledge in **`__pco__`** test objects (`*.to.ts` / `*.to.tsx`) beside your features. Runners consume the description through **adapters** when you need the same intents in Storybook `play` or Cypress — not as a prerequisite for scoped, stable behavioral tests in a single runner.
 
-## The duplication problem
+## The duplication problem (cross-runner)
+
+Once TestObjects work in Vitest or Jest, the same widget intents often get **redefined** for Storybook `play` and Cypress — parallel getter sets for identical knowledge:
 
 ```mermaid
 flowchart TB
@@ -76,9 +82,11 @@ PCO is **not** a replacement for Testing Library, Cypress, or Vitest. It is a **
 - **Not** a DI framework or test harness monopoly — `App.get()` is a convenience singleton with a documented reset contract; see [getting-started.md](./getting-started.md#level-3--app-harness-msw-and-routing).
 - **Not** asserting for you — `expect` (node), `cy.should` (Cypress), and [semantic-matchers](https://github.com/dvegap95/semantic-matchers) for API spies remain runner-native.
 
-## HTTP assertions complement
+## HTTP boundary
 
-UI test objects describe **what the user sees and does**. API contracts use MSW handlers in `setupMockData()` plus **semantic-matchers** for spy assertions (`toHaveBeenLastCalledWithUrl`, etc.). That split keeps DOM queries separate from HTTP shape checks. See [matchers.md](./matchers.md).
+UI test objects describe **what the user sees and does**. API contracts live in `*Api.to.ts` with MSW handlers in `setupMockData()`; **semantic-matchers** assert what the client sent (`toHaveBeenLastCalledWithUrl`, etc.) without standing up server logic in tests.
+
+That split keeps DOM queries separate from HTTP shape checks and avoids the two common traps: mocking only the response (missing the request) or branching handlers on request (server complexity in the suite). See [http-boundary.md](./http-boundary.md) and [matchers.md](./matchers.md).
 
 ## When PCO pays off
 
@@ -90,9 +98,9 @@ PCO earns its folder structure when:
 
 If you only ever run a single runner on throwaway smoke tests, a thin RTL wrapper may be enough. See [when-not-to-use.md](./when-not-to-use.md).
 
-## Portfolio thesis: triangulation
+## Cross-runner triangulation
 
-The strongest adoption story is **Vitest + Storybook + MSW**: behavioral specs and visual stories exercise the same HTTP contract and the same test object getters. Cypress (and future Playwright) extend that contract to a live browser without duplicating selector knowledge.
+The strongest combination is **Vitest + Storybook + MSW**: behavioral specs and visual stories exercise the same HTTP contract and the same test object getters. Cypress (and future Playwright) extend that contract to a live browser without duplicating selector knowledge.
 
 ```mermaid
 flowchart LR
@@ -105,7 +113,7 @@ flowchart LR
   TO --> E2E
 ```
 
-Cross-runner **definition** reuse (one class, three runners) is the `0.2.x` resolver goal. Today Cypress may still require a parallel DOM-only class for chainable getters — documented honestly in [cross-runner-tutorial.md](./cross-runner-tutorial.md) until migration completes.
+Cross-runner **definition** reuse (one class, every runner) is the active `0.2.x` goal — [resolver model](./resolver-model.md). Cypress may still use a parallel DOM-only class for chainable getters until that lands; see [cross-runner-tutorial.md](./cross-runner-tutorial.md).
 
 ## Next steps
 

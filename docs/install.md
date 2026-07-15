@@ -2,7 +2,7 @@
 
 Install **`@page-component-object/*`** from [npm](https://www.npmjs.com/org/page-component-object). The pattern alias **PCO** (`__pco__`, `*.to.ts`) is separate from the npm scope.
 
-> **Status (`0.1.2`):** Vitest, Jest, and Storybook (MSW-backed view tests) are **stable**. Cypress support is **experimental** — getter reuse and `PCOChainable` work today; see [cypress.md](./cypress.md).
+> **Status (`0.1.2`):** Vitest, Jest, and Storybook (MSW-backed view tests) are **stable**. Cypress: **`PCOChainable` / `findBy*` shipped**; unified cross-runner TestObjects land in **`0.2.x`** — see [cypress-adoption.md](./cypress-adoption.md).
 
 ## Quick install (Vitest + routed MSW views)
 
@@ -57,7 +57,7 @@ Versions below match the repo's `0.1.2` release and current peer ranges. Patch/m
 | **Vitest** | `adapter-vitest` |
 | **Jest** | `adapter-jest` |
 | **Storybook** | `adapter-storybook` + `msw-storybook-addon` peer |
-| **Cypress** E2E | `adapter-cypress` (experimental) |
+| **Cypress** E2E | `adapter-cypress` — chainables shipped; cross-runner TO unification in `0.2.x` |
 
 Full package list and descriptions: [README — Packages](../README.md#packages).
 
@@ -83,7 +83,8 @@ pnpm add @page-component-object/core @page-component-object/queries @page-compon
 
 Peers: `storybook` and `@storybook/test` ^8 or ^9. Preview wiring: [msw-storybook.md](./msw-storybook.md).
 
-### Cypress (experimental)
+### Cypress
+
 
 ```bash
 pnpm add @page-component-object/core @page-component-object/queries @page-component-object/adapter-cypress

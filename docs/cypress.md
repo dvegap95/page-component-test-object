@@ -2,7 +2,7 @@
 
 Cypress runs against a **real app** with **no MSW**. PCO’s role is to **reuse TestObject getters** and optional `UserAgent` bridging — not to duplicate Cypress’s strengths (network, screenshots, real navigation).
 
-> **Stability (`0.1.2`):** Cypress support is **experimental**. DOM getter reuse, `setupPCOCypress()`, and **`PCOChainable`** (`CypressComponentTestObject`) work today. See [PCOChainable](#pcochainable-cypresscomponenttestobject) below.
+> **Stability (`0.1.2`):** `PCOChainable`, `findBy*`, and DOM getter reuse are **shipped**. Unified cross-runner TestObject definitions are **`0.2.x`** — see [cypress-adoption.md](./cypress-adoption.md).
 
 > **Important:** Cypress never uses the node MSW server or `BaseViewTestObject` constructors. Share **DOM getters** from `ComponentTestObject` subclasses; keep API mock setup in Vitest/Storybook only.
 

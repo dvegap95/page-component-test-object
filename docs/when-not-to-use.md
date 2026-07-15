@@ -10,9 +10,9 @@ A single `render` + `screen.getByRole` + one `expect` does not need a test objec
 
 ### Single runner, no reuse
 
-If you **only** run Vitest and never Storybook or E2E, a thin helper hook around Testing Library may be simpler than PCO’s package surface (`App`, adapters, MSW bridge).
+If you **only** run Vitest and never Storybook or E2E, PCO still pays off when integration specs need **scoped queries and stable intent methods** — the adapter overhead is optional until you add a second runner.
 
-PCO’s multi-runner table in [why-pco.md](./why-pco.md) is the main value proposition — without that, weigh the overhead honestly.
+Cross-runner reuse in [why-pco.md](./why-pco.md) is the extension of that central contract — not the only reason to adopt TestObjects.
 
 ### No duplicated widget knowledge
 

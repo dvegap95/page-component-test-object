@@ -101,15 +101,17 @@ this.child(RowTO, (p) => p.context.findByRole('row', { name: /x/i }));
 
 ## getBy / queryBy / findBy policy
 
-The framework exposes the full Testing Library surface. **You choose** per getter; adapters map execution:
+The framework exposes the full Testing Library surface on shared test objects. **Consumers choose** per getter.
 
-| API | RTL adapter | Cypress adapter |
-|-----|-------------|-----------------|
-| `queryBy*` | Sync; null if absent | Sync snapshot or chain variant |
-| `getBy*` | Sync throw | Chain with implicit retry |
-| `findBy*` | Async `waitFor` | `cy.findBy*` |
+| API | RTL adapter (Vitest/Jest/Storybook) | Cypress adapter |
+|-----|-------------------------------------|-----------------|
+| `queryBy*` | Sync; `null` if absent | Enqueues retry-aware TL command (same as `findBy*` today) |
+| `getBy*` | Sync throw if absent | Enqueues retry-aware TL command (same as `findBy*` today) |
+| `findBy*` | Async RTL `findBy*` (waits for appearance) | Enqueues retry-aware TL command |
 
-Document timing quirks in specs — `getBy` fails fast in JSDOM; Cypress retries via command queue.
+On **Cypress**, `getBy*`, `queryBy*`, and `findBy*` on `context` all route through `@testing-library/cypress` — there is no separate “sync snapshot only” path for `getBy*`. Getters return **PCO targets** (chainable), not materialized elements for `cy.wrap()`.
+
+On **RTL**, timing still differs: `getBy*` throws immediately in JSDOM; `findBy*` waits. Specs should pick the query variant that matches the behavior under test.
 
 ## Anti-patterns
 
@@ -120,17 +122,18 @@ cy.get('.sidebar').then(($el) => new PCO(() => cy.wrap($el[0])));
 // GOOD Cypress: chain as resolver
 new PCO(() => cy.get('[data-testid="sidebar"]'));
 
-// BAD: sync RTL getter used in Cypress after navigation
+// BAD: materialize HTMLElement from getter, then wrap for Cypress
 get heading() {
-  return this.context.getByRole('heading', { name: /items/i }); // runs NOW
+  return this.context.getByRole('heading', { name: /items/i }); // used as HTMLElement
 }
-cy.wrap(view.heading).click(); // no retry queue
+cy.wrap(view.heading).click();
 
-// GOOD Cypress: enqueues command
+// GOOD: getter returns a PCO target — chainable, retry-aware on Cypress
 get heading() {
-  return this.context.findByRole('heading', { name: /items/i });
+  return this.context.getByRole('heading', { name: /items/i });
 }
 view.heading.should('contain.text', 'Items');
+view.heading.userClick();
 ```
 
 ## Runtime guards

@@ -2,6 +2,8 @@
 
 Progressive onboarding for PCO — start at the level that matches your runner, then go deeper when you need MSW and routing.
 
+**Context:** The [README](../README.md) explains the toolset; [vision.md](./vision.md) walks a full booking scenario; [why-pco.md](./why-pco.md) adds diagrams and cross-runner depth.
+
 | Level | You learn | Good first demo |
 |-------|-----------|-----------------|
 | [**Level 1**](#level-1--component-test-objects) | `ComponentTestObject` + getters + primitives | [MuiPlayground.stories.tsx](../apps/storybook-demo/src/mui/MuiPlayground.stories.tsx) |

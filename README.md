@@ -1,36 +1,10 @@
 # Page Component Object (PCO)
 
-**npm:** [`@page-component-object/*`](https://www.npmjs.com/org/page-component-object) — shared TestObjects for React UI tests. The pattern and folder layout go by **PCO** (`__pco__`, `*.to.ts`, `PCOChainable`).
+**A toolset for behavioral integration tests in React** — scoped TestObjects (`*.to.ts` / `*.to.tsx` in `__pco__`) hold queries, interactions, and (where supported) assertions so specs describe *what the user does*, not how to find every node in the tree.
 
-Cross-runner suites often maintain **three parallel copies** of the same work: selectors in Vitest, the same getters again in Storybook `play`, and another set in Cypress. When a date picker or modal flow changes, that fix lands in three places. PCO applies Page Object thinking at the **component and view** level — centralize **queries**, **interactions**, and **intents** in `TestObjects` (`*.to.ts` / `*.to.tsx`) beside your features, then let **adapters** run them in **Vitest**, **Jest**, **Storybook**, and **Cypress**. API mocks, data factories, and test-app wiring live in the same `__pco__` layer.
-
-> **Status:** `0.1.2` on npm — stable for **Vitest**, **Jest**, and **Storybook** (MSW-backed view tests). **Cypress chainables** (`PCOChainable`, `findBy*`) ship today; **unified cross-runner TO definitions** are landing in `0.2.x` via the resolver model. See [Cypress adoption](./docs/cypress-adoption.md).
-
-## Why PCO?
-
-**Start here:** [docs/why-pco.md](./docs/why-pco.md) — the central thesis, duplication diagram, and when PCO pays off. Then [design principles](./docs/design-principles.md) and [getting started](./docs/getting-started.md) (Level 1 → 3).
-
-## Technical context
-
-| Area | In this repo |
-|------|----------------|
-| Monorepo | pnpm workspaces, Turborepo, tsup builds across scoped packages |
-| Library design | Adapter pattern — one TestObject surface, four test runners |
-| Test layering | Query → primitive interaction → domain intent ([philosophy](./docs/philosophy.md)) |
-| Selectors | Testing Library roles and accessible names; Cypress via `@testing-library/cypress` |
-| HTTP boundary | MSW v2 registry — handlers shared between node tests and Storybook |
-| Widget reuse | Composable presets (e.g. [`@page-component-object/preset-mui`](./packages/presets/mui)) in view test objects |
-| API assertions | [`@semantic-matchers`](https://github.com/dvegap95/semantic-matchers) integration for Vitest/Jest spy matchers |
-
-## Install
-
-```bash
-pnpm add @page-component-object/core @page-component-object/queries @page-component-object/msw \
-  @page-component-object/react @page-component-object/router-react \
-  @page-component-object/adapter-vitest
-```
-
-Add `@page-component-object/adapter-jest`, `@page-component-object/adapter-storybook`, or `@page-component-object/adapter-cypress` for other runners. Peer dependencies and per-runner bundles: [docs/install.md](./docs/install.md).
+> **New here?** Copy [Install](#install) → follow [Getting started](./docs/getting-started.md) (Level 1). Skim [What it is](#what-it-is) for context. For the booking-flow story: [vision](./docs/vision.md).
+>
+> **Status:** `0.1.2` on npm — [`@page-component-object/*`](https://www.npmjs.com/org/page-component-object). **Stable:** Vitest, Jest, Storybook (MSW-backed view tests). **Shipped:** Cypress `PCOChainable` / `findBy*`. **In progress (`0.2.x`):** unified cross-runner TestObjects — [resolver model](./docs/resolver-model.md), [Cypress adoption](./docs/cypress-adoption.md).
 
 ## Quick example
 
@@ -55,14 +29,83 @@ export class HomeViewTestObject extends BaseViewTestObject {
 ```
 
 ```ts
-// Vitest behavioral test
+// Vitest behavioral test — elements from getters are PCO targets
 const view = new HomeViewTestObject();
 await view.render();
 expect(view.itemLinks).toHaveLength(3);
-await view.getUser().click(view.itemLinks[0]);
+await view.itemLinks[0].userClick();
 ```
 
-See [docs/getting-started.md](./docs/getting-started.md) for the full walkthrough.
+See [getting started](./docs/getting-started.md) for the full walkthrough (Level 1 → 3).
+
+## Install
+
+```bash
+pnpm add @page-component-object/core @page-component-object/queries @page-component-object/msw \
+  @page-component-object/react @page-component-object/router-react \
+  @page-component-object/adapter-vitest
+```
+
+Add `@page-component-object/adapter-jest`, `@page-component-object/adapter-storybook`, or `@page-component-object/adapter-cypress` for other runners. Peer dependencies and per-runner bundles: [install](./docs/install.md).
+
+## What it is
+
+Integration tests tend to accumulate **inline query chains and interaction blocks** — repeated setup and selectors scattered across specs instead of behavior.
+
+In a **focused test** (one dialog, one primary action), a direct query is often enough:
+
+```ts
+await screen.findByRole('button', { name: 'Accept' }).click();
+```
+
+That breaks down in **full integration views**: another Accept on a card, a sticky bar, or a row action added later can make the same global query ambiguous. Teams then reach for nested `within()` scopes — workable, but duplicated across every spec that touches the same flow.
+
+PCO applies Page Object thinking at the **component and view** level: scoped test objects beside the feature hold query knowledge once. For an **already-open** dialog:
+
+```ts
+await view.addItemButton.userClick(); // view action that opens the modal
+await view.confirmAdditionModal.acceptButton.userClick(); // scoped to that dialog
+```
+
+`confirmAdditionModal` scopes queries to the Confirm Addition dialog — not whichever Accept matches first on the page. Opening the modal stays a **view action** (or a view intent like `confirmAddition()` if you compose the whole flow). The modal test object does not need to know what opened it.
+
+Specs stay focused on **observable behavior**: render a view, act through intents or scoped targets, assert outcomes.
+
+## Supporting the full integration surface
+
+Behavioral view tests need more than DOM helpers. PCO bundles the surrounding harness:
+
+| Concern | Where it lives |
+|---------|----------------|
+| Scoped queries & user actions | `ComponentTestObject` / view `*.to.*` |
+| Scenario-focused payloads | `DataFactory` — strip fields irrelevant to the test ([project structure](./docs/project-structure.md)) |
+| Render, router, storage | `BaseViewTestObject` — view-owned harness ([getting started — Level 3](./docs/getting-started.md#level-3--app-harness-msw-and-routing)) |
+| HTTP mocks & request assertions | `ApiTestObject` + MSW — mock the response you expect, assert what was sent ([HTTP boundary](./docs/http-boundary.md), [matchers](./docs/matchers.md)) |
+
+## Across the testing stack
+
+That ecosystem is usually built first for **one runner** (Vitest or Jest). Then the same intents show up again — Storybook `play` functions, Cypress E2E — redefining queries and procedures for the same widgets even when files sit beside the component.
+
+PCO **abstracts and widens** the Page Component Object pattern through adapters. **Today:** Vitest, Jest, and Storybook share MSW-backed view test objects; Cypress reuses DOM getters (chainables shipped in `0.1.2`). **Direction (`0.2.x`):** unified TestObject definitions across runners via the [resolver model](./docs/resolver-model.md) — so the same `__pco__` surface runs everywhere without parallel getter copies. Cross-runner reuse extends the central contract; it is not the reason to adopt scoped TestObjects in the first place.
+
+## Vision
+
+A booking-flow spec should read like the scenario — not like fixture assembly plus DOM chains. PCO keeps **Given / When / Then** in the test; query knowledge, mock wiring, and widget mechanics live in test objects you own.
+
+Full walkthrough — verbose spec vs PCO, feature by feature: **[docs/vision.md](./docs/vision.md)**.
+
+## Technical context
+
+| Area | In this repo |
+|------|----------------|
+| Monorepo | pnpm workspaces, Turborepo, tsup builds across scoped packages |
+| Library design | Adapter pattern — one TestObject surface, four test runners |
+| Test layering | Query → primitive interaction → domain intent ([philosophy](./docs/philosophy.md)) |
+| Selectors | Testing Library roles and accessible names; Cypress via `@testing-library/cypress` |
+| HTTP boundary | MSW v2 registry — handlers shared between node tests and Storybook ([http-boundary](./docs/http-boundary.md)) |
+| Test data | `DataFactory` — scenario-focused payloads, separate from `ApiTestObject` |
+| Widget reuse | Composable presets (e.g. [`@page-component-object/preset-mui`](./packages/presets/mui)) in view test objects |
+| API assertions | [`@semantic-matchers`](https://github.com/dvegap95/semantic-matchers) integration for Vitest/Jest spy matchers |
 
 ## Packages
 
@@ -95,11 +138,13 @@ Fictitious catalog domain under [`apps/demo-shared`](./apps/demo-shared).
 
 | Doc | Topic |
 |-----|-------|
-| [Why PCO](./docs/why-pco.md) | Central thesis, duplication diagram |
-| [Design principles](./docs/design-principles.md) | Runtime contracts, escape hatches |
-| [Getting started](./docs/getting-started.md) | Level 1 → 3 progressive onboarding |
-| [Cross-runner tutorial](./docs/cross-runner-tutorial.md) | One view in Vitest, Storybook, Cypress |
+| [Getting started](./docs/getting-started.md) | Level 1 → 3 progressive onboarding — **start here after install** |
+| [Vision](./docs/vision.md) | Booking-flow walkthrough — verbose spec vs PCO, design goals |
 | [Install](./docs/install.md) | npm packages, peers, compatibility matrix |
+| [Why PCO (deep dive)](./docs/why-pco.md) | Duplication diagram, layer model, when it pays off |
+| [HTTP boundary](./docs/http-boundary.md) | MSW, `ApiTestObject`, request vs response testing |
+| [Design principles](./docs/design-principles.md) | Runtime contracts, escape hatches |
+| [Cross-runner tutorial](./docs/cross-runner-tutorial.md) | One view in Vitest, Storybook, Cypress |
 | [Portability](./docs/portability.md) | What travels vs runner-native |
 | [Resolver model](./docs/resolver-model.md) | `rootResolver`, `PCOTarget` architecture |
 | [Cypress adoption](./docs/cypress-adoption.md) | Chainables, E2E path, Playwright comparison |
@@ -139,8 +184,6 @@ Maintainers: release workflow in [`.github/PUBLISH.md`](./.github/PUBLISH.md); a
 | Cypress chainable matchers | Planned |
 | More UI presets (`@page-component-object/preset-*`) | Planned |
 | Playwright adapter | Research spike — both E2E paths open |
-
-Interaction model: [docs/philosophy.md](./docs/philosophy.md).
 
 ## Related
 

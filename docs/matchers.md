@@ -55,5 +55,6 @@ Add to `packages/msw/src/apiMatchers.ts` with `defineMatcher`, export from `apiM
 
 ## Related
 
+- [HTTP boundary](./http-boundary.md)
 - [getting-started.md](./getting-started.md) — view tests + `mocks`
 - [@semantic-matchers/core on npm](https://www.npmjs.com/package/@semantic-matchers/core)

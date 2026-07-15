@@ -1,20 +1,34 @@
 # Documentation
 
-**New here?** Read [Why PCO](./why-pco.md) for the thesis, then the [repository README](../README.md) for install and a quick example.
+**New here?** [Install](../README.md#install) from the README → [Getting started](./getting-started.md) (Level 1). Skim the README [What it is](../README.md#what-it-is) when you want context.
 
-## Onboarding path
+## Onboarding paths
+
+**Hands-on (recommended):**
 
 | Step | Guide |
 |------|-------|
-| 1 | [Why PCO](./why-pco.md) |
+| 1 | [README](../README.md) — install + quick example |
 | 2 | [Getting started](./getting-started.md) — Level 1 → 3 |
-| 3 | [Cross-runner tutorial](./cross-runner-tutorial.md) |
+| 3 | [Project structure](./project-structure.md) — `__pco__` layout |
+| 4 | [Cross-runner tutorial](./cross-runner-tutorial.md) — when you add a second runner |
+
+**Understand the model first:**
+
+| Step | Guide |
+|------|-------|
+| 1 | [README — What it is](../README.md#what-it-is) |
+| 2 | [Vision](./vision.md) — booking-flow walkthrough |
+| 3 | [Why PCO](./why-pco.md) — diagrams, when it pays off |
+| 4 | [Getting started](./getting-started.md) |
 
 ## Reference
 
 | Guide | Description |
 |-------|-------------|
 | [Install](./install.md) | npm packages, peers, compatibility matrix |
+| [Vision](./vision.md) | Booking-flow walkthrough, design goals, shipped vs composed |
+| [HTTP boundary](./http-boundary.md) | MSW, `ApiTestObject`, request vs response testing |
 | [Design principles](./design-principles.md) | Runtime contracts, escape hatches |
 | [When not to use](./when-not-to-use.md) | Honest scope boundaries |
 | [Portability](./portability.md) | Portable vs runner-native |
@@ -30,3 +44,7 @@
 | [Changelog](../CHANGELOG.md) | Version history |
 
 Repository overview: [README](../README.md).
+
+---
+
+**Maintainers / doc authors:** [authoring-philosophy.md](./authoring-philosophy.md) — example constraints (not required for library consumers).

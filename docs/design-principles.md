@@ -41,13 +41,17 @@ Cypress specs keep `.should()`, `.click()`, and `@testing-library/cypress` retry
 
 ## Element-centric interactions
 
-Prefer `await target.userClick()` over `await user.click(target)`. A shared `UserAgent` singleton implements primitives per runner (`user-event` in node; Cypress bridge in E2E).
+PCO targets expose `userClick()`, `userType()`, and related primitives. A shared **`UserAgent` singleton** (`getUser()`) implements the same semantics per runner — RTL `user-event` in node; Cypress bridge in E2E. **`await view.getUser().click(target)` remains supported** alongside `await target.userClick()`.
+
+Examples in this repo often use target-centric calls; that is convention, not a mandate against Testing Library’s user-centric APIs. One active user per app under test — not multi-user simulation. See [authoring-philosophy.md](./authoring-philosophy.md).
 
 Intent methods on your TOs compose primitives — they do not call `userEvent` directly.
 
 ## MSW for HTTP boundary (node + Storybook only)
 
-Vitest, Jest, and Storybook share MSW handler definitions through `setupMockData()` and `storyParameters()`. Cypress E2E runs against a real app — reuse **DOM getters**, not MSW setup. See [msw-storybook.md](./msw-storybook.md).
+Vitest, Jest, and Storybook share MSW handler definitions through `setupMockData()` and `storyParameters()`. Cypress E2E runs against a real app — reuse **DOM getters**, not MSW setup.
+
+For mocking philosophy (response vs request assertions, `ApiTestObject` split), see [http-boundary.md](./http-boundary.md). For Storybook wiring, see [msw-storybook.md](./msw-storybook.md).
 
 ## Sync resolvers, lazy scope
 
@@ -74,7 +78,7 @@ Changes to the resolver model must preserve existing node-runner behavior behind
 Longer-term evaluation (not blocking adoption):
 
 - Playwright adapter (research spike; both E2E paths stay open)
-- `children()` collection helpers
+- `children()` collection helpers — map `findAllBy*` results to an array of child test objects (e.g. table rows → `RowTestObject[]`) without hand-rolling index proxies; not shipped yet
 - `App` AsyncLocalStorage for in-file parallelism
 
 Maintainer roadmap: [`.github/PLAN.md`](../.github/PLAN.md).
